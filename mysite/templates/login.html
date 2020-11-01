@@ -1,0 +1,59 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spectral SC">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/logincss.css' %}">
+    
+</head>
+<style>
+    h1{
+        color:#edf1ff;
+        text-shadow: 5px 5px 10px black;
+    }
+.headerone{
+    font-family: 'Spectral SC', serif;
+    
+    padding: 110px 0;
+    text-align: center;
+}
+</style>
+
+
+<body>
+    <div class="login-dark">
+        <h1 class="headerone"><b>TheBoyes - Web Vulnerability Tester</b></h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <h2 class="sr-only">Login Form</h2>
+            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+            <div class="form-group"> {{ form.username }}</div>
+            <div class="form-group"> {{ form.password }}</div>
+            
+            <!-- <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email">{{form.username}}</div> -->
+            <!--<div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password">{{form.password}}</div> -->
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</div><a href = "mailto:developers@theboyes.com">Can't Login?</a></form>
+               
+    </div>
+</section>
+
+<footer class="bg-black small text-center text-white-50">
+    <div class="container">
+      Copyright &copy; TheBoyes 2020
+    </div>
+  </footer>
+</body>
+
+</html>
+

@@ -1,0 +1,392 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <title>FYP - Is Your Network Safe?</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/loader.css' %}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/grayscale.min.css' %}" rel="stylesheet">
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+
+</head>
+
+<body id="page-top">
+ 
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">FYP</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#signup">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Header -->
+  <header class="masthead">
+    <div class="container d-flex h-100 align-items-center">
+      <div class="mx-auto text-center">
+        <br><br><br><br>
+        <h1 class="mx-auto my-0 text-uppercase">TheBoyes</h1>
+        <h2 class="text-white-50 mx-auto mt-2 mb-5">Key in the IP Address and our intelligent system will check it out.</h2>
+        
+
+
+        <form action="/external/" class="form-inline d-flex" method="post">
+            <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter IP address..." required>
+            <button class="btn btn-primary mx-auto">Check!</button><br><br>
+           
+        </form>
+
+        
+        <div id='map' style='width: 400px; height: 300px;'></div>
+        
+        {% if data3 %}
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q';
+            var latextrac="{{data3}}";
+            var lonextrac="{{data4}}";
+            var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [lonextrac,latextrac],
+            zoom: 14,
+            pitch: 45
+            });
+
+            
+            var size = 200;
+ 
+// implementation of CustomLayerInterface to draw a pulsing dot icon on the map
+// see https://docs.mapbox.com/mapbox-gl-js/api/#customlayerinterface for more info
+var pulsingDot = {
+width: size,
+height: size,
+data: new Uint8Array(size * size * 4),
+ 
+// get rendering context for the map canvas when layer is added to the map
+onAdd: function() {
+var canvas = document.createElement('canvas');
+canvas.width = this.width;
+canvas.height = this.height;
+this.context = canvas.getContext('2d');
+},
+ 
+// called once before every frame where the icon will be used
+render: function() {
+var duration = 1000;
+var t = (performance.now() % duration) / duration;
+ 
+var radius = (size / 2) * 0.3;
+var outerRadius = (size / 2) * 0.7 * t + radius;
+var context = this.context;
+ 
+// draw outer circle
+context.clearRect(0, 0, this.width, this.height);
+context.beginPath();
+context.arc(
+this.width / 2,
+this.height / 2,
+outerRadius,
+0,
+Math.PI * 2
+);
+context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+context.fill();
+ 
+// draw inner circle
+context.beginPath();
+context.arc(
+this.width / 2,
+this.height / 2,
+radius,
+0,
+Math.PI * 2
+);
+context.fillStyle = 'rgba(255, 100, 100, 1)';
+context.strokeStyle = 'white';
+context.lineWidth = 2 + 4 * (1 - t);
+context.fill();
+context.stroke();
+ 
+// update this image's data with data from the canvas
+this.data = context.getImageData(
+0,
+0,
+this.width,
+this.height
+).data;
+ 
+// continuously repaint the map, resulting in the smooth animation of the dot
+map.triggerRepaint();
+ 
+// return `true` to let the map know that the image was updated
+return true;
+}
+};
+ 
+map.on('load', function() {
+map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+var latextrac="{{data3}}";
+var lonextrac="{{data4}}";
+map.addSource('points', {
+'type': 'geojson',
+'data': {
+'type': 'FeatureCollection',
+'features': [
+{
+'type': 'Feature',
+'geometry': {
+'type': 'Point',
+'coordinates': [lonextrac,latextrac],
+
+}
+}
+]
+}
+});
+map.addLayer({
+'id': 'points',
+'type': 'symbol',
+'source': 'points',
+'layout': {
+'icon-image': 'pulsing-dot'
+}
+});
+});
+
+
+        </script>
+        {% endif %}
+
+  
+    </div>
+      
+      </div>
+    </div>
+  </header>
+ 
+  {% if data %}
+  <section id="about" class="about-section text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2 class="text-white mb-4">Your results are ready! </h2>
+          
+          <p class="text-white-50">
+            
+            Ports open and vulnerable: {{data}}
+            <div class="btn btn-primary mx-auto">{{data2}}</div>
+            
+            <div class="btn btn-primary mx-auto">LAT {{data3}}</div>
+            <div class="btn btn-primary mx-auto">LONG {{data4}}</div>
+
+            <div class="btn btn-primary mx-auto">{{data5}}</div>
+
+          </p>
+           
+          
+            
+
+            <!--<a  class="btn btn-primary mx-auto" href="{% url 'attack'%}">Attack</a>-->
+                        
+            <form action="{% url 'attack'%}" class="form-inline d-flex" method="post">
+              {% csrf_token %}
+              <input type="text" name="param2" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter IP address..." required>
+              <button class="btn btn-primary mx-auto" type="submit" value="{% url 'attack'%}">Attack</button><br><br>
+             
+          </form>
+         
+        </div>
+        
+      </div>
+      
+  </section>
+
+  {% endif %}
+ <!--
+  <section id="projects" class="projects-section bg-light">
+    <div class="container">
+
+     
+      <div class="row align-items-center no-gutters mb-4 mb-lg-5">
+        <div class="col-xl-8 col-lg-7">
+          <img class="img-fluid mb-3 mb-lg-0" src="{% static 'img/bg-masthead.jpg' %}" alt="">
+        </div>
+        <div class="col-xl-4 col-lg-5">
+          <div class="featured-text text-center text-lg-left">
+            <h4>Shoreline</h4>
+            <p class="text-black-50 mb-0">Grayscale is open source and MIT licensed. This means you can use it for any project - even commercial projects! Download it, customize it, and publish your website!</p>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+        <div class="col-lg-6">
+          <img class="img-fluid" src="{% static 'img/demo-image-01.jpg' %}" alt="">
+        </div>
+        <div class="col-lg-6">
+          <div class="bg-black text-center h-100 project">
+            <div class="d-flex h-100">
+              <div class="project-text w-100 my-auto text-center text-lg-left">
+                <h4 class="text-white">Misty</h4>
+                <p class="mb-0 text-white-50">An example of where you can put an image of a project, or anything else, along with a description.</p>
+                <hr class="d-none d-lg-block mb-0 ml-0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+   
+      <div class="row justify-content-center no-gutters">
+        <div class="col-lg-6">
+          <img class="img-fluid" src="{% static 'img/demo-image-02.jpg' %}" alt="">
+        </div>
+        <div class="col-lg-6 order-lg-first">
+          <div class="bg-black text-center h-100 project">
+            <div class="d-flex h-100">
+              <div class="project-text w-100 my-auto text-center text-lg-right">
+                <h4 class="text-white">Mountains</h4>
+                <p class="mb-0 text-white-50">Another example of a project with its respective description. These sections work well responsively as well, try this theme on a small screen!</p>
+                <hr class="d-none d-lg-block mb-0 mr-0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="signup" class="signup-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto text-center">
+
+          <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+          <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
+
+          <form class="form-inline d-flex">
+            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter email address...">
+            <button type="submit" class="btn btn-primary mx-auto">Subscribe</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+  <section class="contact-section bg-black">
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-md-4 mb-3 mb-md-0">
+          <div class="card py-4 h-100">
+            <div class="card-body text-center">
+              <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+              <h4 class="text-uppercase m-0">Address</h4>
+              <hr class="my-4">
+              <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3 mb-md-0">
+          <div class="card py-4 h-100">
+            <div class="card-body text-center">
+              <i class="fas fa-envelope text-primary mb-2"></i>
+              <h4 class="text-uppercase m-0">Email</h4>
+              <hr class="my-4">
+              <div class="small text-black-50">
+                <a href="#">hello@yourdomain.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3 mb-md-0">
+          <div class="card py-4 h-100">
+            <div class="card-body text-center">
+              <i class="fas fa-mobile-alt text-primary mb-2"></i>
+              <h4 class="text-uppercase m-0">Phone</h4>
+              <hr class="my-4">
+              <div class="small text-black-50">+1 (555) 902-8832</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="social d-flex justify-content-center">
+        <a href="#" class="mx-2">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="mx-2">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="mx-2">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+-->
+  <!-- Footer -->
+  <footer class="bg-black small text-center text-white-50">
+    <div class="container">
+      Copyright &copy; TheBoyes 2020
+    </div>
+  </footer>
+  
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'js/grayscale.min.js' %}"></script>
+
+</body>
+
+</html>
