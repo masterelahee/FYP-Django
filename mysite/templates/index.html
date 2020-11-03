@@ -68,7 +68,7 @@
 
 
         <form action="/external/" class="form-inline d-flex" method="post">
-            <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website or IP address..." required>
+            <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website" required>
             <input type="text" name="userInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter username" required>
             <input type="text" name="passInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter password" required>
             <button class="btn btn-primary mx-auto">Check!</button><br><br>
@@ -214,11 +214,12 @@ map.addLayer({
             
             Ports open and vulnerable: {{data}}
             <div class="btn btn-primary mx-auto">{{data2}}</div>
+      
+            <br>
+            Links scraped: {{data5}}
+            <br>
+            Cookie found: {{data6}}
             
-            <div class="btn btn-primary mx-auto">LAT {{data3}}</div>
-            <div class="btn btn-primary mx-auto">LONG {{data4}}</div>
-
-            <div class="btn btn-primary mx-auto">{{data5}}</div>
 
           </p>
            
@@ -296,7 +297,7 @@ map.addLayer({
 
     </div>
   </section>
--->
+
   <section id="signup" class="signup-section">
     <div class="container">
       <div class="row">

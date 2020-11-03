@@ -173,7 +173,7 @@ def external(request):
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
     # -------------------------------------------
-    cli(url)
+    abc=cli(url)
     # urlscraper(url)
                             
     visited_links  = set()
@@ -199,16 +199,17 @@ def external(request):
     br.set_handle_robots(False)
     #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    thelink='https://'+remoteServer
+    thelink='http://'+remoteServer
     br.open(thelink)
     
     # Select the second (index one) form (the first form is a search query box)
-    
+    print(br.select_form(nr=0))
     br.select_form(nr=0)
 
     # User credentials
     br.form['email'] = request.POST.get('userInp')
     br.form['password'] = request.POST.get('passInp')
+    
     br.submit()
     
     br.set_cookiejar(cj)
@@ -222,7 +223,7 @@ def external(request):
     print(list(visited_links))
     
         # -------------------------------------------------------------------
-    a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links)})
+    a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
        
     
     return a
