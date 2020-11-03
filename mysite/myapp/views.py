@@ -173,7 +173,7 @@ def external(request):
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
     # -------------------------------------------
-    abc=cli(url)
+    cli(url)
     # urlscraper(url)
                             
     visited_links  = set()
