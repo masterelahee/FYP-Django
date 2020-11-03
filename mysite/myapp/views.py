@@ -74,7 +74,7 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
-    
+
 @login_required
 def pick(request):
     return render_to_response('pick.html')
@@ -207,8 +207,8 @@ def external(request):
     br.select_form(nr=0)
 
     # User credentials
-    br.form['email'] = 'admin@admin.com'
-    br.form['password'] = 'password'
+    br.form['email'] = request.POST.get('userInp')
+    br.form['password'] = request.POST.get('passInp')
     br.submit()
     
     br.set_cookiejar(cj)
