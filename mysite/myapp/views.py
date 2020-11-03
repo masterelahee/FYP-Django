@@ -74,9 +74,14 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+    
 @login_required
 def pick(request):
     return render_to_response('pick.html')
+
+@login_required
+def normal(request):
+    return render_to_response('normal.html')    
 
 @login_required
 def index(request):

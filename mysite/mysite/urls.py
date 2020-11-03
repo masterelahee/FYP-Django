@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("external/",  v.external),
     path('select/', v.pick, name="pick"),
+    path('normal/', v.normal, name="normal"),
     path('attack', v.attack, name='attack'),
     path('welcome/', v.index, name="welcome"),
     path('', login_view, name="login"),
