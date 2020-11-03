@@ -20,10 +20,11 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import include
 from myapp.views import login_view, register_view, logout_view
 urlpatterns = [
+
     path('admin/', admin.site.urls),
-    # path('', v.index, name="index"),
-    # path("external/",  v.external),
-    # path('attack', v.attack, name='attack'),
+    path("external/",  v.external),
+    path('select/', v.pick, name="pick"),
+    path('attack', v.attack, name='attack'),
     path('welcome/', v.index, name="welcome"),
     path('', login_view, name="login"),
     path('accounts/register/', register_view),

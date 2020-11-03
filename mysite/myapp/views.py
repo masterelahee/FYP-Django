@@ -8,6 +8,7 @@ from django.http import HttpResponse
 import socket
 import subprocess
 import os
+from collections import OrderedDict
 import urllib
 import json
 import random
@@ -18,20 +19,20 @@ import html2text
 import requests 
 import lxml.html
 from django.contrib.auth.decorators import login_required
-
-
+from .headercheck import SecurityHeaders
+from myapp.securityheaders.__main__ import cli
+from urllib.parse import urlparse
+import urllib.request
 from django.shortcuts import render, redirect
-
 from django.contrib.auth import (
     authenticate,
     get_user_model,
     login,
     logout
 )
-
 from .forms import UserLoginForm, UserRegisterForm
 
-
+#https://www.youtube.com/watch?v=gsW5gYTNi34
 def login_view(request):
     next = request.GET.get('next')
     form = UserLoginForm(request.POST or None)
@@ -73,6 +74,9 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+@login_required
+def pick(request):
+    return render_to_response('pick.html')
 
 @login_required
 def index(request):
@@ -112,10 +116,61 @@ def external(request):
     val=values['lat']
     val2=values['lon']
 
+
     b=len(fixed_list)/31
     c=b*100
+    #----------------------------------------------
+    
+    foo = SecurityHeaders()
+
+    parsed = urlparse(remoteServer)
+    if not parsed.scheme:
+        url = 'https://' + remoteServer # default to http if scheme not provided
+
+
+    headers = foo.check_headers(url)
+
+    if not headers:
+        print ("Failed to fetch headers, exiting...")
+        sys.exit(1)
+
+    okColor = '\033[92m'
+    warnColor = '\033[93m'
+    endColor = '\033[0m'
+    for header, value in headers.items():
+        if value['warn'] == 1:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+        elif value['warn'] == 0:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+
+    https = foo.test_https(url)
+    if https['supported']:
+        print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+    if https['certvalid']:
+        print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+
+    if foo.test_http_to_https(url, 5):
+        print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
     # -------------------------------------------
-    links  = set()                             
+    cli(url)
+    # urlscraper(url)
+                            
     visited_links  = set()
     # Cookie Jar
 
@@ -138,10 +193,10 @@ def external(request):
     br.set_handle_referer(True)
     br.set_handle_robots(False)
     #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-    br.addheaders = [('User-agent','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/45.0.2454101')]
-    thelink='http://'+remoteServer
+    br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+    thelink='https://'+remoteServer
     br.open(thelink)
-
+    
     # Select the second (index one) form (the first form is a search query box)
     
     br.select_form(nr=0)
@@ -163,10 +218,10 @@ def external(request):
     
         # -------------------------------------------------------------------
     a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links)})
-    
+       
     
     return a
-    
+    #BRUTE FORCE
 
 def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'
@@ -189,72 +244,76 @@ def attack(request):
         if port == 65534:
             port = 1
 
-def urlscraper(url):
+# def urlscraper(url):
        
     
-   # Browser
+#    # Browser
 
-    links  = set()                             
-    visited_links  = set()
-    # Cookie Jar
+#     links  = set()                             
+#     visited_links  = set()
+#     # Cookie Jar
 
-    cj=cookielib.LWPCookieJar()
+#     cj=cookielib.LWPCookieJar()
 
-    # Browser options
+#     # Browser options
 
-    # The site we will navigate into, handling it's session
+#     # The site we will navigate into, handling it's session
     
                 
                 
                 
 
-    # urlList = []
-    # getpage= requests.get('http://f27ad1ed2e47.ngrok.io/admin')
+#     # urlList = []
+#     # getpage= requests.get('http://f27ad1ed2e47.ngrok.io/admin')
 
-    # getpage_soup= BeautifulSoup(getpage.text, 'html.parser')
+#     # getpage_soup= BeautifulSoup(getpage.text, 'html.parser')
 
-    # all_links= getpage_soup.findAll('a', href=True)
-    # print(all_links)
-
-
+#     # all_links= getpage_soup.findAll('a', href=True)
+#     # print(all_links)
 
 
 
-    if __name__ == '__main__':
-        br = mechanize.Browser()
-        cj = cookielib.LWPCookieJar()
-        br.set_cookiejar(cj)
+
+
+#     if __name__ == '__main__':
+#         #-----------------------------------------------------------------------------------
         
-        br.set_handle_equiv(True)
-        br.set_handle_gzip(True)
-        br.set_handle_redirect(True)
-        br.set_handle_referer(True)
-        br.set_handle_robots(False)
-        #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-        br.addheaders = [('User-agent','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/45.0.2454101')]
         
-        br.open(url)
+     
+#         br = mechanize.Browser()
+#         cj = cookielib.LWPCookieJar()
+#         br.set_cookiejar(cj)
+        
+#         br.set_handle_equiv(True)
+#         br.set_handle_gzip(True)
+#         br.set_handle_redirect(True)
+#         br.set_handle_referer(True)
+#         br.set_handle_robots(False)
+#         #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+#         br.addheaders = [('User-agent','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/45.0.2454101')]
+        
+#         br.open(url)
 
-        # Select the second (index one) form (the first form is a search query box)
+#         # Select the second (index one) form (the first form is a search query box)
         
-        br.select_form(nr=0)
+#         br.select_form(nr=0)
 
-        # User credentials
-        br.form['email'] = 'admin@admin.com'
-        br.form['password'] = 'password'
-        br.submit()
+#         # User credentials
+#         br.form['email'] = 'admin@admin.com'
+#         br.form['password'] = 'password'
+#         br.submit()
         
-        br.set_cookiejar(cj)
-        print(cj)
-        # br.addheaders=[('Cookie',cj)]
+#         br.set_cookiejar(cj)
+#         print(cj)
+#         # br.addheaders=[('Cookie',cj)]
         
 
         
-        visit(br,url)
-        bar=visited_links.copy()
-        for e in bar:
+#         visit(br,url)
+#         bar=visited_links.copy()
+#         for e in bar:
             
-            visit(br,e)
-        print(list(visited_links))
-        legit=list(visited_links)
-        return legit
+#             visit(br,e)
+#         print(list(visited_links))
+#         legit=list(visited_links)
+#         return legit
