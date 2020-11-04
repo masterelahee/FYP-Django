@@ -31,7 +31,20 @@ from django.contrib.auth import (
     logout
 )
 from .forms import UserLoginForm, UserRegisterForm
+import pyrebase 
+config={
+    "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
+    "authDomain": "fyptheboyes.firebaseapp.com",
+    "databaseURL": "https://fyptheboyes.firebaseio.com",
+    "projectId": "fyptheboyes",
+    "storageBucket": "fyptheboyes.appspot.com",
+    "messagingSenderId": "1073113067983",
+    "appId": "1:1073113067983:web:7564efc27471e46f65e2ba",
+    "measurementId": "G-R0SJYKDBMZ"
 
+}
+firebase=pyrebase.initialize_app(config)
+db=firebase.database()
 #https://www.youtube.com/watch?v=gsW5gYTNi34
 def login_view(request):
     next = request.GET.get('next')
@@ -114,7 +127,8 @@ def external(request):
     fixed_list=str(portOpenList)[1:-1]
  
     print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
-
+    data={"ip":remoteServer,"port_open":fixed_list}
+    db.push(data)
     ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
     data=ip_locate.read()
     values=json.loads(data)
@@ -199,11 +213,13 @@ def external(request):
     br.set_handle_robots(False)
     #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    thelink='http://'+remoteServer
+    thelink='https://'+remoteServer
     br.open(thelink)
     
     # Select the second (index one) form (the first form is a search query box)
-    print(br.select_form(nr=0))
+    for f in br.forms():
+        print (f)
+
     br.select_form(nr=0)
 
     # User credentials
