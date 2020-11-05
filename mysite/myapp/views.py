@@ -127,8 +127,7 @@ def external(request):
     fixed_list=str(portOpenList)[1:-1]
  
     print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
-    data={"ip":remoteServer,"port_open":fixed_list}
-    db.push(data)
+    
     ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
     data=ip_locate.read()
     values=json.loads(data)
@@ -156,6 +155,7 @@ def external(request):
     okColor = '\033[92m'
     warnColor = '\033[93m'
     endColor = '\033[0m'
+    
     for header, value in headers.items():
         if value['warn'] == 1:
             if value['defined'] == False:
@@ -188,6 +188,7 @@ def external(request):
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
     # -------------------------------------------
     cli(url)
+    
     # urlscraper(url)
                             
     visited_links  = set()
@@ -240,10 +241,15 @@ def external(request):
     
         # -------------------------------------------------------------------
     a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
-       
+    
+    #sending to firebase
+    to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
+    db.child(remoteServer.replace(".","_")).set(to_firebase)
     
     return a
     #BRUTE FORCE
+
+    
 
 def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'
