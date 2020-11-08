@@ -21,13 +21,14 @@ from django.conf.urls import include
 from myapp.views import login_view, register_view, logout_view
 urlpatterns = [
 
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin"),
     path("external/",  v.external),
     path('select/', v.pick, name="pick"),
     path('normal/', v.normal, name="normal"),
     path('attack', v.attack, name='attack'),
     path('welcome/', v.index, name="welcome"),
     path('', login_view, name="login"),
+    path('signup/', register_view, name="signup"),
     path('accounts/register/', register_view),
     path('accounts/logout/', logout_view, name="logout")
     

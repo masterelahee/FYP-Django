@@ -22,9 +22,11 @@
     }
 .headerone{
     font-family: 'Spectral SC', serif;
-    
     padding: 110px 0;
     text-align: center;
+}
+body{
+    background-color: black;
 }
 </style>
 
@@ -36,7 +38,6 @@
         <form method="post">
             {% csrf_token %}
             
-            <h2 class="sr-only">Login Form</h2>
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
             <div class="form-group"> {{ form.username }}</div>
             <div class="form-group"> {{ form.password }}</div>
@@ -50,7 +51,7 @@
 
 <footer class="bg-black small text-center text-white-50">
     <div class="container">
-      Copyright &copy; TheBoyes 2020
+      Copyright &copy; TheBoyes 2020<a style="color:black;" href="{% url 'admin:index' %}">.</a>
     </div>
   </footer>
 </body>
