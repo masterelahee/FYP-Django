@@ -23,6 +23,8 @@ urlpatterns = [
 
     path('admin/', admin.site.urls, name="admin"),
     path("external/",  v.external),
+    path("normal_external/",  v.norm_scan),
+    path("normal/", v.normal),
     path('select/', v.pick, name="pick"),
     path('normal/', v.normal, name="normal"),
     path('attack', v.attack, name='attack'),

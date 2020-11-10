@@ -32,6 +32,8 @@ from django.contrib.auth import (
 )
 from .forms import UserLoginForm, UserRegisterForm
 import pyrebase 
+
+
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
     "authDomain": "fyptheboyes.firebaseapp.com",
@@ -46,6 +48,7 @@ config={
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 #https://www.youtube.com/watch?v=gsW5gYTNi34
+
 
 
 def error_404_view(request,exception):
@@ -111,6 +114,7 @@ def index(request):
 @login_required
 @csrf_exempt
 def external(request):
+
     remoteServer    = request.POST.get('param')
     remoteServerIP  = socket.gethostbyname(remoteServer)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
@@ -258,6 +262,147 @@ def external(request):
     return a
     #BRUTE FORCE
 
+
+@login_required
+@csrf_exempt
+def norm_scan(request):
+
+    remoteServer    = request.POST.get('param')
+    remoteServerIP  = socket.gethostbyname(remoteServer)
+    com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
+    portOpenList = []
+    portCloseList = []
+    #out=run([sys.executable, 'D://Desktop//quanta//QuantaDjango//quanta_Scanner//mysite//myapp//tester.py',inp], shell=False)
+    try:
+        for port in com_port:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.8)
+            result = sock.connect_ex((remoteServerIP, port))
+            if result == 0:
+                portOpenList.append(port)
+                print("Port {}: 	 Open".format(port))
+
+            else:
+                portCloseList.append(port)
+                print("Port {}:          Closed".format(port))
+            sock.close()
+
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt")
+    fixed_list=str(portOpenList)[1:-1]
+ 
+    print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
+    
+    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
+    data=ip_locate.read()
+    values=json.loads(data)
+    val=values['lat']
+    val2=values['lon']
+
+
+    b=len(fixed_list)/31
+    c=b*100
+    #----------------------------------------------
+    
+    foo = SecurityHeaders()
+
+    parsed = urlparse(remoteServer)
+    if not parsed.scheme:
+        url = 'https://' + remoteServer # default to http if scheme not provided
+
+
+    headers = foo.check_headers(url)
+
+    if not headers:
+        print ("Failed to fetch headers, exiting...")
+        sys.exit(1)
+
+    okColor = '\033[92m'
+    warnColor = '\033[93m'
+    endColor = '\033[0m'
+    
+    for header, value in headers.items():
+        if value['warn'] == 1:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+        elif value['warn'] == 0:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+
+    https = foo.test_https(url)
+    if https['supported']:
+        print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+    if https['certvalid']:
+        print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+
+    if foo.test_http_to_https(url, 5):
+        print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+    # -------------------------------------------
+    cli(url)
+    
+    # urlscraper(url)
+                            
+    visited_links  = set()
+    # Cookie Jar
+
+    cj=cookielib.LWPCookieJar()
+    def visit(br, url):
+        br.open(url)
+        br._factory.is_html = True
+        links = br.links()
+        for link in links:
+            if not link.url in links:
+                visited_links.add(link.url)  
+
+    br = mechanize.Browser()
+    cj = cookielib.LWPCookieJar()
+    br.set_cookiejar(cj)
+    
+    br.set_handle_equiv(True)
+    br.set_handle_gzip(True)
+    br.set_handle_redirect(True)
+    br.set_handle_referer(True)
+    br.set_handle_robots(False)
+    #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+    br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+    thelink='https://'+remoteServer
+    br.open(thelink)
+    
+    # Select the second (index one) form (the first form is a search query box)
+    
+    br.set_cookiejar(cj)
+    print(cj)
+
+    visit(br,thelink)
+    bar=visited_links.copy()
+    for e in bar:
+        visit(br,e)
+    
+    print(list(visited_links))
+    
+        # -------------------------------------------------------------------
+    a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
+    
+    #sending to firebase
+    to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
+    db.child(remoteServer.replace(".","_")).set(to_firebase)
+    
+    return a
+    #BRUTE FORCE
     
 
 def default_map(request):

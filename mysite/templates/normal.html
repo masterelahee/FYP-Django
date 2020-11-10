@@ -8,7 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <title>FYP - Is Your Network Safe?</title>
 
   <!-- Bootstrap core CSS -->
@@ -29,7 +31,7 @@
 </head>
 
 <body id="page-top">
- 
+  
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
@@ -67,13 +69,16 @@
         
 
 
-        <form action="/external/" class="form-inline d-flex" method="post">
+        <form action="/normal_external/" class="form-inline d-flex" method="post">
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website or IP address..." required>
-            <button class="btn btn-primary mx-auto">Check!</button><br><br>
+            <button class="btn btn-primary mx-auto" >Check!</button><br><br>
            
         </form>
 
         
+    
+
+
         <div id='map' style='width: 400px; height: 300px;'></div>
         
         {% if data3 %}
@@ -386,7 +391,7 @@ map.addLayer({
 
   <!-- Custom scripts for this template -->
   <script src="{% static 'js/grayscale.min.js' %}"></script>
-
+  
 </body>
 
 </html>
