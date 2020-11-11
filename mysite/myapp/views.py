@@ -17,6 +17,7 @@ import mechanize
 import http.cookiejar as cookielib
 from bs4 import BeautifulSoup
 import html2text
+import re
 import requests 
 import lxml.html
 from django.contrib.auth.decorators import login_required
@@ -413,6 +414,15 @@ def norm_scan(request):
 @login_required
 @csrf_exempt    
 def arachni (request):
+    
+
+    url = request.POST.get('param')
+    if not re.match('(?:http|https)://', url):
+        url='https://{}'.format(url)
+    else:
+        pass
+    
+    print(url)
     a = ArachniClient()
     resumeFlag = False
     authFlag = False
@@ -430,14 +440,14 @@ def arachni (request):
             break
 
     print("Normal scan")
-    url = request.POST.get('param')
+    
     a.target(url)
     scan_json_object = a.start_scan() #outputs json dictionary
     scan_ID = scan_json_object["id"]
     start_time = time.time()
 
 
-    while True:
+    while status_object["busy"] == False:
     
         print("Resumed scan? | ", resumeFlag)
         print("Authenticated? | ", authFlag)
@@ -457,12 +467,13 @@ def arachni (request):
             a.getScanReport(scan_ID,"json") #output to json for database processing
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
             a.processJSON(scan_ID) #print out choice information
-            break
+            
         time.sleep(60) #delay status update to 1 minute per status request
         
     a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
+    time.sleep(10)
     
-    return render(request, 'fullarachni.html')
+    return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"]})
 
 def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'
@@ -484,7 +495,7 @@ def attack(request):
         print ("Sent %s packet to %s throught port:%s"%(sent,remoteServerIP2,port))
         if port == 65534:
             port = 1
-    return render_to_response('index.html')
+    
 
 
 

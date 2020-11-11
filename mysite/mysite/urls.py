@@ -25,7 +25,7 @@ urlpatterns = [
     path("external/",  v.external),
     path("normal_external/",  v.norm_scan),
     path("fullscan/",  v.fullscan_arachni, name="full"),
-    
+    path("fullscan_external/",  v.arachni),
     path("normal/", v.normal),
     path('select/', v.pick, name="pick"),
     path('normal/', v.normal, name="normal"),
