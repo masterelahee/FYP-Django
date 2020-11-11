@@ -12,6 +12,7 @@ from collections import OrderedDict
 import urllib
 import json
 import random
+import time
 import mechanize
 import http.cookiejar as cookielib
 from bs4 import BeautifulSoup
@@ -21,6 +22,7 @@ import lxml.html
 from django.contrib.auth.decorators import login_required
 from .headercheck import SecurityHeaders
 from myapp.securityheaders.__main__ import cli
+from myapp.arachni_tester import ArachniClient
 from urllib.parse import urlparse
 import urllib.request
 from django.shortcuts import render, redirect
@@ -106,6 +108,10 @@ def pick(request):
 @login_required
 def normal(request):
     return render_to_response('normal.html')    
+
+@login_required
+def fullscan_arachni(request):
+    return render_to_response('fullarachni.html') 
 
 @login_required
 def index(request):
@@ -404,6 +410,59 @@ def norm_scan(request):
     return a
     #BRUTE FORCE
     
+@login_required
+@csrf_exempt    
+def arachni (request):
+    a = ArachniClient()
+    resumeFlag = False
+    authFlag = False
+
+    #checks for existing scans and resumes from there instead
+    avail_scan_object = a.get_scans() #returns json object of available scans
+    print(a.get_scans()) #displays available scans | testing only
+
+    for x in avail_scan_object: #check if avail scan is ongoing
+        status_object = a.get_status(x)
+        if(status_object["busy"] == True): #break and resume last scan if scan is still ongoing
+            scan_ID = x
+            resumeFlag = True
+            start_time = time.time()
+            break
+
+    print("Normal scan")
+    url = request.POST.get('param')
+    a.target(url)
+    scan_json_object = a.start_scan() #outputs json dictionary
+    scan_ID = scan_json_object["id"]
+    start_time = time.time()
+
+
+    while True:
+    
+        print("Resumed scan? | ", resumeFlag)
+        print("Authenticated? | ", authFlag)
+        print("The scan is ongoing...")
+        status_object = a.get_status(scan_ID)
+
+        print("Current page is: ", status_object["statistics"]["current_page"])
+        print("Total audited pages are: ", status_object["statistics"]["audited_pages"])
+        print("Total found pages are: ", status_object["statistics"]["found_pages"])
+        print("Elapsed time is: ", status_object["statistics"]["runtime"])
+        print("Current status is: ", status_object["status"])
+        print("Current busy flag is: ", status_object["busy"])
+
+        if(status_object["busy"] == False):
+            print("Total scan time: ", status_object["statistics"]["runtime"])
+            print("Scan has been completed, retrieving report...")
+            a.getScanReport(scan_ID,"json") #output to json for database processing
+            a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
+            a.processJSON(scan_ID) #print out choice information
+            break
+        time.sleep(60) #delay status update to 1 minute per status request
+        
+    a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
+    
+    return render(request, 'fullarachni.html')
 
 def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'
@@ -426,6 +485,10 @@ def attack(request):
         if port == 65534:
             port = 1
     return render_to_response('index.html')
+
+
+
+
 # def urlscraper(url):
        
     
