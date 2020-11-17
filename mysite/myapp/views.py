@@ -35,7 +35,10 @@ from django.contrib.auth import (
 )
 from .forms import UserLoginForm, UserRegisterForm
 import pyrebase 
-
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+from email.mime.text import MIMEText
 
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -51,7 +54,6 @@ config={
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 #https://www.youtube.com/watch?v=gsW5gYTNi34
-
 
 
 def error_404_view(request,exception):
@@ -107,12 +109,27 @@ def pick(request):
     return render_to_response('pick.html')
 
 @login_required
+@csrf_exempt
+def report(request):
+    extract = db.child(request.POST.get('parameder')).get()
+    
+    f=json.dumps(dict(extract.val()))
+    
+
+    
+    return render(request,'report.html',{"extracted":f})
+
+@login_required
 def normal(request):
     return render_to_response('normal.html')    
 
 @login_required
 def fullscan_arachni(request):
     return render_to_response('fullarachni.html') 
+
+@login_required
+def fullscan_arachni_auth(request):
+    return render_to_response('fullarachni_auth.html') 
 
 @login_required
 def index(request):
@@ -244,8 +261,9 @@ def external(request):
     br.select_form(nr=0)
 
     # User credentials
-    br.form['email'] = request.POST.get('userInp')
-    br.form['password'] = request.POST.get('passInp')
+
+    br.form[request.POST.get('form_cred_user')] = request.POST.get('userInp')
+    br.form[request.POST.get('form_cred_pass')] = request.POST.get('passInp')
     
     br.submit()
     
@@ -273,7 +291,8 @@ def external(request):
 @login_required
 @csrf_exempt
 def norm_scan(request):
-
+#do the opushing to firebase and puling
+    
     remoteServer    = request.POST.get('param')
     remoteServerIP  = socket.gethostbyname(remoteServer)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
@@ -410,13 +429,14 @@ def norm_scan(request):
     
     return a
     #BRUTE FORCE
-    
+
+
 @login_required
 @csrf_exempt    
 def arachni (request):
     
-
     url = request.POST.get('param')
+
     if not re.match('(?:http|https)://', url):
         url='https://{}'.format(url)
     else:
@@ -446,14 +466,121 @@ def arachni (request):
     scan_ID = scan_json_object["id"]
     start_time = time.time()
 
-
-    while status_object["busy"] == False:
+    scanflag=True
+    while scanflag is True:
     
         print("Resumed scan? | ", resumeFlag)
         print("Authenticated? | ", authFlag)
         print("The scan is ongoing...")
+        
         status_object = a.get_status(scan_ID)
+        print("Current page is: ", status_object["statistics"]["current_page"])
+        print("Total audited pages are: ", status_object["statistics"]["audited_pages"])
+        print("Total found pages are: ", status_object["statistics"]["found_pages"])
+        print("Elapsed time is: ", status_object["statistics"]["runtime"])
+        print("Current status is: ", status_object["status"])
+        print("Current busy flag is: ", status_object["busy"])
 
+        if(status_object["busy"] == False):
+            print("Total scan time: ", status_object["statistics"]["runtime"])
+            print("Scan has been completed, retrieving report...")
+            a.getScanReport(scan_ID,"json") #output to json for database processing
+            a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
+            #a.processJSON(scan_ID) #print out choice information
+
+            urlfirebase=re.sub('[.:/]','_',url)
+            print(urlfirebase)
+        
+            with open("arachni_" + scan_ID + "_scan_report.json", encoding="utf-8") as jsonfile:
+                json_obj = json.load(jsonfile)
+
+                try:
+                    for x in json_obj['issues']:
+                        
+                        # print("Name: ",x['name'])
+                        # print("Description: ",x['description'])
+                        # print("Remedy guidance: ", x['remedy_guidance'])
+                        # print("Issue found in site: ", x['vector']['url'])
+                        # print("References: ", x['references'])
+                      
+                        if x['name']=="Interesting response":
+                            to_firebase={"issues":x['name'],"description":x['description']}
+                            
+                        else:
+                            to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
+                        db.child(urlfirebase).push(to_firebase)
+
+                    for x in json_obj['sitemap']:
+                        
+                        db.child(urlfirebase).child("site_urls").push(x)
+                except Exception:
+                    pass
+
+            
+            scanflag=False
+        #time.sleep(0.5) #delay status update to 1 minute per status request
+            
+            
+    a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
+      
+    return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
+
+@login_required
+@csrf_exempt    
+def arachni_auth (request):
+    
+
+    url = request.POST.get('param')
+
+    if not re.match('(?:http|https)://', url):
+        url='https://{}'.format(url)
+    else:
+        pass
+    
+    print(url)
+    a = ArachniClient()
+    resumeFlag = False
+    authFlag = False
+
+    #checks for existing scans and resumes from there instead
+    avail_scan_object = a.get_scans() #returns json object of available scans
+    print(a.get_scans()) #displays available scans | testing only
+
+    for x in avail_scan_object: #check if avail scan is ongoing
+        status_object = a.get_status(x)
+        if(status_object["busy"] == True): #break and resume last scan if scan is still ongoing
+            scan_ID = x
+            resumeFlag = True
+            start_time = time.time()
+            break
+
+    #authFlag = True
+    print("Authenticated scan")
+    # a.startAuthScan()
+    a.profile("myapp/profiles/full_audit_auth.json")
+    target_url = url
+    username = request.POST.get('userInp')
+    password = request.POST.get('passInp')
+
+    try:
+        urllib.request.urlopen(target_url)
+        a.options["url"] = target_url
+        a.options["plugins"]["autologin"]["url"] = target_url
+        a.options["plugins"]["autologin"]["parameters"] = request.POST.get('form_cred_user')+"=" + username + "&" + request.POST.get('form_cred_pass')+"=" + password
+    except urllib.request.HTTPError as e:
+        print(e.code)
+
+    scan_json_object = a.start_scan() #outputs json dictionary
+    scan_ID = scan_json_object["id"]
+    start_time = time.time()
+    scanflag=True
+    while scanflag is True:
+    
+        print("Resumed scan? | ", resumeFlag)
+        print("Authenticated? | ", authFlag)
+        print("The scan is ongoing...")
+        
+        status_object = a.get_status(scan_ID)
         print("Current page is: ", status_object["statistics"]["current_page"])
         print("Total audited pages are: ", status_object["statistics"]["audited_pages"])
         print("Total found pages are: ", status_object["statistics"]["found_pages"])
@@ -467,13 +594,13 @@ def arachni (request):
             a.getScanReport(scan_ID,"json") #output to json for database processing
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
             a.processJSON(scan_ID) #print out choice information
-            
-        time.sleep(60) #delay status update to 1 minute per status request
+            scanflag=False
+        time.sleep(5) #delay status update to 1 minute per status request
         
     a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
-    time.sleep(10)
     
-    return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"]})
+    
+    return render(request, 'fullarachni_auth.html',{'data_arach':status_object["statistics"]["runtime"]})
 
 def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'
@@ -496,80 +623,3 @@ def attack(request):
         if port == 65534:
             port = 1
     
-
-
-
-
-# def urlscraper(url):
-       
-    
-#    # Browser
-
-#     links  = set()                             
-#     visited_links  = set()
-#     # Cookie Jar
-
-#     cj=cookielib.LWPCookieJar()
-
-#     # Browser options
-
-#     # The site we will navigate into, handling it's session
-    
-                
-                
-                
-
-#     # urlList = []
-#     # getpage= requests.get('http://f27ad1ed2e47.ngrok.io/admin')
-
-#     # getpage_soup= BeautifulSoup(getpage.text, 'html.parser')
-
-#     # all_links= getpage_soup.findAll('a', href=True)
-#     # print(all_links)
-
-
-
-
-
-#     if __name__ == '__main__':
-#         #-----------------------------------------------------------------------------------
-        
-        
-     
-#         br = mechanize.Browser()
-#         cj = cookielib.LWPCookieJar()
-#         br.set_cookiejar(cj)
-        
-#         br.set_handle_equiv(True)
-#         br.set_handle_gzip(True)
-#         br.set_handle_redirect(True)
-#         br.set_handle_referer(True)
-#         br.set_handle_robots(False)
-#         #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-#         br.addheaders = [('User-agent','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/45.0.2454101')]
-        
-#         br.open(url)
-
-#         # Select the second (index one) form (the first form is a search query box)
-        
-#         br.select_form(nr=0)
-
-#         # User credentials
-#         br.form['email'] = 'admin@admin.com'
-#         br.form['password'] = 'password'
-#         br.submit()
-        
-#         br.set_cookiejar(cj)
-#         print(cj)
-#         # br.addheaders=[('Cookie',cj)]
-        
-
-        
-#         visit(br,url)
-#         bar=visited_links.copy()
-#         for e in bar:
-            
-#             visit(br,e)
-#         print(list(visited_links))
-#         legit=list(visited_links)
-#         return legit

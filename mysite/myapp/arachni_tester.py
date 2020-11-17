@@ -5,7 +5,10 @@ import os
 import time
 from bs4 import BeautifulSoup
 
+
 class ArachniClient(object):
+
+  
 
    with open('myapp/profiles/full_audit_normal.json') as f:
       default_profile = json.load(f)
@@ -66,18 +69,19 @@ class ArachniClient(object):
          self.options = json.load(f)
    
    def getScanReport(self, scanID, report_format):
+      
       if report_format == 'html':
          report_format = 'html.zip'
 
       if report_format in ['json', 'xml', 'yaml', 'html.zip']:
-         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,"./reports/arachni_" + scanID + "_scan_report." + report_format)
+         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,"arachni_" + scanID + "_scan_report." + report_format)
       elif report_format == None: #outputs to json by default
-         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report","./reports/arachni_" + scanID + "_scan_report.json")
+         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report","arachni_" + scanID + "_scan_report.json")
       else:
          print ("Your requested format is not available.")
    
    def processJSON(self, scanID):  
-      with open("./reports/arachni_" + scanID + "_scan_report.json", encoding="utf-8") as jsonfile:
+      with open("arachni_" + scanID + "_scan_report.json", encoding="utf-8") as jsonfile:
          json_obj = json.load(jsonfile)
 
       try:
@@ -87,12 +91,13 @@ class ArachniClient(object):
             print("Remedy guidance: ", x['remedy_guidance'])
             print("Issue found in site: ", x['vector']['url'])
             print("References: ", x['references'])
-            print("")
+
+
       except Exception:
          pass
    
    def startAuthScan(self): #call this if user decides to do auth scan
-      self.profile("./profiles/full_audit_auth.json")
+      self.profile("myapp/profiles/full_audit_auth.json")
       target_url = input("Enter URL: ")
       username = input("Input username: ")
       password = input("Input password: ")
@@ -172,6 +177,7 @@ if __name__ == '__main__':
       if(status_object["busy"] == False):
          print("Total scan time: ", status_object["statistics"]["runtime"])
          print("Scan has been completed, retrieving report...")
+         
          a.getScanReport(scan_ID,"json") #output to json for database processing
          a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
          a.processJSON(scan_ID) #print out choice information

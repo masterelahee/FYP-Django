@@ -1,0 +1,419 @@
+
+2020-11-16 02:49:49 +0800 --------------------------------------------------------------------------------
+ENV:
+---
+ALLUSERSPROFILE: C:\ProgramData
+APPDATA: C:\Users\USER\AppData\Roaming
+ARACHNI_FRAMEWORK_LOGDIR: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\\logs\framework
+ARACHNI_WEBUI_LOGDIR: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\\logs\webui
+asl.log: Destination=file
+BUNDLER_ORIG_GEM_PATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0;C:/Users/USER/.gem/ruby/2.2.0
+BUNDLER_ORIG_MANPATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/kramdown-1.4.1/man
+BUNDLER_VERSION: 1.14.6
+BUNDLE_BIN_PATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/bundler-1.14.6/exe/bundle
+BUNDLE_GEMFILE: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/arachni-ui-web/Gemfile
+CommonProgramFiles: C:\Program Files\Common Files
+CommonProgramFiles(x86): C:\Program Files (x86)\Common Files
+CommonProgramW6432: C:\Program Files\Common Files
+COMPUTERNAME: LAPTOP-FLHQ8BK5
+ComSpec: C:\WINDOWS\system32\cmd.exe
+DriverData: C:\Windows\System32\Drivers\DriverData
+ENV_ROOT: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\
+ENV_RUBY_BIN: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\ruby\bin
+ENV_WEBUI_BIN: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\arachni-ui-web\bin
+ENV_WEBUI_ROOT: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\arachni-ui-web
+FPS_BROWSER_APP_PROFILE_STRING: Internet Explorer
+FPS_BROWSER_USER_PROFILE_STRING: Default
+GEM_HOME: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0
+GEM_PATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0;C:/Users/USER/.gem/ruby/2.2.0
+GTK_BASEPATH: C:\Program Files (x86)\GtkSharp\2.12\
+HOME: C:/Users/USER
+HOMEDRIVE: 'C:'
+HOMEPATH: "\\Users\\USER"
+LOCALAPPDATA: C:\Users\USER\AppData\Local
+LOGONSERVER: "\\\\LAPTOP-FLHQ8BK5"
+MANPATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/kramdown-1.4.1/man
+MSYS2_PATH_TYPE: inherit
+NDI_RUNTIME_DIR_V2: D:\v4
+NDI_RUNTIME_DIR_V3: D:\v4
+NDI_RUNTIME_DIR_V4: D:\v4
+NUMBER_OF_PROCESSORS: '8'
+OneDrive: C:\Users\USER\OneDrive
+OS: Windows_NT
+Path: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/bin;D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\ruby\bin;C:\Program
+  Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\Intel(R)
+  Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine
+  Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program
+  Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R)
+  Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management
+  Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program
+  Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program
+  Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\PharosSystems\Core;C:\Program
+  Files\Microsoft SQL Server\110\Tools\Binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Git\cmd;C:\Program
+  Files (x86)\Nmap;C:\Program Files\dotnet\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\msys64\home\USER\.splashkit;C:\msys64\home\USER\.splashkit\lib\win64;C:\msys64\home\USER\.splashkit\lib;C:\Windows\System32;C:\Users\USER\AppData\Local\Programs\Python\Python38-32\Scripts;D:\Microsoft
+  VS Code\bin;C:\Users\USER\AppData\Local\GitHubDesktop\bin;C:\Users\USER\AppData\Local\Microsoft\WindowsApps;D:\Xampp\php;C:\Users\USER\AppData\Local\Programs\Python\Python38-32
+pathExists: '0 '
+PATHEXT: ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC"
+PROCESSOR_ARCHITECTURE: AMD64
+PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 158 Stepping 10, GenuineIntel
+PROCESSOR_LEVEL: '6'
+PROCESSOR_REVISION: 9e0a
+ProgramData: C:\ProgramData
+ProgramFiles: C:\Program Files
+ProgramFiles(x86): C:\Program Files (x86)
+ProgramW6432: C:\Program Files
+PROMPT: "$P$G"
+PSModulePath: C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+PT7HOME: D:\Cisco Packet Tracer 7.3.0
+PUBLIC: C:\Users\Public
+QT_DEVICE_PIXEL_RATIO: auto
+RACK_ENV: development
+RAILS_ENV: production
+RUBYLIB: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/bundler-1.14.6/lib
+RUBYOPT: "-rbundler/setup"
+SESSIONNAME: Console
+SystemDrive: 'C:'
+SystemRoot: C:\WINDOWS
+TEMP: C:\Users\USER\AppData\Local\Temp
+TMP: C:\Users\USER\AppData\Local\Temp
+USER: USER
+USERDOMAIN: LAPTOP-FLHQ8BK5
+USERDOMAIN_ROAMINGPROFILE: LAPTOP-FLHQ8BK5
+USERNAME: USER
+USERPROFILE: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\home
+VBOX_MSI_INSTALL_PATH: D:\VM\
+windir: C:\WINDOWS
+--------------------------------------------------------------------------------
+OPTIONS:
+---
+audit:
+  parameter_values: true
+  exclude_vector_patterns: []
+  include_vector_patterns: []
+  link_templates: []
+browser_cluster:
+  local_storage: {}
+  wait_for_elements: {}
+  pool_size: 10
+  job_timeout: 25
+  worker_time_to_live: 100
+  ignore_images: false
+  screen_width: 1600
+  screen_height: 1200
+datastore:
+  report_path: 
+  token: 764b4f62d88aad5beed5c62fc8dad040
+http:
+  user_agent: Arachni/v2.0dev
+  request_timeout: 10000
+  request_redirect_limit: 5
+  request_concurrency: 20
+  request_queue_size: 100
+  request_headers: {}
+  response_max_size: 500000
+  cookies: {}
+  authentication_type: auto
+input:
+  values: {}
+  default_values:
+    "(?i-mx:pass)": 5543!%arachni_secret
+    "(?i-mx:name)": arachni_name
+    "(?i-mx:mail)": arachni@email.gr
+    "(?i-mx:amount)": '100'
+    "(?i-mx:usr)": arachni_user
+    "(?i-mx:id)": '1'
+    "(?i-mx:txt)": arachni_text
+    "(?i-mx:account)": '12'
+    "(?i-mx:user)": arachni_user
+    "(?i-mx:num)": '132'
+  without_defaults: false
+  force: false
+scope:
+  redundant_path_patterns: {}
+  dom_depth_limit: 5
+  exclude_file_extensions: []
+  exclude_path_patterns: []
+  exclude_content_patterns: []
+  include_path_patterns: []
+  restrict_paths: []
+  extend_paths: []
+  url_rewrites: {}
+  auto_redundant_paths: 3
+session: {}
+checks:
+- allowed_methods
+- backup_directories
+- csrf
+- path_traversal
+- html_objects
+- http_only_cookies
+- http_put
+- insecure_client_access_policy
+- insecure_cookies
+- interesting_responses
+- x_frame_options
+- password_autocomplete
+- backup_files
+platforms: []
+plugins:
+  uniformity: {}
+  autothrottle: {}
+  healthmap: {}
+  timing_attacks: {}
+  discovery: {}
+no_fingerprinting: false
+authorized_by: 
+url: https://juice-shop.herokuapp.com/
+--------------------------------------------------------------------------------
+[2020-11-16 02:49:49 +0800] [HTTP: 200] https://juice-shop.herokuapp.com/styles.css
+[2020-11-16 02:49:49 +0800] [filesize_exceeded] Maximum file size exceeded
+[2020-11-16 02:50:18 +0800] [HTTP: 200] https://juice-shop.herokuapp.com/vendor-es5.js
+[2020-11-16 02:50:18 +0800] [filesize_exceeded] Maximum file size exceeded
+[2020-11-16 02:50:20 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:59447700 @resource=#<Arachni::Page::DOM:58530440 @url="https://juice-shop.herokuapp.com/#/" @transitions=42 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:click @element=<body class="mat-app-background bluegrey-lightgreen-theme" data-arachni-id="1337870950"> time= timed_out=false>
+[2020-11-16 02:50:20 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 57185
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:136:in `get'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/navigation.rb:32:in `to'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:334:in `block in goto'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:151:in `call'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:151:in `start'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:106:in `initialize'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:329:in `new'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:329:in `goto'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:146:in `restore'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 02:50:20 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 02:50:25 +0800] [HTTP: 200] https://juice-shop.herokuapp.com/vendor-es2018.js
+[2020-11-16 02:50:25 +0800] [filesize_exceeded] Maximum file size exceeded
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:381188820 @resource=#<Arachni::Page::DOM:381188680 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:click @element=<span _ngcontent-xfj-c156="" class="ng-star-inserted"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 1588
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:277316600 @resource=#<Arachni::Page::DOM:277316500 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:click @element=<div _ngcontent-xfj-c156="" aria-label="Click for more information about the product" mattooltip="Click for more information" mattooltipposition="above" class="mat-tooltip-trigger product" aria-describedby="cdk-describedby-message-3" cdk-describedby-host="" style="-webkit-flex-direction: row; box-sizing: border-box; display: -webkit-flex;" data-arachni-id="594754615"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 34001
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:600:in `find_element_by'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:600:in `find_element_by'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/search_context.rb:59:in `find_element'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/search_context.rb:59:in `find_element'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser/element_locator.rb:70:in `locate'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser/element_locator.rb:70:in `locate'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:589:in `block in fire_event'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:589:in `block in fire_event'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/wait.rb:56:in `until'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/wait.rb:56:in `until'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:589:in `fire_event'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:589:in `fire_event'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:203:in `play'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:203:in `play'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:181:in `block in restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:181:in `block in restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `each'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `each'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:62139500 @resource=#<Arachni::Page::DOM:62139440 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:mousemove @element=<span _ngcontent-xfj-c156="" class="ng-star-inserted"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:233379860 @resource=#<Arachni::Page::DOM:233379420 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:mousedown @element=<span _ngcontent-xfj-c156="" class="ng-star-inserted"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:232640200 @resource=#<Arachni::Page::DOM:232640100 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:dblclick @element=<span _ngcontent-xfj-c156="" class="ng-star-inserted"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:275790300 @resource=#<Arachni::Page::DOM:275789600 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:mouseout @element=<span _ngcontent-xfj-c156="" class="ng-star-inserted"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: Error while processing job: #<Arachni::BrowserCluster::Jobs::DOMExploration::EventTrigger:308874260 @resource=#<Arachni::Page::DOM:308873960 @url="https://juice-shop.herokuapp.com/#/" @transitions=43 @data_flow_sinks=0 @execution_flow_sinks=0> @event=:mouseover @element=<span _ngcontent-xfj-c156="" class="ng-star-inserted"> time= timed_out=false>
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 12006
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 16928
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 49676
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 27541
+[2020-11-16 09:00:29 +0800] Worker: [Errno::ECONNREFUSED] No connection could be made because the target machine actively refused it. - connect(2) for "127.0.0.1" port 19364
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `open'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:879:in `block in connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:89:in `block in timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/timeout.rb:99:in `timeout'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:878:in `connect'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1453:in `begin_transport'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:863:in `do_start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1410:in `transport_request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:852:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1384:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1377:in `block in request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:853:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/2.2.0/net/http.rb:1375:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:103:in `response_for'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/default.rb:57:in `request'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:600:in `find_element_by'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/http/common.rb:59:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:240:in `window_handles'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:208:in `switch_to_frame'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:136:in `get'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/search_context.rb:59:in `find_element'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:653:in `raw_execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/driver.rb:189:in `window_handles'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:216:in `switch_to_default_content'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/navigation.rb:32:in `to'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser/element_locator.rb:70:in `locate'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:631:in `execute'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:1456:in `ensure_open_window'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/target_locator.rb:99:in `default_content'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:334:in `block in goto'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:589:in `block in fire_event'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/remote/bridge.rb:240:in `window_handles'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:325:in `goto'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:966:in `capture_snapshot'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:151:in `call'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/wait.rb:56:in `until'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/selenium-webdriver-3.0.1/lib/selenium/webdriver/common/driver.rb:189:in `window_handles'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:151:in `start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:366:in `goto'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:153:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:589:in `fire_event'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:1456:in `ensure_open_window'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:106:in `initialize'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:153:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:203:in `play'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:325:in `goto'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:329:in `new'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:181:in `block in restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:153:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:329:in `goto'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `each'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom/transition.rb:197:in `play'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:181:in `block in restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `each'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/page/dom.rb:180:in `restore'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser.rb:266:in `load'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/jobs/dom_exploration/event_trigger.rb:34:in `run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/job.rb:109:in `configure_and_run'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:80:in `run_job'
+[2020-11-16 09:00:29 +0800] Worker: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/arachni-1.5.1/lib/arachni/browser_cluster/worker.rb:244:in `block in start'
