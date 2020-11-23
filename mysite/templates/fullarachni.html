@@ -68,16 +68,13 @@
         <form action="/fullscan_external/" class="form-inline d-flex" method="post">
             
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website" required>
-            <!-- <input type="text" name="userInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter username" required>
-            <input type="text" name="passInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter password" required> -->
+            <input type="text" name="emailtosend" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter your email" required>
             <button class="btn btn-primary mx-auto">Check!</button><br><br>
+            
            
         </form>
 
-        
-        
-        
-        {% if data_arach %}
+      {%if data_arach %}
         <form action="/report/" class="form-inline d-flex" method="post">
           {% csrf_token %}
           <br>
@@ -85,7 +82,8 @@
         <input type="hidden" name="parameder" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" value={{urlfirebase}}>
         <button class="btn btn-primary btn-lg" >Click Me!</button>
       </form>
-        {% endif %}
+      {% endif %}
+        
 
   
     </div>

@@ -59,16 +59,33 @@
   </nav>
   
   <!-- Header -->
-  <header class="masthead">
+ <header class="masthead">
     <div class="container d-flex h-100 align-items-center">
       <div class="mx-auto text-center">
     
-        <h1 class="mx-auto my-0 text-uppercase">TheBoyes</h1>
-        <h2 class="text-white-50 mx-auto mt-2 mb-5">Hello, here is your scan report.</h2>
+        <h1 class="mx-auto my-0 text-uppercase">Your Scan Report</h1>
+        <h2 class="text-white-50 mx-auto mt-2 mb-5">Hello again, below is your scan report.</h2>
+    </div>
+  </div>
+       
+        <!-- <p class="text-black-50 mb-0"> -->
+          <table class="table table-striped table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Issues/Links</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+        {% for stuff in extracted %}
+        
+        <tr>
+            <td>{{stuff|linebreaksbr }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
     
-            <p class="text-black-50 mb-0">{{extracted}}</p>
-          
-
       <!--
       <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
         <div class="col-lg-6">
@@ -108,25 +125,6 @@
     </div>
   </section>
 
-  <section id="signup" class="signup-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-10 col-lg-8 mx-auto text-center">
-
-          <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-          <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
-
-          <form class="form-inline d-flex">
-            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter email address...">
-            <button type="submit" class="btn btn-primary mx-auto">Subscribe</button>
-          </form>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
- 
   <section class="contact-section bg-black">
     <div class="container">
 
@@ -183,7 +181,11 @@
     </div>
   </section>
   -->
-
+  <footer class="bg-black small text-center text-white-50">
+    <div class="container">
+      Copyright &copy; TheBoyes 2020
+    </div>
+  </footer>
   
   <!-- Bootstrap core JavaScript -->
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>

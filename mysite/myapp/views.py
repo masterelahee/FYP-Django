@@ -37,8 +37,12 @@ from .forms import UserLoginForm, UserRegisterForm
 import pyrebase 
 import smtplib
 from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.application import MIMEApplication
+from email import encoders
+from mediafire import (MediaFireApi, MediaFireUploader)
+from myapp.emailer import thisonetrust
 
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -111,13 +115,17 @@ def pick(request):
 @login_required
 @csrf_exempt
 def report(request):
+    f=[]
+    #extract = db.child(request.POST.get('parameder')).get()
     extract = db.child(request.POST.get('parameder')).get()
-    
-    f=json.dumps(dict(extract.val()))
-    
+    for x in extract.each():
 
-    
-    return render(request,'report.html',{"extracted":f})
+        k=db.child(request.POST.get('parameder')).child(x.key()).get()
+        for ohno in k.each():
+
+            print(ohno.val())
+            f.append(ohno.val())
+    return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
 
 @login_required
 def normal(request):
@@ -491,7 +499,7 @@ def arachni (request):
             urlfirebase=re.sub('[.:/]','_',url)
             print(urlfirebase)
         
-            with open("arachni_" + scan_ID + "_scan_report.json", encoding="utf-8") as jsonfile:
+            with open(scan_ID + ".json", encoding="utf-8") as jsonfile:
                 json_obj = json.load(jsonfile)
 
                 try:
@@ -520,10 +528,12 @@ def arachni (request):
             scanflag=False
         #time.sleep(0.5) #delay status update to 1 minute per status request
             
-            
+    
+   
     a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
       
     return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
+   
 
 @login_required
 @csrf_exempt    

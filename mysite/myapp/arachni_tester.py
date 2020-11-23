@@ -74,14 +74,14 @@ class ArachniClient(object):
          report_format = 'html.zip'
 
       if report_format in ['json', 'xml', 'yaml', 'html.zip']:
-         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,"arachni_" + scanID + "_scan_report." + report_format)
+         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,scanID + "." + report_format)
       elif report_format == None: #outputs to json by default
-         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report","arachni_" + scanID + "_scan_report.json")
+         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report",scanID + ".json")
       else:
          print ("Your requested format is not available.")
    
    def processJSON(self, scanID):  
-      with open("arachni_" + scanID + "_scan_report.json", encoding="utf-8") as jsonfile:
+      with open(scanID + ".json", encoding="utf-8") as jsonfile:
          json_obj = json.load(jsonfile)
 
       try:
