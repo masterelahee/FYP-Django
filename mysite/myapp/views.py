@@ -57,15 +57,32 @@ config={
 }
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
+auth=firebase.auth()
 #https://www.youtube.com/watch?v=gsW5gYTNi34
-
+#https://codeloop.org/python-firebase-authentication-with-email-password/
 
 def error_404_view(request,exception):
     return render_to_response('404.html')
 
 def error_505_view(request,exception):
     return render_to_response('500.html')
+#----------------------------------------------
+def signIn(request):
+    return render(request, "login.html")
 
+def postsign(request):
+    email=request.POST.get('email')
+    passw=request.POST.get('pass')
+    try:
+        user=auth.sign_in_with_email_and_password(email,passw)
+    except:
+        message="Invalid credentials. Try again."
+        return render(request,"login.html", {"msg":message})    
+
+    auth.send_password_reset_email(email)
+    return render(request,"pick.html") 
+
+#----------------------------------------------
 def login_view(request):
     next = request.GET.get('next')
     form = UserLoginForm(request.POST or None)
@@ -111,6 +128,13 @@ def logout_view(request):
 @login_required
 def pick(request):
     return render_to_response('pick.html')
+
+
+def admin_custom(request):
+    return render_to_response('template.html')
+
+def admin_reg(request):
+    return render_to_response('userreg.html')
 
 @login_required
 @csrf_exempt

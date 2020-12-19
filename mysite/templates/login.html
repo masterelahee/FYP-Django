@@ -1,3 +1,9 @@
+{% if msg %}
+<script>
+    alert('{{msg}}');
+</script>
+
+{%endif%}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
@@ -35,23 +41,32 @@ body{
     <div class="login-dark">
         <h1 class="headerone"><b>TheBoyes - Web Vulnerability Tester</b></h1>
         
-        <form method="post">
+        <!-- <form method="post">
             {% csrf_token %}
             
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
             <div class="form-group"> {{ form.username }}</div>
             <div class="form-group"> {{ form.password }}</div>
             
-            <!-- <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email">{{form.username}}</div> -->
-            <!--<div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password">{{form.password}}</div> -->
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</div><a href = "mailto:developers@theboyes.com">Can't Login?</a></form>
-               
+                -->
+
+                <form  action="/post_sign/" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+                    <!-- <div class="form-group"> {{ form.username }}</div>
+                    <div class="form-group"> {{ form.password }}</div> -->
+                    <div class="form-group">Email: <input type="email" name="email" autocomplete="off" required></div>
+                    <div class="form-group">Code: <input type="password" name="pass" autocomplete="off" required></div>
+                    <input class="btn btn-primary btn-block" type="submit" value="Sign In"><br>
+                    <a href = "mailto:developers@theboyes.com">Can't Login? Click me, i'll help.</a></form>                
     </div>
 </section>
 
 <footer class="bg-black small text-center text-white-50">
     <div class="container">
-      Copyright &copy; TheBoyes 2020<a style="color:black;" href="{% url 'admin:index' %}">.</a>
+      Copyright &copy; TheBoyes 2020<a style="color:black;" href="{% url 'admin_custom' %}">.</a>
     </div>
   </footer>
 </body>
