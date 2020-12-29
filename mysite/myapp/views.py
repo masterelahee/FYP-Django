@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup
 import html2text
 import re
 import requests 
+from datetime import datetime
 import lxml.html
 from django.contrib.auth.decorators import login_required
 from .headercheck import SecurityHeaders
@@ -78,8 +79,22 @@ def postsign(request):
     except:
         message="Invalid credentials. Try again."
         return render(request,"login.html", {"msg":message})    
-
-    auth.send_password_reset_email(email)
+    #----------------------------------------
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    email_address = email    # add email address here
+    Subject = 'Did you log in?\n\n'
+    content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
+    footer = '- TheBoyes'    # add test footer 
+    passcode = 'blfmslewrtijnfqn'        # add passcode here
+    conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
+    conn.ehlo()
+    conn.login('fypemail@yahoo.com', passcode)
+    conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
+    conn.quit()
+    #-----------------------------------------------------
+    # Reset password
+    #auth.send_password_reset_email(email)
     return render(request,"pick.html") 
 
 #----------------------------------------------
@@ -98,6 +113,8 @@ def login_view(request):
     context = {
         'form': form,
     }
+
+    
     return render(request, "login.html", context)
 
 
