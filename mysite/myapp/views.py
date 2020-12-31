@@ -85,7 +85,7 @@ def postsign(request):
     email_address = email    # add email address here
     Subject = 'Did you log in?\n\n'
     content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
-    footer = '- TheBoyes'    # add test footer 
+    footer = '- TheBoyes Administrator'    # add test footer 
     passcode = 'blfmslewrtijnfqn'        # add passcode here
     conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
     conn.ehlo()
@@ -98,44 +98,20 @@ def postsign(request):
     return render(request,"pick.html") 
 
 #----------------------------------------------
-def login_view(request):
-    next = request.GET.get('next')
-    form = UserLoginForm(request.POST or None)
-    if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        if next:
-            return redirect(next)
-        return redirect('/select')
 
-    context = {
-        'form': form,
-    }
-
+def postregister(request):
+    regem=request.POST.get('reg_email')
+    regpass=request.POST.get('reg_password')
     
-    return render(request, "login.html", context)
-
-
-def register_view(request):
-    next = request.GET.get('next')
-    form = UserRegisterForm(request.POST or None)
-    if form.is_valid():
-        user = form.save(commit=False)
-        password = form.cleaned_data.get('password')
-        user.set_password(password)
-        user.save()
-        new_user = authenticate(username=user.username, password=password)
-        login(request, new_user)
-        if next:
-            return redirect(next)
-        return redirect('/')
-
-    context = {
-        'form': form,
-    }
-    return render(request, "signup.html", context)
+    try:
+        user=auth.create_user_with_email_and_password(regem, regpass)
+    except:
+        message="Please check your input. Try again."
+        return render(request,"template.html", {"msgg":message})  
+    signin = auth.sign_in_with_email_and_password(regem, regpass)
+    auth.send_email_verification(signin['idToken'])
+    print("Email Verification Has Been Sent")
+    return render(request,'template.html')
 
 
 def logout_view(request):
@@ -148,10 +124,10 @@ def pick(request):
 
 
 def admin_custom(request):
-    return render_to_response('template.html')
+    return render(request,'template.html')
 
 def admin_reg(request):
-    return render_to_response('userreg.html')
+    return render(request,'userreg.html')
 
 @login_required
 @csrf_exempt

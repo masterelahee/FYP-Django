@@ -1,3 +1,9 @@
+{% if msgg %}
+<script>
+    alert('{{msgg}}');
+</script>
+
+{%endif%}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -45,12 +51,7 @@
             </a>
           </li>
           
-          <!-- <li class="nav-item active-pro ">
-                <a class="nav-link" href="./upgrade.html">
-                    <i class="material-icons">unarchive</i>
-                    <p>Upgrade to PRO</p>
-                </a>
-            </li> -->
+        
         </ul>
       </div>
     </div>
@@ -59,7 +60,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">New User Registration</a>
+            <a class="navbar-brand" href="{% url 'admin_reg' %}">New User Registration</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
             <span class="sr-only">Toggle navigation</span>
@@ -81,38 +82,39 @@
                   <p class="card-category">Fill in the form to register a new user</p>
                 </div>
                 <div class="card-body">
-                  <form>
+                  <form action="/signup/" method="post">
+                    {% csrf_token %}
                     <div class="row">
-                      <div class="col-md-5">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Company (disabled)</label>
-                          <input type="text" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Username</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
+                      <div class="col-md-7">
                         <div class="form-group">
                           <label class="bmd-label-floating">Email address</label>
-                          <input type="email" class="form-control">
+                          <input type="email" name="reg_email" class="form-control">
                         </div>
                       </div>
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Password</label>
+                          <input type="password" name="reg_password" class="form-control">
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Email address</label>
+                          <input type="email" name="reg_email" class="form-control">
+                        </div>
+                      </div> -->
                     </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Fist Name</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" disabled>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Last Name</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" disabled>
                         </div>
                       </div>
                     </div>
@@ -120,7 +122,7 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Adress</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" disabled>
                         </div>
                       </div>
                     </div>
@@ -128,24 +130,24 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">City</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" disabled>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Country</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" disabled>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Postal Code</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" disabled>
                         </div>
                       </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                    <input type="submit" class="btn btn-primary" value="Register"></input>
                     <div class="clearfix"></div>
                   </form>
                 </div>
@@ -200,7 +202,7 @@
   <!--  Notifications Plugin    -->
   <script src="{% static 'assets/js/plugins/bootstrap-notify.js' %}"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="{% static 'assets/js/material-dashboard.js?v=2.1.0' %}"></script>
+  <script src="{% static 'assets/js/material-dashboard.js' %}"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="{% static 'assets/demo/demo.js' %}"></script>
   <script>

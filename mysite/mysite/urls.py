@@ -18,7 +18,7 @@ from django.urls import path
 from myapp import views as v
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import include
-from myapp.views import login_view, register_view, logout_view
+from myapp.views import postregister, logout_view
 
 admin.site.site_header="TheBoyes Administrator Dashboard"
 # https://www.youtube.com/watch?v=PX6J6h_ihyE&list=PLVZgTVNoxdMksQAJI7J2IHpNW7rY7U3XI&index=2
@@ -39,13 +39,9 @@ urlpatterns = [
     path('administrator/', v.admin_custom, name='admin_custom'),
     path('new-user/', v.admin_reg, name='admin_reg'),
     path('welcome/', v.index, name="welcome"),
-
-    #path('', login_view, name="login"),
     path('', v.signIn, name="login"),
     path('post_sign/', v.postsign),
-
-    path('signup/', register_view, name="signup"),
-    path('accounts/register/', register_view),
+    path('signup/', v.postregister),
     path('accounts/logout/', logout_view, name="logout")
     
 ]
