@@ -45,6 +45,7 @@ from email import encoders
 from mediafire import (MediaFireApi, MediaFireUploader)
 from myapp.emailer import thisonetrust
 
+
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
     "authDomain": "fyptheboyes.firebaseapp.com",
@@ -59,6 +60,7 @@ config={
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 auth=firebase.auth()
+
 #https://www.youtube.com/watch?v=gsW5gYTNi34
 #https://codeloop.org/python-firebase-authentication-with-email-password/
 
@@ -76,6 +78,15 @@ def postsign(request):
     passw=request.POST.get('pass')
     try:
         user=auth.sign_in_with_email_and_password(email,passw)
+        usercheck = auth.get_account_info(user['idToken'])
+        usercheckjson=json.dumps(usercheck['users'])
+        userjsonload=json.loads(usercheckjson)
+        print(userjsonload[0]['emailVerified'])
+        
+        if userjsonload[0]['emailVerified'] == False:
+            message="Please verify your email before login!"
+            return render(request,"login.html", {"msgg":message})
+         
     except:
         message="Invalid credentials. Try again."
         return render(request,"login.html", {"msg":message})    
@@ -111,6 +122,7 @@ def postregister(request):
     signin = auth.sign_in_with_email_and_password(regem, regpass)
     auth.send_email_verification(signin['idToken'])
     print("Email Verification Has Been Sent")
+
     return render(request,'template.html')
 
 
