@@ -44,7 +44,9 @@ from email.mime.application import MIMEApplication
 from email import encoders
 from mediafire import (MediaFireApi, MediaFireUploader)
 from myapp.emailer import thisonetrust
-
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import auth as auth2
 
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -54,12 +56,17 @@ config={
     "storageBucket": "fyptheboyes.appspot.com",
     "messagingSenderId": "1073113067983",
     "appId": "1:1073113067983:web:7564efc27471e46f65e2ba",
-    "measurementId": "G-R0SJYKDBMZ"
-
+    "measurementId": "G-R0SJYKDBMZ",
+    
 }
 firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 auth=firebase.auth()
+
+cred=credentials.Certificate('D:/Desktop/FYP/FYP-Django/mysite/myapp/firebasesdk.json')
+firebase_admin.initialize_app(cred, {
+    "databaseURL": "https://fyptheboyes.firebaseio.com",
+})
 
 #https://www.youtube.com/watch?v=gsW5gYTNi34
 #https://codeloop.org/python-firebase-authentication-with-email-password/
@@ -121,6 +128,7 @@ def postregister(request):
         return render(request,"template.html", {"msgg":message})  
     signin = auth.sign_in_with_email_and_password(regem, regpass)
     auth.send_email_verification(signin['idToken'])
+    
     print("Email Verification Has Been Sent")
 
     return render(request,'template.html')
@@ -134,9 +142,39 @@ def logout_view(request):
 def pick(request):
     return render_to_response('pick.html')
 
-
+#working on this part 2/1/2020
 def admin_custom(request):
-    return render(request,'template.html')
+    g=[]
+    ver=""
+    today=datetime.today().strftime('%d-%m-%Y')
+    
+    page = auth2.list_users()
+    while page:
+        for user in page.users:
+            # print('User: ' + user)
+            if user.email_verified == True:
+                ver="Verified"
+            else:
+                ver="Not Verified"
+            usermeta=auth2.get_user(user.uid)
+            createtime=usermeta.user_metadata.creation_timestamp
+            lastlogin=usermeta.user_metadata.last_sign_in_timestamp
+            formtd_time_create=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(createtime/1000.0))
+            formtd_time_lastlogin=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(lastlogin/1000.0))
+            
+            g.append([user.email,ver,formtd_time_create,formtd_time_lastlogin])
+        # Get next batch of users.
+        page = page.get_next_page()
+       
+    #     k=db.child(request.POST.get('parameder')).child(x.key()).get()
+    #     for ohno in k.each():
+
+    #         print(ohno.val())
+    #         f.append(ohno.val())
+    # return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
+    
+    return render(request,'template.html', {"extractuser":list(g),"today":today})
+    
 
 def admin_reg(request):
     return render(request,'userreg.html')
