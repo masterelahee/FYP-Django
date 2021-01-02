@@ -146,6 +146,7 @@ def pick(request):
 def admin_custom(request):
     g=[]
     ver=""
+    disabled=""
     today=datetime.today().strftime('%d-%m-%Y')
     
     page = auth2.list_users()
@@ -157,21 +158,19 @@ def admin_custom(request):
             else:
                 ver="Not Verified"
             usermeta=auth2.get_user(user.uid)
+            disbled=user.disabled
+            if disbled==False:
+                disabled="Active"
+            else:
+                disabled="Disable"
             createtime=usermeta.user_metadata.creation_timestamp
             lastlogin=usermeta.user_metadata.last_sign_in_timestamp
             formtd_time_create=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(createtime/1000.0))
             formtd_time_lastlogin=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(lastlogin/1000.0))
             
-            g.append([user.email,ver,formtd_time_create,formtd_time_lastlogin])
-        # Get next batch of users.
+            g.append([user.email,ver,disabled,formtd_time_create,formtd_time_lastlogin])
+        
         page = page.get_next_page()
-       
-    #     k=db.child(request.POST.get('parameder')).child(x.key()).get()
-    #     for ohno in k.each():
-
-    #         print(ohno.val())
-    #         f.append(ohno.val())
-    # return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
     
     return render(request,'template.html', {"extractuser":list(g),"today":today})
     
