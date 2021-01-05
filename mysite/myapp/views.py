@@ -80,6 +80,7 @@ def error_505_view(request,exception):
 def signIn(request):
     return render(request, "login.html")
 
+
 def postsign(request):
     email=request.POST.get('email')
     passw=request.POST.get('pass')
@@ -116,7 +117,8 @@ def postsign(request):
     return render(request,"pick.html") 
 
 #----------------------------------------------
-
+#CHECK THIS IF WORK!!
+@login_required(login_url='/admin_log_in/')
 def postregister(request):
     regem=request.POST.get('reg_email')
     regpass=request.POST.get('reg_password')
@@ -142,7 +144,7 @@ def logout_view(request):
 def pick(request):
     return render_to_response('pick.html')
 
-#working on this part 2/1/2020
+@login_required(login_url='/admin_log_in/')
 def admin_custom(request):
     g=[]
     ver=""
@@ -174,9 +176,34 @@ def admin_custom(request):
     
     return render(request,'template.html', {"extractuser":list(g),"today":today})
     
-
+@login_required(login_url='/admin_log_in/')
 def admin_reg(request):
     return render(request,'userreg.html')
+
+def admin_login(request):
+    return render(request,'admin_login.html')
+
+def admin_process_log(request):
+    adm_mail=request.POST.get('admin_uname')
+    adm_password=request.POST.get('admin_pass')
+    
+    print(adm_password)
+    if str(adm_mail) == 'fypemail@yahoo.com':
+        try:
+            user=auth.sign_in_with_email_and_password(adm_mail, adm_password)
+        except:
+            message="Check input! Try again."
+            return render(request,"admin_login.html", {"msgg":message})
+    else:
+        message="Email problem! Try again."
+        return render(request,"admin_login.html", {"msgg":message})
+    return redirect('/administrator/')
+
+def logout_admin(request):
+    logout(request)
+    return redirect('/admin-login/')
+    
+
 
 @login_required
 @csrf_exempt
