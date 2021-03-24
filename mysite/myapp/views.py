@@ -1,5 +1,6 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from subprocess import run,PIPE
+import subprocess
 import requests
 import sys
 from django.views.decorators.csrf import csrf_exempt
@@ -8,6 +9,7 @@ from django.http import HttpResponse
 import socket
 import subprocess
 import os
+import pathlib
 from collections import OrderedDict
 import urllib
 import json
@@ -19,6 +21,7 @@ from bs4 import BeautifulSoup
 import html2text
 import re
 import requests 
+import dropbox
 from datetime import datetime
 import lxml.html
 from django.contrib.auth.decorators import login_required
@@ -42,7 +45,6 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.application import MIMEApplication
 from email import encoders
-from mediafire import (MediaFireApi, MediaFireUploader)
 from myapp.emailer import thisonetrust
 import firebase_admin
 from firebase_admin import credentials
@@ -78,6 +80,7 @@ def error_505_view(request,exception):
     return render_to_response('500.html')
 #----------------------------------------------
 def signIn(request):
+    
     return render(request, "login.html")
 
 
@@ -89,15 +92,19 @@ def postsign(request):
         usercheck = auth.get_account_info(user['idToken'])
         usercheckjson=json.dumps(usercheck['users'])
         userjsonload=json.loads(usercheckjson)
-        print(userjsonload[0]['emailVerified'])
-        
+                
         if userjsonload[0]['emailVerified'] == False:
             message="Please verify your email before login!"
             return render(request,"login.html", {"msgg":message})
-         
+        
     except:
         message="Invalid credentials. Try again."
         return render(request,"login.html", {"msg":message})    
+
+    session_id=user['idToken'] 
+
+    request.session['uid']=str(session_id) 
+  
     #----------------------------------------
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -111,14 +118,17 @@ def postsign(request):
     conn.login('fypemail@yahoo.com', passcode)
     conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
     conn.quit()
+    
     #-----------------------------------------------------
     # Reset password
     #auth.send_password_reset_email(email)
+
+
     return render(request,"pick.html") 
 
 #----------------------------------------------
-#CHECK THIS IF WORK!!
-@login_required(login_url='/admin_log_in/')
+#CHECK THIS IF WORK!! ADMIN fypemail yahoo pass is password, regitration is not working, login required
+# #@login_required(login_url='/admin_log_in/')
 def postregister(request):
     regem=request.POST.get('reg_email')
     regpass=request.POST.get('reg_password')
@@ -140,11 +150,13 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-@login_required
-def pick(request):
-    return render_to_response('pick.html')
+@login_required(login_url='login')
+def home(request):
+   
+    return render(request,'pick.html')
+    
 
-@login_required(login_url='/admin_log_in/')
+
 def admin_custom(request):
     g=[]
     ver=""
@@ -176,7 +188,7 @@ def admin_custom(request):
     
     return render(request,'template.html', {"extractuser":list(g),"today":today})
     
-@login_required(login_url='/admin_log_in/')
+# #@login_required(login_url='/admin_log_in/')
 def admin_reg(request):
     return render(request,'userreg.html')
 
@@ -195,9 +207,9 @@ def admin_process_log(request):
             message="Check input! Try again."
             return render(request,"admin_login.html", {"msgg":message})
     else:
-        message="Email problem! Try again."
+        message="Not an admin! Try again."
         return render(request,"admin_login.html", {"msgg":message})
-    return redirect('/administrator/')
+    return redirect('admin_custom')
 
 def logout_admin(request):
     logout(request)
@@ -205,7 +217,7 @@ def logout_admin(request):
     
 
 
-@login_required
+# #@login_required
 @csrf_exempt
 def report(request):
     f=[]
@@ -220,23 +232,23 @@ def report(request):
             f.append(ohno.val())
     return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
 
-@login_required
+#@login_required
 def normal(request):
     return render_to_response('normal.html')    
 
-@login_required
+#@login_required
 def fullscan_arachni(request):
-    return render_to_response('fullarachni.html') 
+    return render(request,'fullarachni.html') 
 
-@login_required
+#@login_required
 def fullscan_arachni_auth(request):
     return render_to_response('fullarachni_auth.html') 
 
-@login_required
+#@login_required
 def index(request):
     return render_to_response('index.html')
 
-@login_required
+#@login_required
 @csrf_exempt
 def external(request):
 
@@ -389,7 +401,7 @@ def external(request):
     #BRUTE FORCE
 
 
-@login_required
+#@login_required
 @csrf_exempt
 def norm_scan(request):
 #do the opushing to firebase and puling
@@ -532,11 +544,93 @@ def norm_scan(request):
     #BRUTE FORCE
 
 
-@login_required
+#@login_required
 @csrf_exempt    
 def arachni (request):
     
     url = request.POST.get('param')
+    # email=request.POST.get('useremail')
+
+    remoteServerIP  = socket.gethostbyname(url)
+    com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
+    portOpenList = []
+    portCloseList = []
+    #out=run([sys.executable, 'D://Desktop//quanta//QuantaDjango//quanta_Scanner//mysite//myapp//tester.py',inp], shell=False)
+    try:
+        for port in com_port:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.8)
+            result = sock.connect_ex((remoteServerIP, port))
+            if result == 0:
+                portOpenList.append(port)
+                print("Port {}: 	 Open".format(port))
+
+            else:
+                portCloseList.append(port)
+                print("Port {}:          Closed".format(port))
+            sock.close()
+
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt")
+    fixed_list=str(portOpenList)[1:-1]
+ 
+    print ("ip: ",url , "portsOpen: ", fixed_list)
+    
+    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+url)
+    data=ip_locate.read()
+    values=json.loads(data)
+    print(values)
+    #----------------------------------------------
+    
+    foo = SecurityHeaders()
+
+    parsed = urlparse(url)
+    if not parsed.scheme:
+        url = 'https://' + url # default to http if scheme not provided
+
+
+    headers = foo.check_headers(url)
+
+    if not headers:
+        print ("Failed to fetch headers, exiting...")
+        sys.exit(1)
+
+    okColor = '\033[92m'
+    warnColor = '\033[93m'
+    endColor = '\033[0m'
+    
+    for header, value in headers.items():
+        if value['warn'] == 1:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+        elif value['warn'] == 0:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+
+    https = foo.test_https(url)
+    if https['supported']:
+        print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+    if https['certvalid']:
+        print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+
+    if foo.test_http_to_https(url, 5):
+        print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
+    else:
+        print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+
 
     if not re.match('(?:http|https)://', url):
         url='https://{}'.format(url)
@@ -544,6 +638,8 @@ def arachni (request):
         pass
     
     print(url)
+    subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    time.sleep(20)
     a = ArachniClient()
     resumeFlag = False
     authFlag = False
@@ -568,6 +664,10 @@ def arachni (request):
     start_time = time.time()
 
     scanflag=True
+    cwd = os.getcwd()
+
+# Print the current working directory
+    print("Current working directory: {0}".format(cwd))
     while scanflag is True:
     
         print("Resumed scan? | ", resumeFlag)
@@ -588,11 +688,11 @@ def arachni (request):
             a.getScanReport(scan_ID,"json") #output to json for database processing
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
             #a.processJSON(scan_ID) #print out choice information
-
+            time.sleep(10)
+            thisonetrust(scan_ID,email,'zip')
             urlfirebase=re.sub('[.:/]','_',url)
-            print(urlfirebase)
-        
-            with open(scan_ID + ".json", encoding="utf-8") as jsonfile:
+            
+            with open("./myapp/reports"+scan_ID + ".json", encoding="utf-8") as jsonfile:
                 json_obj = json.load(jsonfile)
 
                 try:
@@ -609,7 +709,7 @@ def arachni (request):
                             
                         else:
                             to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
-                        db.child(urlfirebase).push(to_firebase)
+                        db.child(urlfirebase).child("arach_issues").push(to_firebase)
 
                     for x in json_obj['sitemap']:
                         
@@ -621,19 +721,21 @@ def arachni (request):
             scanflag=False
         #time.sleep(0.5) #delay status update to 1 minute per status request
             
-    
-   
+    # scan_ID="38cac91e1b48532d6ab6b44d188b42f5"
+    # thisonetrust(scan_ID,request.POST.get('email'))
     a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
       
     return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
    
 
-@login_required
+#@login_required
 @csrf_exempt    
 def arachni_auth (request):
     
 
     url = request.POST.get('param')
+    username = request.POST.get('userInp')
+    password = request.POST.get('passInp')
 
     if not re.match('(?:http|https)://', url):
         url='https://{}'.format(url)
@@ -662,9 +764,7 @@ def arachni_auth (request):
     # a.startAuthScan()
     a.profile("myapp/profiles/full_audit_auth.json")
     target_url = url
-    username = request.POST.get('userInp')
-    password = request.POST.get('passInp')
-
+    
     try:
         urllib.request.urlopen(target_url)
         a.options["url"] = target_url

@@ -8,6 +8,7 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <style>
             body {
         background-color: #1d0630;
@@ -96,7 +97,7 @@
         font-size: 13px;
         box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
     }
-    
+
     .forgot {
         text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
         color: #E1BEE7;
@@ -109,6 +110,7 @@
         text-decoration: none
     }
     
+
     @media (max-width: 600px) {
         .main {
             border-radius: 0px;
@@ -129,8 +131,8 @@
         {% csrf_token %}
       <input class="un" name="admin_uname" type="text" align="center" placeholder="Username">
       <input class="pass" name="admin_pass" type="password" align="center" placeholder="Password">
-      <input type="submit" class="submit" align="center" value="Login"></input>
-                 
+      <input type="submit" class="submit" align="center" value="Login"></input><br><br>
+      <a id="linkbutton" class="btn btn-outline-dark mx-auto d-block" href="{% url 'login' %}">Click here to go to the scanner</a>          
                 
     </div>
      

@@ -4,52 +4,77 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.application import MIMEApplication
 from email import encoders
-from mediafire import (MediaFireApi, MediaFireUploader)
 import time
+import pathlib
+import dropbox
+import re
+import os
 
-def thisonetrust(scan_id):
-    api = MediaFireApi()
-    uploader = MediaFireUploader(api)
-    session = api.user_get_session_token(email='fypemail@yahoo.com', password='iamusingastrongpassword',app_id='42511')
 
-    # API client does not know about the token
-    # until explicitly told about it:
-    api.session = session
-    # scan_id = 'wefwefwefwef' #replace this part with the scanner id from the arachni scanner  
 
-    fd = open('D:/Desktop/FYP/FYP-Django/mysite/' + scan_id + '.html.zip', 'rb')
-    time.sleep(10)
-    result = uploader.upload(fd, scan_id + '.html.zip', folder_key='tje4eo1vl6m83') #returns a json object
-    time.sleep(10)
-    print(api.file_get_info(result.quickkey))
-    result_object = api.file_get_info(result.quickkey)
-    print(result_object["file_info"]["filename"])
-    print(result_object["file_info"]["links"]["normal_download"]) #returns the download link
+def thisonetrust(scan_id,email,checker):
+    ## HARDCODED FILE PATH, CHANGE THIS LATER
+    # the source file
+    # folder = os.path.join(BASE_DIR, '')
+    print(scan_id)
+    print(email)
+    folder = pathlib.Path("./myapp/reports")    # located in this folder
+    print(folder)
+    scanID = scan_id
+    print(scanID)
+    filename = scanID + ".html.zip"         # file name
+    filepath = folder / filename  # path object, defining the file
+    print(filepath)
 
-    mf_link = result_object["file_info"]["links"]["normal_download"]
+    # target location in Dropbox
+    target = "/"              # the target folder
+    targetfile = target + filename   # the target path and file name
 
-    #take scan id, call mediafire uploader and then get dl link to email to user
+    # Create a dropbox object using an API v2 key
+    d = dropbox.Dropbox("ClkPn4pV_5sAAAAAAAAAAUm4ft1qOk4VNd77wioArPu7WbFxQBb1f7-UKZQPfaRB")
+    print(d.users_get_current_account())
+    # open the file and upload it
+    try:
+        with filepath.open("rb") as f:
+        # upload gives you metadata about the file
+        # we want to overwite any previous version of the file
+            
+            meta = d.files_upload(f.read(), targetfile, mode=dropbox.files.WriteMode("overwrite"))
+            print(meta)
 
-    # Create a multipart message
-    msg = MIMEMultipart()
-    body_part = MIMEText('Your report is ready, here is the link to download it: ' + mf_link, 'plain')
-    msg['Subject'] = 'Python scan report'
-    msg['From'] = 'fypemail@yahoo.com'
-    msg['To'] = 'irfanelahee6@gmail.com'
-    # Add body to email
-    msg.attach(body_part)
+        # create a shared link
+        link = d.sharing_create_shared_link(targetfile)
 
-    # Create SMTP object
-    session = smtplib.SMTP('smtp.mail.yahoo.com', 587)
-    session.starttls() #enable security
-    # Login to the server
-    session.login('fypemail@yahoo.com', 'driqnfsefylmmlwq')
+        # url which can be shared
+        dropbox_url = link.url
 
-    # Convert the message to a string and send it
-    session.sendmail(msg['From'], msg['To'], msg.as_string())
-    print("Mail sent")
-    session.quit() #closes email session after done
+        print(dropbox_url)
 
-    # sender_address = 'fypemail@yahoo.com'
-    # sender_pass = 'driqnfsefylmmlwq'
-    # receiver_address = 'jasonling9199@gmail.com'
+        #take scan id, call mediafire uploader and then get dl link to email to user
+        time.sleep(10)
+        # Create a multipart message
+        msg = MIMEMultipart()
+        body_part = MIMEText('Your report is ready, here is the link to download it: ' + dropbox_url, 'plain')
+        msg['Subject'] = 'TheBoyes web scanner scan report'
+        msg['From'] = 'fypemail@yahoo.com' #change this to email used by us
+        msg['To'] = email #change this to email input from user
+        # Add body to email
+        msg.attach(body_part)
+
+        # Create SMTP object
+        session = smtplib.SMTP('smtp.mail.yahoo.com', 587)
+        session.starttls() #enable security
+        # Login to the server
+        session.login('fypemail@yahoo.com', 'driqnfsefylmmlwq')
+
+        # Convert the message to a string and send it
+        session.sendmail(msg['From'], msg['To'], msg.as_string())
+        print("Mail sent")
+        session.quit() #closes email session after done
+
+        # sender_address = 'fypemail@yahoo.com'
+        # sender_pass = 'driqnfsefylmmlwq'
+        # receiver_address = 'jasonling9199@gmail.com'
+
+    except IOError:
+        print("File not accessible")

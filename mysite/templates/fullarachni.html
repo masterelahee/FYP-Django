@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +41,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="{% url 'pick' %}">Home</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
@@ -68,7 +68,7 @@
         <form action="/fullscan_external/" class="form-inline d-flex" method="post">
             
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website" required>
-            <input type="text" name="emailtosend" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter your email" required>
+            
             <button class="btn btn-primary mx-auto">Check!</button><br><br>
             
            

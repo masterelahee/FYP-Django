@@ -46,6 +46,10 @@ INSTALLED_APPS = [
 
 ]
 
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -127,3 +131,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL="login"
+LOGIN_REDIRECT_URL="home"

@@ -74,7 +74,7 @@ class ArachniClient(object):
          report_format = 'html.zip'
 
       if report_format in ['json', 'xml', 'yaml', 'html.zip']:
-         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,scanID + "." + report_format)
+         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,"./myapp/reports/"+scanID + "." + report_format)
       elif report_format == None: #outputs to json by default
          urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report",scanID + ".json")
       else:
