@@ -549,7 +549,7 @@ def norm_scan(request):
 def arachni (request):
     
     url = request.POST.get('param')
-    # email=request.POST.get('useremail')
+    email=request.POST.get('userinputemail')
 
     remoteServerIP  = socket.gethostbyname(url)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
@@ -559,7 +559,7 @@ def arachni (request):
     try:
         for port in com_port:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.8)
+            sock.settimeout(1)
             result = sock.connect_ex((remoteServerIP, port))
             if result == 0:
                 portOpenList.append(port)
@@ -638,7 +638,7 @@ def arachni (request):
         pass
     
     print(url)
-    subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
     time.sleep(20)
     a = ArachniClient()
     resumeFlag = False
@@ -688,43 +688,48 @@ def arachni (request):
             a.getScanReport(scan_ID,"json") #output to json for database processing
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
             #a.processJSON(scan_ID) #print out choice information
-            time.sleep(10)
-            thisonetrust(scan_ID,email,'zip')
+            print("passed here")
+            time.sleep(60)
+            fixed_scan_Id=scan_ID[:20]
+            thisonetrust(fixed_scan_Id,email,url)
+
             urlfirebase=re.sub('[.:/]','_',url)
-            
-            with open("./myapp/reports"+scan_ID + ".json", encoding="utf-8") as jsonfile:
-                json_obj = json.load(jsonfile)
+            print("passed here toooo")
+            try:
+                with open("./myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
+                    json_obj = json.load(jsonfile)
 
-                try:
-                    for x in json_obj['issues']:
-                        
-                        # print("Name: ",x['name'])
-                        # print("Description: ",x['description'])
-                        # print("Remedy guidance: ", x['remedy_guidance'])
-                        # print("Issue found in site: ", x['vector']['url'])
-                        # print("References: ", x['references'])
-                      
-                        if x['name']=="Interesting response":
-                            to_firebase={"issues":x['name'],"description":x['description']}
+                    try:
+                        for x in json_obj['issues']:
                             
-                        else:
-                            to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
-                        db.child(urlfirebase).child("arach_issues").push(to_firebase)
-
-                    for x in json_obj['sitemap']:
+                            # print("Name: ",x['name'])
+                            # print("Description: ",x['description'])
+                            # print("Remedy guidance: ", x['remedy_guidance'])
+                            # print("Issue found in site: ", x['vector']['url'])
+                            # print("References: ", x['references'])
                         
-                        db.child(urlfirebase).child("site_urls").push(x)
-                except Exception:
-                    pass
+                            if x['name']=="Interesting response":
+                                to_firebase={"issues":x['name'],"description":x['description']}
+                                
+                            else:
+                                to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
+                            db.child(urlfirebase).child("arach_issues").push(to_firebase)
 
-            
+                        for x in json_obj['sitemap']:
+                            
+                            db.child(urlfirebase).child("site_urls").push(x)
+                    except Exception:
+                        pass
+
+            except:
+                print("File not found!")
             scanflag=False
         #time.sleep(0.5) #delay status update to 1 minute per status request
             
     # scan_ID="38cac91e1b48532d6ab6b44d188b42f5"
     # thisonetrust(scan_ID,request.POST.get('email'))
     a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
-      
+    p.kill()  
     return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
    
 

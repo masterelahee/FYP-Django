@@ -12,7 +12,7 @@ import os
 
 
 
-def thisonetrust(scan_id,email,checker):
+def thisonetrust(scan_id,email,url):
     ## HARDCODED FILE PATH, CHANGE THIS LATER
     # the source file
     # folder = os.path.join(BASE_DIR, '')
@@ -54,7 +54,7 @@ def thisonetrust(scan_id,email,checker):
         time.sleep(10)
         # Create a multipart message
         msg = MIMEMultipart()
-        body_part = MIMEText('Your report is ready, here is the link to download it: ' + dropbox_url, 'plain')
+        body_part = MIMEText('Your report for {0} is ready, here is the link to download it: '.format(url) + dropbox_url, 'plain')
         msg['Subject'] = 'TheBoyes web scanner scan report'
         msg['From'] = 'fypemail@yahoo.com' #change this to email used by us
         msg['To'] = email #change this to email input from user
