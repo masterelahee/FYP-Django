@@ -26,7 +26,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls, name="admin"),
     path("external/",  v.external),
-    path("normal_external/",  v.norm_scan),
+    path("normal_external/",  v.norm_scan, name="normal_scan"),
     path("fullscan/",  v.fullscan_arachni, name="full"),
     path("fullauthscan/",  v.fullscan_arachni_auth, name="full_auth"),
     path("fullscan_external/",  v.arachni),

@@ -49,6 +49,7 @@ from myapp.emailer import thisonetrust
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth as auth2
+from myapp.pdf_generator import pdf_generator
 
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -66,7 +67,7 @@ db=firebase.database()
 auth=firebase.auth()
 
 cred=credentials.Certificate('D:/Desktop/FYP/FYP-Django/mysite/myapp/firebasesdk.json')
-firebase_admin.initialize_app(cred, {
+app=firebase_admin.initialize_app(cred, {
     "databaseURL": "https://fyptheboyes.firebaseio.com",
 })
 
@@ -234,7 +235,7 @@ def report(request):
 
 #@login_required
 def normal(request):
-    return render_to_response('normal.html')    
+    return render(request,'normal.html')    
 
 #@login_required
 def fullscan_arachni(request):
@@ -242,11 +243,11 @@ def fullscan_arachni(request):
 
 #@login_required
 def fullscan_arachni_auth(request):
-    return render_to_response('fullarachni_auth.html') 
+    return render(request,'fullarachni_auth.html') 
 
 #@login_required
 def index(request):
-    return render_to_response('index.html')
+    return render(request,'index.html')
 
 #@login_required
 @csrf_exempt
@@ -396,9 +397,9 @@ def external(request):
     #sending to firebase
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
     db.child(remoteServer.replace(".","_")).set(to_firebase)
-    
+    pdf_generator(re.sub('[.:/]','_',url),app)
     return a
-    #BRUTE FORCE
+    
 
 
 #@login_required
@@ -539,7 +540,8 @@ def norm_scan(request):
     #sending to firebase
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
     db.child(remoteServer.replace(".","_")).set(to_firebase)
-    
+    time.sleep(10)
+    pdf_generator(re.sub('[.:/]','_',remoteServer),app)
     return a
     #BRUTE FORCE
 
@@ -581,12 +583,14 @@ def arachni (request):
     values=json.loads(data)
     print(values)
     #----------------------------------------------
+     #sending to firebase
     
+
     foo = SecurityHeaders()
 
     parsed = urlparse(url)
     if not parsed.scheme:
-        url = 'https://' + url # default to http if scheme not provided
+        url = 'https://' + url # defasult to http if scheme not provided
 
 
     headers = foo.check_headers(url)
@@ -629,8 +633,9 @@ def arachni (request):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-
-
+    
+   
+    
 
     if not re.match('(?:http|https)://', url):
         url='https://{}'.format(url)
@@ -689,11 +694,14 @@ def arachni (request):
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
             #a.processJSON(scan_ID) #print out choice information
             print("passed here")
-            time.sleep(60)
+            time.sleep(10)
             fixed_scan_Id=scan_ID[:20]
             thisonetrust(fixed_scan_Id,email,url)
 
             urlfirebase=re.sub('[.:/]','_',url)
+            
+            to_firebase={"ip":urlfirebase,"port_open":fixed_list, "ip_info":values, "head_found":headers}
+            db.child(urlfirebase).set(to_firebase)
             print("passed here toooo")
             try:
                 with open("./myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
@@ -717,7 +725,7 @@ def arachni (request):
 
                         for x in json_obj['sitemap']:
                             
-                            db.child(urlfirebase).child("site_urls").push(x)
+                            db.child(urlfirebase).child("site_urls").update(x)
                     except Exception:
                         pass
 
@@ -729,7 +737,11 @@ def arachni (request):
     # scan_ID="38cac91e1b48532d6ab6b44d188b42f5"
     # thisonetrust(scan_ID,request.POST.get('email'))
     a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
-    p.kill()  
+     
+
+    #the pdf generator is here
+    pdf_generator(re.sub('[.:/]','_',url),app)
+    p.kill() 
     return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
    
 
