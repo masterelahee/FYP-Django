@@ -75,12 +75,13 @@
         </form>
 
       {%if data_arach %}
+      <br><br>
         <form action="/report/" class="form-inline d-flex" method="post">
           {% csrf_token %}
           <br>
         <a>Your scan has been completed in {{data_arach}} seconds. Click the button to check out your report:</a><br>
         <input type="hidden" name="parameder" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" value={{urlfirebase}}>
-        <button class="btn btn-primary btn-lg" >Click Me!</button>
+        <br><button class="btn btn-primary btn-lg" >Click Me!</button>
       </form>
       {% endif %}
         

@@ -1,16 +1,10 @@
-{% if msg %}
-<script>
-    alert('{{msg}}');
-</script>
-
-{%endif%}
 
 {% if msgg %}
 <script>
     alert('{{msgg}}');
 </script>
 
-{%endif%}
+{% endif %}
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -26,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/logincss.css' %}">
-    
+    <script data-theme="dark" src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <style>
     h1{
@@ -58,15 +52,17 @@ body{
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</div><a href = "mailto:developers@theboyes.com">Can't Login?</a></form>
                 -->
 
-                <form  action="" method="post">
+                <form  action="{% url 'post_sign' %}" method="post">
                     {% csrf_token %}
                     
                     <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
                     <!-- <div class="form-group"> {{ form.username }}</div>
                     <div class="form-group"> {{ form.password }}</div> -->
-                    <div class="form-group">Email: <input type="email" name="email" autocomplete="off" required></div>
-                    <div class="form-group">Code: <input type="password" name="pass" autocomplete="off" required></div>
+                    <div class="form-group">Email <input type="email" name="email" autocomplete="off" required size="38"></div>
+                    <div class="form-group">Code<input type="password" name="pass" autocomplete="off" required size="38"></div>
+                    <div class="g-recaptcha" data-sitekey="6Le9FpEaAAAAAGddZ9wCerlOdvZHxu6llA3O2IDE"></div>
                     <input class="btn btn-primary btn-block" type="submit" value="Sign In"><br>
+                    
                     <a href = "mailto:developers@theboyes.com">Can't Login? Click me, i'll help.</a></form>                
     </div>
 </section>

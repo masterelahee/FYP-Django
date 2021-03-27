@@ -86,21 +86,41 @@ def signIn(request):
 
 
 def postsign(request):
+
+    captcha_token=request.POST.get('g-recaptcha-response')
+    captcha_url='https://www.google.com/recaptcha/api/siteverify'
+    captcha_secret='6Le9FpEaAAAAAPPu0sot1fAVj4n31mharnfEdrLt'
+    cap_data={"secret":captcha_secret, "response":captcha_token}
+    cap_server_response=requests.post(url=captcha_url, data=cap_data)
+    cap_json=json.loads(cap_server_response.text)
+    print(cap_json)
+
     email=request.POST.get('email')
     passw=request.POST.get('pass')
+    
+       
     try:
         user=auth.sign_in_with_email_and_password(email,passw)
         usercheck = auth.get_account_info(user['idToken'])
         usercheckjson=json.dumps(usercheck['users'])
         userjsonload=json.loads(usercheckjson)
+        
                 
         if userjsonload[0]['emailVerified'] == False:
             message="Please verify your email before login!"
             return render(request,"login.html", {"msgg":message})
         
+        
+        elif cap_json['success']==False:
+            message="Invalid captcha, try again!"
+            return render(request,"login.html", {"msgg":message})
+        
     except:
         message="Invalid credentials. Try again."
-        return render(request,"login.html", {"msg":message})    
+        return render(request,"login.html", {"msgg":message}) 
+    
+    
+   
 
     session_id=user['idToken'] 
 
@@ -151,7 +171,7 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-@login_required(login_url='login')
+@login_required
 def home(request):
    
     return render(request,'pick.html')
@@ -222,7 +242,16 @@ def logout_admin(request):
 @csrf_exempt
 def report(request):
     f=[]
-    #extract = db.child(request.POST.get('parameder')).get()
+   
+    # extract = db.child(request.POST.get('parameder')).get()
+    # for x in extract.each():
+
+    #     k=db.child(request.POST.get('parameder')).child(x.key()).get()
+    #     for ohno in k.each():
+
+    #         print(ohno.val())
+    #         f.append(ohno.val())
+
     extract = db.child(request.POST.get('parameder')).get()
     for x in extract.each():
 

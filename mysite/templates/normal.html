@@ -27,7 +27,13 @@
 
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
-
+<script>
+  $("#btnId").click(function(e){
+     e.preventDefault();
+     //show loading gif
+     $(this).closest('form').submit();
+});
+</script>
 </head>
 
 <body id="page-top">
@@ -71,11 +77,11 @@
 
         <form action="{% url 'normal_scan' %}" class="form-inline d-flex" method="post">
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website or IP address..." required>
-            <button class="btn btn-primary mx-auto" >Check!</button><br><br>
+            <button class="btn btn-primary mx-auto"  id='btnId'>Check!</button><br><br>
            
         </form>
 
-        
+   
     
 
 
