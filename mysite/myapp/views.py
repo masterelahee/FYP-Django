@@ -583,6 +583,7 @@ def arachni (request):
     email=request.POST.get('userinputemail')
 
     remoteServerIP  = socket.gethostbyname(url)
+    print(remoteServerIP)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
     portOpenList = []
     portCloseList = []
@@ -619,7 +620,7 @@ def arachni (request):
 
     parsed = urlparse(url)
     if not parsed.scheme:
-        url = 'https://' + url # defasult to http if scheme not provided
+        url = 'http://' + url # defasult to http if scheme not provided
 
 
     headers = foo.check_headers(url)
@@ -788,6 +789,8 @@ def arachni_auth (request):
     else:
         pass
     
+    p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    time.sleep(20)
     print(url)
     a = ArachniClient()
     resumeFlag = False
@@ -807,8 +810,8 @@ def arachni_auth (request):
 
     #authFlag = True
     print("Authenticated scan")
-    # a.startAuthScan()
-    a.profile("myapp/profiles/full_audit_auth.json")
+    a.startAuthScan()
+    a.profile("./myapp/profiles/full_audit_auth.json")
     target_url = url
     
     try:
