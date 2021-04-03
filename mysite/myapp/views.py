@@ -66,7 +66,7 @@ firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 auth=firebase.auth()
 
-cred=credentials.Certificate('D:/Desktop/FYP/FYP-Django/mysite/myapp/firebasesdk.json')
+cred=credentials.Certificate('D:/School/Y3S2/Soft B/FYP-Django/mysite/myapp/firebasesdk.json')
 app=firebase_admin.initialize_app(cred, {
     "databaseURL": "https://fyptheboyes.firebaseio.com",
 })

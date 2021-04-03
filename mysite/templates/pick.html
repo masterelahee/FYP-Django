@@ -3,7 +3,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -14,6 +13,7 @@
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/loader.css' %}" rel="stylesheet">
+  
 
   <!-- Custom fonts for this template -->
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
@@ -25,8 +25,8 @@
   
   
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
-<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
-
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
 </head>
 
 <body id="page-top">
@@ -92,9 +92,115 @@
             </div>
 
             <!-- <a class="btn btn-primary" >Authenticated Scan</a> -->
-            
+          </div> 
                        
         </form>
+    </div>
+  </header>
+    
+  <!--table here-->
+  <div>
+      <table class="scan-details">
+        <thead>
+            <tr>
+                <th>Light Scan</th> <th>Full Scan</th> <th>Test performed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Fingerprint web server software</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Analyze HTTP headers for security misconfiguration</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check the security of HTTP cookies</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check the SSL certificate of the server</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check if the server software is affected by known vulnerabilities</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Analyze robots.txt for interesting URLs</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check whether a client access file exists, and if it contains a wildcard entry (clientaccesspolicy.xml, crossdomain.xml)</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Discover server configuration problems such as Directory Listing</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Crawl website</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for SQL Injection</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for Cross-Site Scripting</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for Local File Inclusion and Remote File Inclusion</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for OS Command Injection</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for outdated JavaScript libraries</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Find administrative pages</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for sensitive files (archives, backups, certificates, key stores) based on hostname and some common words</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Attempt to find interesting files/functionality</td>
+            </tr>
+            <tr>
+                <td class="align-center alert-danger"><i class="ace-icon fa fa-times bigger-110 red" aria-hidden="true"></i></td>
+                <td class="align-center alert-success"><i class="ace-icon fa fa-check bigger-110 green" aria-hidden="true"></i></td>
+                <td>Check for information disclosure issues</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+        
 
  <!--
   <section id="projects" class="projects-section bg-light">
