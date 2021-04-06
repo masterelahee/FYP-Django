@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -148,6 +149,13 @@
                     
                     <input type="submit" class="btn btn-primary" value="Register"></input>
                     <div class="clearfix"></div>
+                    {% if msgg %}
+                      <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{msgg}}
+                      </div>
+
+                    {% endif %}
                   </form>
                 </div>
               </div>
