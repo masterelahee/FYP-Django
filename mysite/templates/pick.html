@@ -70,7 +70,7 @@
 
         <form class="text-center" method="post">
           <div class="btn-group">
-            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Quick Scan</a>
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Light Scan</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <a  class="dropdown-item" href="{% url 'normal' %}">Normal Scan</a>
               <a class="dropdown-item" href="{% url 'welcome' %}">Authenticated Scan</a>
@@ -83,7 +83,7 @@
                 <li><a href="{% url 'welcome' %}">Authenticated Scan</a></li>
               </ul> -->
               <div class="btn-group">
-              <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Deep Scan</a>
+              <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Full Scan</a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href="{% url 'full' %}">Normal Scan</a>
                 <a class="dropdown-item" href="{% url 'full_auth' %}">Authenticated Scan</a>
@@ -99,6 +99,7 @@
   </header>
     
   <!--table here-->
+  <h2 class="scan-header">Scan Type Details</h2>
   <div>
       <table class="scan-details">
         <thead>
