@@ -2,8 +2,8 @@
     "workbench.colorCustomizations": {
     
     },
-    "python.pythonPath": "d:\\Desktop\\FYP\\FYP-TheBoyes\\mytester\\Scripts\\python.exe",
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "python.pythonPath": "thelatestfypvenv\\Scripts\\python.exe"
 
    
 }

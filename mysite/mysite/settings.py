@@ -131,4 +131,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL="login"
-LOGIN_REDIRECT_URL="home"
+LOGIN_REDIRECT_URL="/home/"
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)

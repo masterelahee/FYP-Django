@@ -67,7 +67,7 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-          <div class="col-lg-6 col-md-12">
+          <div class="col-sm-8">
             <div class="card">
               <div class="card-header card-header-primary">
                 <h4 class="card-title">User Stats</h4>
@@ -81,19 +81,22 @@
                     <th>Account Status</th>
                     <th>Created</th>
                     <th>Last Login</th>
+                    <th>Actions</th>
                   </thead>
+                  <form action="{% url 'del_disble_user' %}" method="post">
+                    {% csrf_token %}
                   <tbody>
                     {% for user_stuff in extractuser %}
         
                     <tr>
                       {% for y in user_stuff %}
-                      <td>{{y}}</td>
+                      <td>{{y|safe}}</td>
                       
                       {% endfor %}
                       
                     </tr>
                     {% endfor %}
-                  </tbody>
+                  </tbody></form>
                 </table>
               </div>
             </div>

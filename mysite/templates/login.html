@@ -1,10 +1,4 @@
 
-{% if msgg %}
-<script>
-    alert('{{msgg}}');
-</script>
-
-{% endif %}
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -46,8 +40,8 @@ body{
             {% csrf_token %}
             
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-            <div class="form-group"> {{ form.username }}</div>
-            <div class="form-group"> {{ form.password }}</div>
+            <div class="form-group" name="email"> {{ form.username }}</div>
+            <div class="form-group" name="pass"> {{ form.password }}</div>
             
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</div><a href = "mailto:developers@theboyes.com">Can't Login?</a></form>
                 -->
@@ -58,6 +52,12 @@ body{
                     <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
                     <!-- <div class="form-group"> {{ form.username }}</div>
                     <div class="form-group"> {{ form.password }}</div> -->
+                    {% if msgg %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{msgg}}
+                    </div>
+                    {% endif %}
                     <div class="form-group">Email <input type="email" name="email" autocomplete="off" required size="38"></div>
                     <div class="form-group">Code<input type="password" name="pass" autocomplete="off" required size="38"></div>
                     <div class="g-recaptcha" data-sitekey="6Le9FpEaAAAAAGddZ9wCerlOdvZHxu6llA3O2IDE"></div>

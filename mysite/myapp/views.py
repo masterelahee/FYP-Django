@@ -22,7 +22,7 @@ import html2text
 import re
 import requests 
 import dropbox
-from datetime import datetime
+from datetime import datetime, date
 import lxml.html
 from django.contrib.auth.decorators import login_required
 from .headercheck import SecurityHeaders
@@ -37,6 +37,7 @@ from django.contrib.auth import (
     login,
     logout
 )
+from django.contrib.auth.models import User
 from .forms import UserLoginForm, UserRegisterForm
 import pyrebase 
 import smtplib
@@ -71,14 +72,15 @@ app=firebase_admin.initialize_app(cred, {
     "databaseURL": "https://fyptheboyes.firebaseio.com",
 })
 
+login_email_rn=""
 #https://www.youtube.com/watch?v=gsW5gYTNi34
 #https://codeloop.org/python-firebase-authentication-with-email-password/
 
 def error_404_view(request,exception):
-    return render_to_response('404.html')
+    return render(request,'404.html')
 
 def error_505_view(request,exception):
-    return render_to_response('500.html')
+    return render(request,'500.html')
 #----------------------------------------------
 def signIn(request):
     
@@ -87,6 +89,8 @@ def signIn(request):
 
 def postsign(request):
 
+    email=request.POST.get('email')
+    passw=request.POST.get('pass')
     captcha_token=request.POST.get('g-recaptcha-response')
     captcha_url='https://www.google.com/recaptcha/api/siteverify'
     captcha_secret='6Le9FpEaAAAAAPPu0sot1fAVj4n31mharnfEdrLt'
@@ -95,57 +99,98 @@ def postsign(request):
     cap_json=json.loads(cap_server_response.text)
     print(cap_json)
 
-    email=request.POST.get('email')
-    passw=request.POST.get('pass')
+    user = authenticate(request,username=email, password=passw)
     
-       
-    try:
-        user=auth.sign_in_with_email_and_password(email,passw)
-        usercheck = auth.get_account_info(user['idToken'])
-        usercheckjson=json.dumps(usercheck['users'])
-        userjsonload=json.loads(usercheckjson)
+    check_email = auth2.get_user_by_email(email)
+      
+    user_check_fb=auth.sign_in_with_email_and_password(email,passw)
+    usercheckfb = auth.get_account_info(user_check_fb['idToken'])
+    usercheckjson=json.dumps(usercheckfb['users'])
+    userjsonload=json.loads(usercheckjson)
+
+    
+    if user is not None and check_email.uid is not None:
         
-                
-        if userjsonload[0]['emailVerified'] == False:
-            message="Please verify your email before login!"
-            return render(request,"login.html", {"msgg":message})
-        
-        
-        elif cap_json['success']==False:
+        if cap_json['success']==False:
             message="Invalid captcha, try again!"
             return render(request,"login.html", {"msgg":message})
-        
-    except:
-        message="Invalid credentials. Try again."
+            
+        elif check_email.email_verified == False:
+            message="Please verify your email before login!"
+            return render(request,"login.html", {"msgg":message})
+
+        else:
+            #login the user and save session :D
+            login(request, user)
+
+            # ----------------------------------------
+            now = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+            email_address = email    # add email address here
+            Subject = 'Did you log in?\n\n'
+            content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
+            footer = '- TheBoyes Administrator'    # add test footer 
+            passcode = 'blfmslewrtijnfqn'        # add passcode here
+            conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
+            conn.ehlo()
+            conn.login('fypemail@yahoo.com', passcode)
+            conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
+            conn.quit()
+            global login_email_rn
+            login_email_rn=str(email)
+            # -----------------------------------------------------
+            return render(request,"pick.html") 
+      
+    else:
+        message="Invalid login details. Try again."
         return render(request,"login.html", {"msgg":message}) 
     
-    
-   
-
-    session_id=user['idToken'] 
-
-    request.session['uid']=str(session_id) 
+#-----UP IS WORKING---------------------
+    # try:
+    #     user=auth.sign_in_with_email_and_password(email,passw)
+    #     print("The user"+user)
+    #     usercheck = auth.get_account_info(user['idToken'])
+    #     usercheckjson=json.dumps(usercheck['users'])
+    #     userjsonload=json.loads(usercheckjson)
+    #     login(request, user)                
+    #     if userjsonload[0]['emailVerified'] == False:
+    #         message="Please verify your email before login!"
+    #         return render(request,"login.html", {"msgg":message})
+        
+        
+    #     elif cap_json['success']==False:
+    #         login(request, user)
+    #         message="Invalid captcha, try again!"
+    #         return render(request,"login.html", {"msgg":message})
+        
+    # except:
+    #     message="There was a problem. Try again."
+    #     return render(request,"login.html", {"msgg":message})  
   
     #----------------------------------------
-    now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    email_address = email    # add email address here
-    Subject = 'Did you log in?\n\n'
-    content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
-    footer = '- TheBoyes Administrator'    # add test footer 
-    passcode = 'blfmslewrtijnfqn'        # add passcode here
-    conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
-    conn.ehlo()
-    conn.login('fypemail@yahoo.com', passcode)
-    conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
-    conn.quit()
-    
+    # now = datetime.now()
+    # dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    # email_address = email    # add email address here
+    # Subject = 'Did you log in?\n\n'
+    # content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
+    # footer = '- TheBoyes Administrator'    # add test footer 
+    # passcode = 'blfmslewrtijnfqn'        # add passcode here
+    # conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
+    # conn.ehlo()
+    # conn.login('fypemail@yahoo.com', passcode)
+    # conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
+    # conn.quit()
+    # global login_email_rn
+    # login_email_rn=str(email)
     #-----------------------------------------------------
     # Reset password
     #auth.send_password_reset_email(email)
 
+    
+    # session_id=user['idToken'] 
 
-    return render(request,"pick.html") 
+    # request.session['uid']=str(session_id) 
+    # return render(request,"pick.html") 
 
 #----------------------------------------------
 #CHECK THIS IF WORK!! ADMIN fypemail yahoo pass is password, regitration is not working, login required
@@ -153,30 +198,51 @@ def postsign(request):
 def postregister(request):
     regem=request.POST.get('reg_email')
     regpass=request.POST.get('reg_password')
-    
-    try:
-        user=auth.create_user_with_email_and_password(regem, regpass)
-    except:
-        message="Please check your input. Try again."
-        return render(request,"template.html", {"msgg":message})  
-    signin = auth.sign_in_with_email_and_password(regem, regpass)
-    auth.send_email_verification(signin['idToken'])
-    
-    print("Email Verification Has Been Sent")
 
-    return render(request,'template.html')
+    if User.objects.filter(username=regem).exists():
+        message="User Exists!"
+
+        return render(request,'userreg.html', {"msgg":message})
+    else:
+
+        saveuser=User.objects.create_user(username=regem,password=regpass)
+        saveuser.save()
+        user=auth.create_user_with_email_and_password(regem, regpass)
+
+        signin = auth.sign_in_with_email_and_password(regem, regpass)
+        auth.send_email_verification(signin['idToken'])
+        
+        message="Email Verification Has Been Sent"
+
+        return render(request,'userreg.html', {"msgg":message})
 
 
 def logout_view(request):
     logout(request)
     return redirect('/')
 
-@login_required
+# @login_required
 def home(request):
    
     return render(request,'pick.html')
     
 
+def del_disble_user(request):
+    email_to_del=request.POST.get('del_disble_user_button')
+    u=User.objects.get(username=email_to_del)
+    print(u.is_active)
+
+    u.is_active = True
+    u.save()
+    
+    print(email_to_del)
+   
+    user = auth2.get_user_by_email(email_to_del)
+    user_update=auth2.update_user(user.uid, disabled=False)
+    # auth2.delete_user(user.uid)
+
+    print("User gone!")
+    return render(request,'template.html')
 
 def admin_custom(request):
     g=[]
@@ -197,13 +263,16 @@ def admin_custom(request):
             if disbled==False:
                 disabled="Active"
             else:
-                disabled="Disable"
+                disabled="Disabled"
             createtime=usermeta.user_metadata.creation_timestamp
             lastlogin=usermeta.user_metadata.last_sign_in_timestamp
             formtd_time_create=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(createtime/1000.0))
             formtd_time_lastlogin=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(lastlogin/1000.0))
-            
-            g.append([user.email,ver,disabled,formtd_time_create,formtd_time_lastlogin])
+            #change to disable/enable..and add the delete button
+
+            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            disable_button='<button type="submit" class="btn btn-primary" name="del_disble_user_button" value={0}>Disable</button>'.format(user.email)
+            g.append([user.email,ver,disabled,formtd_time_create,formtd_time_lastlogin,disable_button])
         
         page = page.get_next_page()
     
@@ -262,7 +331,7 @@ def report(request):
             f.append(ohno.val())
     return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
 
-#@login_required
+# @login_required
 def normal(request):
     return render(request,'normal.html')    
 
@@ -394,7 +463,7 @@ def external(request):
     br.set_handle_robots(False)
     #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    thelink='https://'+remoteServer
+    thelink='http://'+remoteServer
     br.open(thelink)
     
     # Select the second (index one) form (the first form is a search query box)
@@ -425,7 +494,7 @@ def external(request):
     
     #sending to firebase
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
-    db.child(remoteServer.replace(".","_")).set(to_firebase)
+    db.child(login_email_rn.replace(".","_")).child(remoteServer.replace(".","_")).set(to_firebase)
     pdf_generator(re.sub('[.:/]','_',url),app)
     return a
     
@@ -539,40 +608,43 @@ def norm_scan(request):
 
     br = mechanize.Browser()
     cj = cookielib.LWPCookieJar()
-    br.set_cookiejar(cj)
+    # br.set_cookiejar(cj)
     
-    br.set_handle_equiv(True)
-    br.set_handle_gzip(True)
-    br.set_handle_redirect(True)
-    br.set_handle_referer(True)
-    br.set_handle_robots(False)
-    #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+    # br.set_handle_equiv(True)
+    # br.set_handle_gzip(True)
+    # br.set_handle_redirect(True)
+    # br.set_handle_referer(True)
+    # br.set_handle_robots(False)
+   
     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    thelink='https://'+remoteServer
-    br.open(thelink)
+    thelink=remoteServer
+    # br.open(thelink)
     
-    # Select the second (index one) form (the first form is a search query box)
-    
-    br.set_cookiejar(cj)
-    print(cj)
+       
+    # br.set_cookiejar(cj)
+    print("The email bosku")
+    print(login_email_rn)
 
-    visit(br,thelink)
-    bar=visited_links.copy()
-    for e in bar:
-        visit(br,e)
+    # visit(br,thelink)
+    # bar=visited_links.copy()
+    # for e in bar:
+    #     visit(br,e)
     
     print(list(visited_links))
     
         # -------------------------------------------------------------------
-    a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
-    
+    a=render(request, 'normal.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
+    now_today=datetime.now().strftime("%d%m%Y%H%M%S")
+    print(now_today)
+    url_tofirebase=remoteServer.replace(".","_")+"_"+now_today
+    emailtofirebase=login_email_rn.replace(".","_")
     #sending to firebase
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
-    db.child(remoteServer.replace(".","_")).set(to_firebase)
+    db.child(emailtofirebase).child("scans").child(url_tofirebase).set(to_firebase)
     time.sleep(10)
-    pdf_generator(re.sub('[.:/]','_',remoteServer),app)
+    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',remoteServer),app)
     return a
-    #BRUTE FORCE
+  
 
 
 #@login_required
@@ -583,6 +655,7 @@ def arachni (request):
     email=request.POST.get('userinputemail')
 
     remoteServerIP  = socket.gethostbyname(url)
+    print(remoteServerIP)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
     portOpenList = []
     portCloseList = []
@@ -619,7 +692,7 @@ def arachni (request):
 
     parsed = urlparse(url)
     if not parsed.scheme:
-        url = 'https://' + url # defasult to http if scheme not provided
+        url = 'http://' + url # defasult to http if scheme not provided
 
 
     headers = foo.check_headers(url)
@@ -788,6 +861,8 @@ def arachni_auth (request):
     else:
         pass
     
+    p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    time.sleep(20)
     print(url)
     a = ArachniClient()
     resumeFlag = False
@@ -807,8 +882,8 @@ def arachni_auth (request):
 
     #authFlag = True
     print("Authenticated scan")
-    # a.startAuthScan()
-    a.profile("myapp/profiles/full_audit_auth.json")
+    a.startAuthScan()
+    a.profile("./myapp/profiles/full_audit_auth.json")
     target_url = url
     
     try:
