@@ -94,7 +94,7 @@ class SecurityHeaders():
 
         return {'supported': True, 'certvalid': True}
 
-    def test_http_to_https(self, url, follow_redirects = 0):
+    def test_http_to_https(self, url, follow_redirects = 5):
         parsed = urlparse(url)
         protocol = parsed[0]
         hostname = parsed[1]
@@ -102,9 +102,9 @@ class SecurityHeaders():
         if not protocol:
             protocol = 'http' # default to http if protocl scheme not specified
 
-        if protocol == 'https' and follow_redirects != 0:
+        if protocol == 'https' and follow_redirects != 5:
             return True
-        elif protocol == 'https' and follow_redirects == 0:
+        elif protocol == 'https' and follow_redirects == 5:
             protocol = 'http'
 
         if (protocol == 'http'):
@@ -136,14 +136,16 @@ class SecurityHeaders():
 
         """ Default return array """
         retval = {
-            'x-frame-options': {'defined': False, 'warn': 1, 'contents': '' },
-            'strict-transport-security': {'defined': False, 'warn': 1, 'contents': ''},
-            'access-control-allow-origin': {'defined': False, 'warn': 0, 'contents': ''},
-            'content-security-policy': {'defined': False, 'warn': 1, 'contents': ''},
-            'x-xss-protection': {'defined': False, 'warn': 1, 'contents': ''}, 
-            'x-content-type-options': {'defined': False, 'warn': 1, 'contents': ''},
-            'x-powered-by': {'defined': False, 'warn': 0, 'contents': ''},
-            'server': {'defined': False, 'warn': 0, 'contents': ''} 
+
+            'x-frame-options': {'defined': False, 'warn': 1, 'contents': '', 'discription': 'provide clickjacking protection that A malicious technique that tricks the user into clicking on something other than what they perceive to be clicking, potentially allowing an attacker to leak confidential information or gain control over their computer.  ' },
+            'strict-transport-security': {'defined': False, 'warn': 1, 'contents': '', 'discription': 'is for HTTP Strict Transport Security In general, when HTTPS is forced, the server can convert it using 302 Redirect. However, this can act as a vulnerability point. It is recommended to induce HTTPS connection using 302 Redirect and force HTTPS to the client browser, which is HSTS (HTTP Strict Transport Security). Since it is forced by the client (browser), the connection itself using Plain Text (HTTP) is not attempted from the beginning and has the advantage that it is blocked on the client side. ' },
+            'access-control-allow-origin': {'defined': False, 'warn': 0, 'contents': '', 'discription': 'specifies either a single origin, which tells browsers to allow that origin to access the resource' },
+            'content-security-policy': {'defined': False, 'warn': 1, 'contents': '', 'discription': 'In order not to load unwanted files(eg. xss), this header allows  specified external sources only.' },
+            'x-xss-protection': {'defined': False, 'warn': 1, 'contents': '', 'discription': ' is designed to enable the cross-site scripting (XSS) filter built into modern web browsers.' }, 
+            'x-content-type-options': {'defined': False, 'warn': 1, 'contents': '', 'discription': 'response HTTP header is a marker used by the server to indicate that the MIME types advertised in the Content-Type headers should not be changed and be followed.' },
+            'x-powered-by': {'defined': False, 'warn': 0, 'contents': '' },
+            'server': {'defined': False, 'warn': 0, 'contents': '' }
+
         }
 
         parsed = urlparse(url)
@@ -192,22 +194,15 @@ class SecurityHeaders():
 
 if __name__ == "__main__":
 
-    """parser = argparse.ArgumentParser(description='Check HTTP security headers', \
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('url', metavar='URL', type=str, help='Target URL')
-    parser.add_argument('--max-redirects', dest='max_redirects', metavar='N', default=2, type=int, help='Max redirects, set 0 to disable')
-    args = parser.parse_args()
-    url = args.url"""
 
-    url = 'tryhackus-theboyes.ml'
-
-    """redirects = args.max_redirects"""
+    url = 'guthib.com'
 
     foo = SecurityHeaders()
 
     parsed = urlparse(url)
     if not parsed.scheme:
-        url = 'https://' + url # default to http if scheme not provided
+        url = 'http://' + url # default to http if scheme not provided
+
 
 
     headers = foo.check_headers(url)
@@ -216,36 +211,25 @@ if __name__ == "__main__":
         print ("Failed to fetch headers, exiting...")
         sys.exit(1)
 
-    okColor = '\033[92m'
-    warnColor = '\033[93m'
-    endColor = '\033[0m'
+
+    ###json output
+
+    print('{\n\t"name": "security header",\n\t"headers": [')
     for header, value in headers.items():
         if value['warn'] == 1:
             if value['defined'] == False:
-                print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+                print('\t{\n\t\t"name": " '+ header + '",\n\t\t"discription": "' + value['discription'] + '"\n\t},')
             else:
-                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
-                    ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
-        elif value['warn'] == 0:
-            if value['defined'] == False:
-                print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
-            else:
-                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
-                    ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+                print('\t{\n\t\t"name": " Header \'' + header + '\' contains value \'' + value['contents'] + '",\n\t\t"discription": "Hackers can use this information to find out vulnerabilities easily in the server. For security purposes, it is necessary to use this header to prevent the transmission of information."\n\t},')
 
     https = foo.test_https(url)
-    if https['supported']:
-        print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
-    else:
-        print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+    if not https['supported']:
+        print('\t{\n\t\t"name": "HTTPS supported FAIL",\n\t\t"discription": "HTTPS protects the communication between your browser and server from being intercepted and tampered with by attackers. This provides confidentiality, integrity and authentication to the vast majority of today\'s WWW traffic. "\n\t},')
 
-    if https['certvalid']:
-        print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
-    else:
-        print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+    if not https['certvalid']:
+        print('\t{\n\t\t"name": "HTTPS valid certificate FAIL",\n\t\t"discription": "a HTTPS connection relies on an SSL certificate in order for the procedure to become secure. The reason for this is because the SSL certificate is responsible for \'encrypting\' online data, specifically between the visitor\'s browser and the server. "\n\t},')
 
+    if not foo.test_http_to_https(url, 5):
+        print('\t{\n\t\t"name": "HTTP -> HTTPS redirect FAIL",\n\t\t"discription": "if you do allow HTTP and redirect to HTTPS, that cookies are marked as secure. "\n\t},')
 
-    if foo.test_http_to_https(url, 5):
-        print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
-    else:
-        print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+    print('\t]\n}')

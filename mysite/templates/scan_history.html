@@ -3,19 +3,17 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
   <title>FYP - Is Your Network Safe?</title>
 
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/loader.css' %}" rel="stylesheet">
+  
 
   <!-- Custom fonts for this template -->
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
@@ -24,26 +22,53 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/grayscale.min.css' %}" rel="stylesheet">
-
+  
+  
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
-<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
-<script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
 
-//paste this code under the head tag or in a separate js file.
-	// Wait for window load
-	$(window).load(function() {
-		// Animate loader off screen
-		$(".se-pre-con").fadeOut("slow");;
-	});
-</script>
-</head>
+  <style>
+
+    table {
+    background: #012B39;
+    border-radius: 0.25em;
+    border-collapse: collapse;
+    margin: 1em;
+
+    }
+    th {
+    border-bottom: 1px solid #364043;
+    color: #E2B842;
+    font-size: 0.85em;
+    font-weight: 600;
+    padding: 0.5em 1em;
+    text-align: left;
+    }
+    td {
+    color: #fff;
+    font-weight: 400;
+    padding: 0.65em 1em;
+    text-align: left;
+    }
+    
+    tbody tr {
+    transition: background 0.25s ease;
+
+    }
+    tbody tr:hover {
+    background: #014055;
+    }
+
+  </style>
+
 
 <body id="page-top">
-  <div class="se-pre-con"></div>
+  
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">FYP</a>
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">The Boyes</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
@@ -54,10 +79,13 @@
             <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'scan_history' %}">History</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#signup">Contact</a>
+            <a class="nav-link js-scroll-trigger" href="#products">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#signup">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Logout</a>
@@ -66,210 +94,38 @@
       </div>
     </div>
   </nav>
-  
+</head>
   <!-- Header -->
   <header class="masthead">
     <div class="container d-flex h-100 align-items-center">
-      <div class="mx-auto text-center">
-        <br><br><br><br>
-        <h1 class="mx-auto my-0 text-uppercase">TheBoyes</h1>
-        <h2 class="text-white-50 mx-auto mt-2 mb-5">Key in the website and our intelligent system will check it out.</h2>
-        
-
-
-        <form action="{% url 'normal_scan' %}" class="form-inline d-flex" method="post">
-            <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website or IP address..." required>
-            <button class="btn btn-primary mx-auto" id="btnId">Check!</button><br><br>
-           
-        </form>
-
-   
+        <div class="mx-auto text-center">
+    <h1 class="mx-auto my-0 text-uppercase">Scan History</h2>
     
-
-
-        <div id='map' style='width: 400px; height: 300px; margin:0 auto;'></div>
+    <table class="table table-hover">
+        <thead class="text-warning">
+          <th>Sites</th>
+          <th>Scan Date</th>
+          <th>Action</th>
         
-        {% if data3 %}
-        <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q';
-            var latextrac="{{data3}}";
-            var lonextrac="{{data4}}";
-            var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/dark-v10',
-            center: [lonextrac,latextrac],
-            zoom: 5,
-            pitch: 0
-            });
+        </thead>
+        <tbody>
+            {% for scans, date in scanHistory %}
 
-            
-            var size = 200;
- 
-// implementation of CustomLayerInterface to draw a pulsing dot icon on the map
-// see https://docs.mapbox.com/mapbox-gl-js/api/#customlayerinterface for more info
-var pulsingDot = {
-width: size,
-height: size,
-data: new Uint8Array(size * size * 4),
- 
-// get rendering context for the map canvas when layer is added to the map
-onAdd: function() {
-var canvas = document.createElement('canvas');
-canvas.width = this.width;
-canvas.height = this.height;
-this.context = canvas.getContext('2d');
-},
- 
-// called once before every frame where the icon will be used
-render: function() {
-var duration = 1000;
-var t = (performance.now() % duration) / duration;
- 
-var radius = (size / 2) * 0.3;
-var outerRadius = (size / 2) * 0.7 * t + radius;
-var context = this.context;
- 
-// draw outer circle
-context.clearRect(0, 0, this.width, this.height);
-context.beginPath();
-context.arc(
-this.width / 2,
-this.height / 2,
-outerRadius,
-0,
-Math.PI * 2
-);
-context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
-context.fill();
- 
-// draw inner circle
-context.beginPath();
-context.arc(
-this.width / 2,
-this.height / 2,
-radius,
-0,
-Math.PI * 2
-);
-context.fillStyle = 'rgba(255, 100, 100, 1)';
-context.strokeStyle = 'white';
-context.lineWidth = 2 + 4 * (1 - t);
-context.fill();
-context.stroke();
- 
-// update this image's data with data from the canvas
-this.data = context.getImageData(
-0,
-0,
-this.width,
-this.height
-).data;
- 
-// continuously repaint the map, resulting in the smooth animation of the dot
-map.triggerRepaint();
- 
-// return `true` to let the map know that the image was updated
-return true;
-}
-};
- 
-map.on('load', function() {
-map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-var latextrac="{{data3}}";
-var lonextrac="{{data4}}";
-map.addSource('points', {
-'type': 'geojson',
-'data': {
-'type': 'FeatureCollection',
-'features': [
-{
-'type': 'Feature',
-'geometry': {
-'type': 'Point',
-'coordinates': [lonextrac,latextrac],
-
-}
-}
-]
-}
-});
-map.addLayer({
-'id': 'points',
-'type': 'symbol',
-'source': 'points',
-'layout': {
-'icon-image': 'pulsing-dot'
-}
-});
-});
-
-
-        </script>
-        {% endif %}
-
-  
-    </div>
-      
-      </div>
-    </div>
-  </header>
- 
-  {% if data %}
-  <section id="about" class="about-section text-center">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mx-auto">
-          <h2 class="text-white mb-4">Your results are ready! </h2>
-          
-          <p class="text-white-50">
-            
-            Ports open and vulnerable: {{data}}
-            <div class="btn btn-primary mx-auto">{{data2}}</div>
-            
-            <div class="btn btn-primary mx-auto">LAT {{data3}}</div>
-            <div class="btn btn-primary mx-auto">LONG {{data4}}</div>
-
-            <div class="btn btn-primary mx-auto">{{data5}}</div>
-
-          </p>
+            <tr>
+                <td>
+                {{scans}}
+                </td>
            
-          
+                <td>{{date}}</td>
             
+                <td>{{dload_button|safe}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> </div></div>
+  </header>
 
-            <!--<a  class="btn btn-primary mx-auto" href="{% url 'attack'%}">Attack</a>-->
-                        
-            <form action="{% url 'attack'%}" class="form-inline d-flex" method="post">
-              {% csrf_token %}
-              <input type="text" name="param2" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter IP address..." required>
-              <button class="btn btn-primary mx-auto" type="submit" value="{% url 'attack'%}">Attack</button><br><br>
-             
-          </form>
-         
-        </div>
-        
-      </div>
-      
-  </section>
-
-  {% endif %}
- <!--
-  <section id="projects" class="projects-section bg-light">
-    <div class="container">
-
-     
-      <div class="row align-items-center no-gutters mb-4 mb-lg-5">
-        <div class="col-xl-8 col-lg-7">
-          <img class="img-fluid mb-3 mb-lg-0" src="{% static 'img/new.jpg' %}" alt="">
-        </div>
-        <div class="col-xl-4 col-lg-5">
-          <div class="featured-text text-center text-lg-left">
-            <h4>Vulnerable</h4>
-            <p class="text-black-50 mb-0">Grayscale is open source and MIT licensed. This means you can use it for any project - even commercial projects! Download it, customize it, and publish your website!</p>
-          </div>
-        </div>
-      </div>
-
-     
+      <!--
       <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
         <div class="col-lg-6">
           <img class="img-fluid" src="{% static 'img/demo-image-01.jpg' %}" alt="">
@@ -325,8 +181,8 @@ map.addLayer({
       </div>
     </div>
   </section>
-
- 
+-->
+ <!--
   <section class="contact-section bg-black">
     <div class="container">
 
@@ -383,12 +239,7 @@ map.addLayer({
     </div>
   </section>
   -->
-  <!-- Footer -->
-  <footer class="bg-black small text-center text-white-50">
-    <div class="container">
-      Copyright &copy; TheBoyes 2021
-    </div>
-  </footer>
+
   
   <!-- Bootstrap core JavaScript -->
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
@@ -399,7 +250,11 @@ map.addLayer({
 
   <!-- Custom scripts for this template -->
   <script src="{% static 'js/grayscale.min.js' %}"></script>
-  
+  <footer class="bg-black small text-center text-white-50">
+    <div class="container">
+      Copyright &copy; TheBoyes 2021
+    </div>
+  </footer>
 </body>
 
 </html>

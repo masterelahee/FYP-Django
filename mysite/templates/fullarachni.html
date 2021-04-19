@@ -44,10 +44,13 @@
             <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'scan_history' %}">History</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#signup">Contact</a>
+            <a class="nav-link js-scroll-trigger" href="#products">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#profile">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Logout</a>
@@ -69,6 +72,13 @@
             
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website" required>
             <input type="text" name="userinputemail" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter your email" required>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Scan type</option>
+              <option value="1">Full Audit</option>
+              <option value="2">Cross-Site Scripting</option>
+              <option value="3">SQL Injection</option>
+              <option value="4">Server checking</option>
+            </select> 
             <button class="btn btn-primary mx-auto">Check!</button><br><br>
             
            

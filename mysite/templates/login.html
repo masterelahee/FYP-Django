@@ -27,7 +27,18 @@
     text-align: center;
 }
 body{
+   
     background-color: black;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+body{
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 </style>
 
@@ -58,9 +69,10 @@ body{
                         {{msgg}}
                     </div>
                     {% endif %}
-                    <div class="form-group">Email <input type="email" name="email" autocomplete="off" required size="38"></div>
-                    <div class="form-group">Code<input type="password" name="pass" autocomplete="off" required size="38"></div>
-                    <div class="g-recaptcha" data-sitekey="6Le9FpEaAAAAAGddZ9wCerlOdvZHxu6llA3O2IDE"></div>
+                    <div class="form-group">Email <input style="opacity: 0.4;" type="email" name="email" autocomplete="off" required size="38"></div>
+                    <div class="form-group">Password<input style="opacity: 0.4;" type="password" name="pass" autocomplete="off" required size="38"></div>
+                    <div class="form-group">Code<input style="opacity: 0.4;" type="text" name="code" autocomplete="off" required size="38"></div>
+                    <div class="g-recaptcha" data-theme="dark" data-sitekey="6Le9FpEaAAAAAGddZ9wCerlOdvZHxu6llA3O2IDE"></div>
                     <input class="btn btn-primary btn-block" type="submit" value="Sign In"><br>
                     
                     <a href = "mailto:developers@theboyes.com">Can't Login? Click me, i'll help.</a></form>                

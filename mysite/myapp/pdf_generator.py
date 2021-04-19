@@ -6,7 +6,7 @@ import pdfrw
 from math import ceil
 
 
-def pdf_generator(urlfirebase,app):
+def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,app):
     
     config={
         "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -32,8 +32,8 @@ def pdf_generator(urlfirebase,app):
     PDF_OUTPUT_PATH = './myapp/pdf_reports/{0}.pdf'.format(urlfirebase) 
     print("IAFTER PATH")
     f=[]
-
-    extract = db.child(urlfirebase)# rickyteama_tk or https___guthib_com
+   
+    extract = db.child(login_email_rn.replace(".","_")).child("scans").child(url_tofirebase)# rickyteama_tk or https___guthib_com
     for x in extract.get():
         f.append(x.val())
 

@@ -39,6 +39,7 @@ urlpatterns = [
     path('administrator/', v.admin_custom, name='admin_custom'),
     path('new-user/', v.admin_reg, name='admin_reg'),
     path('full-normal/', v.index, name="welcome"),
+    path('scan-history/',v.scan_history, name="scan_history"),
     # path('', v.postsign, name="post_sign"),
     # path('login/', v.signIn, name="login"),
     path('welcome/', v.postsign, name="post_sign"),

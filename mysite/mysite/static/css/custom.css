@@ -10,3 +10,8 @@ th,td {
     border-color: #BCBCBC;
     word-wrap: break-word;
 }
+
+.scan-header
+{
+    text-align: center;
+}

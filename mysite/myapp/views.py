@@ -51,6 +51,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth as auth2
 from myapp.pdf_generator import pdf_generator
+from myapp.otpyer import qrcodeGenerator, validation
 
 config={
     "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -83,14 +84,16 @@ def error_505_view(request,exception):
     return render(request,'500.html')
 #----------------------------------------------
 def signIn(request):
-    
+
     return render(request, "login.html")
 
 
 def postsign(request):
-
+    
     email=request.POST.get('email')
     passw=request.POST.get('pass')
+    otpcode=request.POST.get('code')
+    
     captcha_token=request.POST.get('g-recaptcha-response')
     captcha_url='https://www.google.com/recaptcha/api/siteverify'
     captcha_secret='6Le9FpEaAAAAAPPu0sot1fAVj4n31mharnfEdrLt'
@@ -98,18 +101,20 @@ def postsign(request):
     cap_server_response=requests.post(url=captcha_url, data=cap_data)
     cap_json=json.loads(cap_server_response.text)
     print(cap_json)
-
-    user = authenticate(request,username=email, password=passw)
-    
-    check_email = auth2.get_user_by_email(email)
-      
-    user_check_fb=auth.sign_in_with_email_and_password(email,passw)
-    usercheckfb = auth.get_account_info(user_check_fb['idToken'])
-    usercheckjson=json.dumps(usercheckfb['users'])
-    userjsonload=json.loads(usercheckjson)
-
-    
-    if user is not None and check_email.uid is not None:
+    try:
+        user = authenticate(request,username=email, password=passw)
+        check_email = auth2.get_user_by_email(email)
+        
+        user_check_fb=auth.sign_in_with_email_and_password(email,passw)
+        usercheckfb = auth.get_account_info(user_check_fb['idToken'])
+        usercheckjson=json.dumps(usercheckfb['users'])
+        userjsonload=json.loads(usercheckjson)
+    except:
+        message="Invalid login details. Try again."
+        return render(request,"login.html", {"msgg":message}) 
+   
+  
+    if user is not None and check_email.uid is not None and otpcode is not None:
         
         if cap_json['success']==False:
             message="Invalid captcha, try again!"
@@ -120,27 +125,42 @@ def postsign(request):
             return render(request,"login.html", {"msgg":message})
 
         else:
-            #login the user and save session :D
-            login(request, user)
+            
+            if otpcode is not None:
+                secret=db.child(email.replace(".","_")).child("secret").get()
+                print(secret.val())
+                
+                otp_check=validation(secret.val(), otpcode)
+                print("printing otp check")
+                print(otp_check)
+                if otp_check == True:
+                    #login the user and save session :D
+                    login(request, user)
+                    
+                    # ----------------------------------------
+                    now = datetime.now()
+                    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                    email_address = email    # add email address here
+                    Subject = 'Did you log in?\n\n'
+                    content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
+                    footer = '- TheBoyes Administrator'    # add test footer 
+                    passcode = 'blfmslewrtijnfqn'        # add passcode here
+                    conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
+                    conn.ehlo()
+                    conn.login('fypemail@yahoo.com', passcode)
+                    conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
+                    conn.quit()
+                    global login_email_rn
+                    login_email_rn=str(email)
+                    # -----------------------------------------------------
+                    return render(request,"pick.html",{"firebasename":check_email.display_name}) 
 
-            # ----------------------------------------
-            now = datetime.now()
-            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-            email_address = email    # add email address here
-            Subject = 'Did you log in?\n\n'
-            content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
-            footer = '- TheBoyes Administrator'    # add test footer 
-            passcode = 'blfmslewrtijnfqn'        # add passcode here
-            conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
-            conn.ehlo()
-            conn.login('fypemail@yahoo.com', passcode)
-            conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
-            conn.quit()
-            global login_email_rn
-            login_email_rn=str(email)
-            # -----------------------------------------------------
-            return render(request,"pick.html") 
-      
+                else:
+                    message="OTP invalid!"
+                    return render(request,"login.html", {"msgg":message}) 
+            else:
+                message="Please key in OTP!"
+                return render(request,"login.html", {"msgg":message})   
     else:
         message="Invalid login details. Try again."
         return render(request,"login.html", {"msgg":message}) 
@@ -214,35 +234,73 @@ def postregister(request):
         
         message="Email Verification Has Been Sent"
 
+        #saving otp secret to firebase
+        secretcode=qrcodeGenerator(regem)
+        print(secretcode)
+        secret_to_firebase = db.child(regem.replace(".","_")).child("secret")
+        secret_to_firebase.set(secretcode)
         return render(request,'userreg.html', {"msgg":message})
 
 
 def logout_view(request):
+    global login_email_rn
+    login_email_rn=""
     logout(request)
     return redirect('/')
 
 # @login_required
 def home(request):
-   
-    return render(request,'pick.html')
+    print(login_email_rn)
+    check_email = auth2.get_user_by_email(login_email_rn)
+    return render(request,'pick.html',{"firebasename":check_email.display_name})
     
-
+#put three button, disable done, noe enable and delete
 def del_disble_user(request):
-    email_to_del=request.POST.get('del_disble_user_button')
-    u=User.objects.get(username=email_to_del)
-    print(u.is_active)
+    email_to_disable=request.POST.get('disble_user_button')
+    email_to_delete=request.POST.get('del_user_button')
+    print(email_to_delete)
+    print(email_to_disable)
+    if email_to_disable is not None:
+        u=User.objects.get(username=email_to_disable)
 
-    u.is_active = True
-    u.save()
+        print(u.is_active)
+        if u.is_active == False:
+            u.is_active = True
+            u.save()
+            
+            print(email_to_disable)
+        
+            user = auth2.get_user_by_email(email_to_disable)
+            user_update=auth2.update_user(user.uid, disabled=False)
+        
+        else:
+            u.is_active = True
+            u.is_active = False
+            u.save()
+        
+            print(email_to_disable)
     
-    print(email_to_del)
-   
-    user = auth2.get_user_by_email(email_to_del)
-    user_update=auth2.update_user(user.uid, disabled=False)
-    # auth2.delete_user(user.uid)
+            user = auth2.get_user_by_email(email_to_disable)
+            user_update=auth2.update_user(user.uid, disabled=True)
+            # auth2.delete_user(user.uid)
+            
+        print("User disabled/enabled!")
+    
+    elif email_to_delete is not None:
+        try:
+            u=User.objects.get(username=email_to_delete)
+            u.username = "delete"+datetime.today().strftime('%d%m%Y%H%M%S')
+            u.save()
+        except User.DoesNotExist:
+            messages.error(request, "User doesnot exist")  
+        user = auth2.get_user_by_email(email_to_delete)
+        auth2.delete_user(user.uid)
+         
+     
+        print("User gone!")
 
-    print("User gone!")
-    return render(request,'template.html')
+
+    return admin_custom(request)
 
 def admin_custom(request):
     g=[]
@@ -271,13 +329,37 @@ def admin_custom(request):
             #change to disable/enable..and add the delete button
 
             #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            disable_button='<button type="submit" class="btn btn-primary" name="del_disble_user_button" value={0}>Disable</button>'.format(user.email)
-            g.append([user.email,ver,disabled,formtd_time_create,formtd_time_lastlogin,disable_button])
+            disable_button='<button type="submit" class="btn btn-primary" name="disble_user_button" value={0}>Enable/Disable</button>'.format(user.email)
+            delete_button='<button type="submit" class="btn btn-primary" name="del_user_button" value={0}>Delete</button>'.format(user.email)
+
+            g.append([user.email,ver,disabled,formtd_time_create,formtd_time_lastlogin,disable_button,delete_button])
         
         page = page.get_next_page()
     
     return render(request,'template.html', {"extractuser":list(g),"today":today})
     
+def scan_history(request):
+
+    history=[]
+    scan_date=[]
+    print(login_email_rn.replace(".","_"))
+    extract_scan_history = db.child(login_email_rn.replace(".","_")).child("scans")
+    for x in extract_scan_history.get():
+        keys=x.key()
+        web_extract=keys.replace("_",".")
+        strip_character="."
+        url_extract=strip_character.join(web_extract.split(strip_character)[:2])
+        date=strip_character.join(web_extract.split(strip_character)[2:])
+        date_formatted=datetime.strptime(date, '%d%m%Y%H%M%S')
+        # date=text[web_extract.find(".")+1:]
+        # print(date)
+        history.append(url_extract)
+        scan_date.append(date_formatted)
+        ziplist=zip(history, scan_date)
+        print(date_formatted)
+        dload_button='<button type="submit" class="btn btn-primary" name="dload_scan" value={0}>Download</button>'.format(url_extract)
+    return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
+
 # #@login_required(login_url='/admin_log_in/')
 def admin_reg(request):
     return render(request,'userreg.html')
@@ -288,9 +370,9 @@ def admin_login(request):
 def admin_process_log(request):
     adm_mail=request.POST.get('admin_uname')
     adm_password=request.POST.get('admin_pass')
-    
-    print(adm_password)
+   
     if str(adm_mail) == 'fypemail@yahoo.com':
+       
         try:
             user=auth.sign_in_with_email_and_password(adm_mail, adm_password)
         except:
@@ -321,7 +403,7 @@ def report(request):
     #         print(ohno.val())
     #         f.append(ohno.val())
 
-    extract = db.child(request.POST.get('parameder')).get()
+    extract = db.child(login_email_rn).child("scans").child(request.POST.get('parameder')).get()
     for x in extract.each():
 
         k=db.child(request.POST.get('parameder')).child(x.key()).get()
@@ -503,7 +585,6 @@ def external(request):
 #@login_required
 @csrf_exempt
 def norm_scan(request):
-#do the opushing to firebase and puling
     
     remoteServer    = request.POST.get('param')
     remoteServerIP  = socket.gethostbyname(remoteServer)
@@ -633,7 +714,7 @@ def norm_scan(request):
     print(list(visited_links))
     
         # -------------------------------------------------------------------
-    a=render(request, 'normal.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
+    a=render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
     now_today=datetime.now().strftime("%d%m%Y%H%M%S")
     print(now_today)
     url_tofirebase=remoteServer.replace(".","_")+"_"+now_today
@@ -773,7 +854,7 @@ def arachni (request):
     scanflag=True
     cwd = os.getcwd()
 
-# Print the current working directory
+
     print("Current working directory: {0}".format(cwd))
     while scanflag is True:
     
