@@ -49,7 +49,8 @@ urlpatterns = [
     path('post_adm_login/',v.admin_process_log),
     path('admin-login/', v.admin_login, name="admin_log_in"),
     path('logout/', v.logout_admin, name="logoutadmin"),
-    path('accounts/logout/', logout_view, name="logout")
+    path('accounts/logout/', logout_view, name="logout"),
+    path('logup/', v.logup, name="logup")
     
 ]
 

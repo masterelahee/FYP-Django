@@ -30,6 +30,7 @@ from myapp.securityheaders.__main__ import cli
 from myapp.arachni_tester import ArachniClient
 from urllib.parse import urlparse
 import urllib.request
+from urllib import parse
 from django.shortcuts import render, redirect
 from django.contrib.auth import (
     authenticate,
@@ -84,7 +85,7 @@ def error_505_view(request,exception):
     return render(request,'500.html')
 #----------------------------------------------
 def signIn(request):
-
+ 
     return render(request, "login.html")
 
 
@@ -342,21 +343,26 @@ def scan_history(request):
 
     history=[]
     scan_date=[]
-    print(login_email_rn.replace(".","_"))
-    extract_scan_history = db.child(login_email_rn.replace(".","_")).child("scans")
-    for x in extract_scan_history.get():
-        keys=x.key()
+    emel=login_email_rn.replace(".","_")
+    print(emel)
+    #  secret=db.child(email.replace(".","_")).child("secret").get()
+    extract_scan_history = db.child(emel).child("scans").get()
+    print("printing random stuff")
+    print(extract_scan_history)
+    
+    for scanned in extract_scan_history:
+        print(scanned.key())
+        keys=scanned.key()
         web_extract=keys.replace("_",".")
         strip_character="."
         url_extract=strip_character.join(web_extract.split(strip_character)[:2])
         date=strip_character.join(web_extract.split(strip_character)[2:])
         date_formatted=datetime.strptime(date, '%d%m%Y%H%M%S')
-        # date=text[web_extract.find(".")+1:]
-        # print(date)
+    
         history.append(url_extract)
         scan_date.append(date_formatted)
         ziplist=zip(history, scan_date)
-        print(date_formatted)
+        print(ziplist)
         dload_button='<button type="submit" class="btn btn-primary" name="dload_scan" value={0}>Download</button>'.format(url_extract)
     return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
 
@@ -364,7 +370,18 @@ def scan_history(request):
 def admin_reg(request):
     return render(request,'userreg.html')
 
+def logup(request):
+    scan_log=[]
+    emel="fypemail@yahoo.com".replace(".","_")
+    print(emel)
+    #  secret=db.child(email.replace(".","_")).child("secret").get()
+    extract_scan_log= db.child(emel).child("logging").get()
+    for i in extract_scan_log:
+        scan_log.append(i)
+    return render(request, 'logging_update.html', {'logup': scan_log})
+
 def admin_login(request):
+    
     return render(request,'admin_login.html')
 
 def admin_process_log(request):
@@ -392,26 +409,20 @@ def logout_admin(request):
 # #@login_required
 @csrf_exempt
 def report(request):
-    f=[]
-   
-    # extract = db.child(request.POST.get('parameder')).get()
-    # for x in extract.each():
+    keys=[]
+    valu=[]
 
-    #     k=db.child(request.POST.get('parameder')).child(x.key()).get()
-    #     for ohno in k.each():
 
-    #         print(ohno.val())
-    #         f.append(ohno.val())
-
-    extract = db.child(login_email_rn).child("scans").child(request.POST.get('parameder')).get()
+    extract = db.child("fypemail@yahoo_com").child("scans").child("endless_horse_04042021001505").get()
+    print(extract)
     for x in extract.each():
 
-        k=db.child(request.POST.get('parameder')).child(x.key()).get()
-        for ohno in k.each():
-
-            print(ohno.val())
-            f.append(ohno.val())
-    return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
+        # k=db.child("endless_horse_04042021001505").child(x.key()).get()
+        # for ohno in k.each():
+        keys.append(x.key())
+        valu.append(x.val())
+    # return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
+    return render(request,'report.html',{"keysNvalue":zip(keys,valu)})
 
 # @login_required
 def normal(request):
@@ -734,8 +745,20 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-
-    remoteServerIP  = socket.gethostbyname(url)
+    url_inp=""
+    try:
+               
+        urller = re.compile(r"https?://(www\.)?")
+        new=urller.sub('', url_tofirebase).strip().strip('/')
+        split_string = new.split("/", 1)
+        url_inp = split_string[0]
+    except:
+        pass
+    print(url_inp)
+    
+    split_url = parse.urlsplit(url)
+    remoteServerIP = socket.gethostbyname(split_url.netloc)
+    # remoteServerIP  = socket.gethostbyname(url)
     print(remoteServerIP)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
     portOpenList = []
@@ -831,7 +854,8 @@ def arachni (request):
     a = ArachniClient()
     resumeFlag = False
     authFlag = False
-
+    scanType = ""
+    
     #checks for existing scans and resumes from there instead
     avail_scan_object = a.get_scans() #returns json object of available scans
     print(a.get_scans()) #displays available scans | testing only
@@ -843,19 +867,53 @@ def arachni (request):
             resumeFlag = True
             start_time = time.time()
             break
-
-    print("Normal scan")
     
-    a.target(url)
-    scan_json_object = a.start_scan() #outputs json dictionary
-    scan_ID = scan_json_object["id"]
-    start_time = time.time()
+    if(resumeFlag == False):
+      
+        checkAuth="n"
+        while checkAuth not in ("y","n"):
+            print("Invalid input")
+            cls()
+            checkAuth = input("Do you want to perform an Authenticated Scan? (y/n): ")
 
+    #select scan type here then ask if user would like to use authenticated scanning
+
+    #start new scan if there are no ongoing ones
+    if(resumeFlag == False and checkAuth == "n"):
+        print("Normal scan")
+
+        checkNormalScanType = int(request.POST.get("scanType"))
+
+        while checkNormalScanType not in [1,2,3,4]:
+            print("Invalid input")
+            cls()
+            checkNormalScanType = input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: ")
+        scanType = a.selectNormalScan(checkNormalScanType)
+        print(scanType)
+        try:
+            a.target(url_inp)
+            scan_json_object = a.start_scan() #outputs json dictionary
+            scan_ID = scan_json_object["id"]
+            start_time = time.time()
+        except Exception as e:
+            print(e)
+
+    #start auth scan if user chose yes
+    elif(resumeFlag == False and checkAuth == "y"):
+        authFlag = True
+        checkAuthScanType = int(input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: "))
+        while checkAuthScanType not in [1,2,3,4]:
+            print("Invalid input")
+            cls()
+            checkAuthScanType = input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: ")
+        print("Authenticated scan")
+        scanType = a.selectAuthScan(checkAuthScanType)
+        scan_json_object = a.start_scan() #outputs json dictionary
+        scan_ID = scan_json_object["id"]
+        start_time = time.time()
+
+    print("passes")
     scanflag=True
-    cwd = os.getcwd()
-
-
-    print("Current working directory: {0}".format(cwd))
     while scanflag is True:
     
         print("Resumed scan? | ", resumeFlag)
@@ -875,57 +933,66 @@ def arachni (request):
             print("Scan has been completed, retrieving report...")
             a.getScanReport(scan_ID,"json") #output to json for database processing
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
-            #a.processJSON(scan_ID) #print out choice information
-            print("passed here")
+            # a.processJSON(scan_ID) #print out choice information
+            scanflag=False
+        
             time.sleep(10)
             fixed_scan_Id=scan_ID[:20]
+            a.delete_scan(scan_ID)
+            print("testpass")
             thisonetrust(fixed_scan_Id,email,url)
 
-            urlfirebase=re.sub('[.:/]','_',url)
             
-            to_firebase={"ip":urlfirebase,"port_open":fixed_list, "ip_info":values, "head_found":headers}
-            db.child(urlfirebase).set(to_firebase)
-            print("passed here toooo")
+            
+            tofirebase={"ip":url_inp,"port_open":fixed_list, "ip_info":values, "head_found":headers}
+           
+            emailtofirebase=login_email_rn.replace(".","_")
+
+            now_today=datetime.now().strftime("%d%m%Y%H%M%S")
+           
+            url_tofirebase=url_inp.replace(".","_")+"_"+now_today
+            print("after fixing")
+            print(url_tofirebase)
+            db.child(emailtofirebase).child("scans").child(url_tofirebase).set(tofirebase) 
+            
+            print("hi there")
             try:
-                with open("./myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
+                with open("myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
                     json_obj = json.load(jsonfile)
-
+                    print(json_obj.get('issues'))
                     try:
-                        for x in json_obj['issues']:
-                            
-                            # print("Name: ",x['name'])
-                            # print("Description: ",x['description'])
-                            # print("Remedy guidance: ", x['remedy_guidance'])
-                            # print("Issue found in site: ", x['vector']['url'])
-                            # print("References: ", x['references'])
-                        
-                            if x['name']=="Interesting response":
-                                to_firebase={"issues":x['name'],"description":x['description']}
+                        if json_obj.get('issues'):
+                            for x in json_obj['issues']:
                                 
-                            else:
-                                to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
-                            db.child(urlfirebase).child("arach_issues").push(to_firebase)
-
-                        for x in json_obj['sitemap']:
+                                if x['name']=="Interesting response":
+                                    to_firebase={"issues":x['name'],"description":x['description']}
+                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
+                                else:
+                                    to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
+                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
+                            for x in json_obj['sitemap']:
+                                
+                                db.child(emailtofirebase).child("scans").child(url_tofirebase).update(x) 
                             
-                            db.child(urlfirebase).child("site_urls").update(x)
-                    except Exception:
-                        pass
+                        else:
+           
+
+                            to_firebase={"issues":"None"}
+                            db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
+
+                    except Exception as e:
+                        print(e)
 
             except:
                 print("File not found!")
             scanflag=False
-        #time.sleep(0.5) #delay status update to 1 minute per status request
-            
-    # scan_ID="38cac91e1b48532d6ab6b44d188b42f5"
-    # thisonetrust(scan_ID,request.POST.get('email'))
-    a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
-     
+      
 
     #the pdf generator is here
-    pdf_generator(re.sub('[.:/]','_',url),app)
+   
+    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),app)
     p.kill() 
-    return render(request, 'fullarachni.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
+    return render(request, 'report.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
    
 
 #@login_required

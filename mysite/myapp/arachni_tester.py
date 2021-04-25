@@ -71,7 +71,7 @@ class ArachniClient(object):
          report_format = 'html.zip'
 
       if report_format in ['json', 'xml', 'yaml','html.zip']:
-         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,"./myapp/reports/" + scanID + "." + report_format)
+         urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report." + report_format,"./myapp/reports/" + scanID[:20] + "." + report_format)
       elif report_format == None: #outputs to json by default
          urllib.request.urlretrieve(self.arachni_url + "/scans/" + scanID + "/report","./myapp/reports/" + scanID + ".json")
       else:
@@ -95,16 +95,16 @@ class ArachniClient(object):
    def selectAuthScan(self, auth_scan_type): #call this if user decides to do auth scan and has selected a type of scan
       scanType = ""
       if auth_scan_type == 1: #full audit
-         self.profile("myapp/profiles/auth/full_audit.json")
+         self.profile("./myapp/profiles/auth/full_audit.json")
          scanType = "Full Audit"
       elif auth_scan_type == 2: #xss
-         self.profile("myapp/profiles/auth/xss.json")
+         self.profile("./myapp/profiles/auth/xss.json")
          scanType = "XSS"
       elif auth_scan_type == 3: #sql
-         self.profile("myapp/profiles/auth/sql.json")
+         self.profile("./myapp/profiles/auth/sql.json")
          scanType = "SQL"
       elif auth_scan_type == 4: #server
-         self.profile("myapp/profiles/auth/server.json")
+         self.profile("./myapp/profiles/auth/server.json")
          scanType = "Server" 
 
       target_url = input("Enter URL: ")
