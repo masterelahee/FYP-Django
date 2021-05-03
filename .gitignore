@@ -4,3 +4,9 @@ virtenviro
 .vscode/settings.json
 .mysite/myapp/reports/*
 .mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/*
+mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/home/AppData/Local/Ofi Labs/PhantomJS/cache/data8/0/23i66lmp.d
+*.d
+*.d
+*.zip
+*.d
+*.log

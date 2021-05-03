@@ -374,10 +374,11 @@ def scan_history(request):
 
     history=[]
     scan_date=[]
-    emel=login_email_rn.replace(".","_")
-    print(emel)
-    #  secret=db.child(email.replace(".","_")).child("secret").get()
-    extract_scan_history = db.child(emel).child("scans").get()
+    
+    # emel=login_email_rn.replace(".","_")
+    # print(emel)
+    
+    extract_scan_history = db.child("fypemail@yahoo_com").child("scans").get()
     print("printing random stuff")
     print(extract_scan_history)
     
@@ -386,14 +387,17 @@ def scan_history(request):
         keys=scanned.key()
         web_extract=keys.replace("_",".")
         strip_character="."
-        url_extract=strip_character.join(web_extract.split(strip_character)[:2])
-        date=strip_character.join(web_extract.split(strip_character)[2:])
-        date_formatted=datetime.strptime(date, '%d%m%Y%H%M%S')
+        print(web_extract)
+        url_extract=web_extract[:-15]
+        # datee=strip_character.join(web_extract.split(strip_character)[2:])
+        dateee=web_extract[-14:]
+        print(url_extract)
+        date_formatted=datetime.strptime(dateee, '%d%m%Y%H%M%S')
     
         history.append(url_extract)
         scan_date.append(date_formatted)
         ziplist=zip(history, scan_date)
-        print(ziplist)
+        
         dload_button='<button type="submit" class="btn btn-primary" name="dload_scan" value={0}>Download</button>'.format(url_extract)
     return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
 
