@@ -375,10 +375,10 @@ def scan_history(request):
     history=[]
     scan_date=[]
     
-    # emel=login_email_rn.replace(".","_")
-    # print(emel)
+    emel=login_email_rn.replace(".","_")
+    print(emel)
     
-    extract_scan_history = db.child("fypemail@yahoo_com").child("scans").get()
+    extract_scan_history = db.child(emel).child("scans").get()
     print("printing random stuff")
     print(extract_scan_history)
     
@@ -444,20 +444,23 @@ def logout_admin(request):
 # #@login_required
 @csrf_exempt
 def report(request):
+  
     keys=[]
-    valu=[]
+    descr=[]
+    remedy=[]
+    url_issue=[]
+    emel=login_email_rn.replace(".","_")
+    extract = db.child(emel).child("scans").child(thewebsite).get()
 
-
-    extract = db.child("fypemail@yahoo_com").child("scans").child("endless_horse_04042021001505").get()
-    print(extract)
     for x in extract.each():
 
-        # k=db.child("endless_horse_04042021001505").child(x.key()).get()
-        # for ohno in k.each():
         keys.append(x.key())
-        valu.append(x.val())
-    # return render(request,'report.html',{"extracted":list(dict.fromkeys(f))})
-    return render(request,'report.html',{"keysNvalue":zip(keys,valu)})
+        descr.append(x.val()['description'])
+        remedy.append(x.val()['remedy'])
+        url_issue.append(x.val()['url_issue'])
+  
+    
+    return render(request,'report.html',{"keysNvalue":zip(keys,descr,remedy,url_issue)})
 
 # @login_required
 def normal(request):
@@ -760,7 +763,9 @@ def norm_scan(request):
     print(list(visited_links))
     
         # -------------------------------------------------------------------
-    a=render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
+ 
+
+    # a=render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj,"keysNvalue":zip(keys,descr,remedy,url_issue)})
     now_today=datetime.now().strftime("%d%m%Y%H%M%S")
     print(now_today)
     url_tofirebase=remoteServer.replace(".","_")+"_"+now_today
@@ -770,7 +775,7 @@ def norm_scan(request):
     db.child(emailtofirebase).child("scans").child(url_tofirebase).set(to_firebase)
     time.sleep(10)
     pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',remoteServer),app)
-    return a
+    return render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
   
 
 
@@ -1026,8 +1031,25 @@ def arachni (request):
     #the pdf generator is here
    
     pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),app)
-    p.kill() 
-    return render(request, 'report.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase})
+    p.kill()
+
+    keys=[]
+    descr=[]
+    remedy=[]
+    url_issue=[]
+    emel=login_email_rn.replace(".","_")
+    extract = db.child(emel).child("scans").child(url_tofirebase).get()
+
+    for x in extract.each():
+
+        keys.append(x.key())
+        descr.append(x.val()['description'])
+        remedy.append(x.val()['remedy'])
+        url_issue.append(x.val()['url_issue'])
+  
+    
+    # return render(request,'report.html',{"keysNvalue":zip(keys,descr,remedy,url_issue)}) 
+    return render(request, 'report.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase,"keysNvalue":zip(keys,descr,remedy,url_issue)})
    
 
 #@login_required

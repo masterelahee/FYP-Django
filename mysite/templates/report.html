@@ -74,16 +74,20 @@
               <tr>
                 <th scope="col">Issues</th>
                 <th scope="col">Description</th>
+                <th scope="col">Remedy</th>
+                <th scope="col">Url Issue</th>
               </tr>
         
             </thead>
             <tbody>
     
-        {% for key,value in keysNvalue %}
+        {% for key,descr,remedy,url_iss in keysNvalue %}
         
           <tr>
             <td>{{key|linebreaksbr }}</td>
-            <td>{{value|linebreaksbr }}</td>
+            <td>{{descr|linebreaksbr }}</td>
+            <td>{{remedy|linebreaksbr }}</td>
+            <td>{{url_iss|linebreaksbr }}</td>
           </tr>
         {% endfor %}
           
