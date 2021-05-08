@@ -6,7 +6,7 @@ import pdfrw
 from math import ceil
 
 
-def pdf_generator(urlfirebase,app):
+def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
     
     config={
         "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -32,8 +32,8 @@ def pdf_generator(urlfirebase,app):
     PDF_OUTPUT_PATH = './myapp/pdf_reports/{0}.pdf'.format(urlfirebase) 
     print("IAFTER PATH")
     f=[]
-
-    extract = db.child(urlfirebase)# rickyteama_tk or https___guthib_com
+   
+    extract = db.child(login_email_rn.replace(".","_")).child("scans").child(url_tofirebase)# rickyteama_tk or https___guthib_com
     for x in extract.get():
         f.append(x.val())
 
@@ -41,18 +41,9 @@ def pdf_generator(urlfirebase,app):
     print(json_fixed)
     raw_data = json.loads(json_fixed)#raw_data is list
 
-    print(type(raw_data[1]))
-    #check normal scan or deep scan
-    if ( str( type( raw_data[1] ) ) == "<class 'str'>"): 
-        scan_type=-1 #0 for deep, -1 for normal
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format4.pdf'
-    else:
-        scan_type=0 
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format_deep.pdf'
-
-    data_dict = raw_data[3+scan_type]
-    data_dict['ip']=raw_data[2+scan_type]
-    for key, value in raw_data[1+scan_type].items():
+    data_dict = raw_data[2]#ip_info
+    data_dict['ip']=raw_data[1]
+    for key, value in raw_data[0].items():#head_found
         if key=='server':
             data_dict[key]=value['contents']
         elif value['defined']==False:
@@ -60,19 +51,24 @@ def pdf_generator(urlfirebase,app):
         elif value['defined']==True:
             data_dict[key]='enabled'
 
-    print(raw_data[4 + scan_type][0])
-    #check likns or num
-    if raw_data[4 + scan_type][0].isnumeric():
-        data_dict['links_found']='None'
 
-    else:
-        links=('\n'.join(raw_data[4 + scan_type])) 
-        data_dict['links_found']=links
+    print(type(raw_data[3][0]))
+    #check normal scan or deep scan
+    if raw_data[3][0].isnumeric():#normal
+        scan_type=0 
+        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format4.pdf'
+    else:# deep
+        scan_type=1 
+        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format_deep.pdf'
 
-    if scan_type==0 :
+    #-links_found-
+    links=('\n'.join(raw_data[4+scan_type])) 
+    data_dict['links_found']=links
+
+    if scan_type==1 :#deep
         issues=[]
-        for key, value in raw_data[0].items():
-            for key2, value2 in raw_data[0][key].items():
+        for key, value in raw_data[3].items():
+            for key2, value2 in raw_data[3][key].items():
                 issues.append(f'{key2.upper()} : {value2}')
             issues.append('\n--')
         print('\n'.join(issues))
