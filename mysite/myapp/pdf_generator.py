@@ -6,7 +6,7 @@ import pdfrw
 from math import ceil
 
 
-def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,app):
+def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
     
     config={
         "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",

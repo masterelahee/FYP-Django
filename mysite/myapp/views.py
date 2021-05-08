@@ -1030,7 +1030,7 @@ def arachni (request):
 
     #the pdf generator is here
    
-    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),app)
+    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
     p.kill()
 
     keys=[]
