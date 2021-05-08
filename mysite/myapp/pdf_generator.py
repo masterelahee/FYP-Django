@@ -43,23 +43,23 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
 
     print(type(raw_data[1]))
     #check normal scan or deep scan
-    if ( str( type( raw_data[1] ) ) == "<class 'str'>"): 
-        scan_type=-1 #0 for deep, -1 for normal
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format4.pdf'
-    else:
-        scan_type=0 
+    if ( str( type( raw_data[3] ) ) == "<class 'str'>"): 
+        scan_type=-1 # deep
         PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format_deep.pdf'
+    else:#normal
+        scan_type=0 
+        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format4.pdf'
 
-    data_dict = raw_data[3+scan_type]
-    data_dict['ip']=raw_data[2+scan_type]
-    for key, value in raw_data[1+scan_type].items():
+    data_dict = raw_data[2]#ip_info
+    data_dict['ip']=raw_data[1]
+    for key, value in raw_data[0].items():#head_found
         if key=='server':
             data_dict[key]=value['contents']
         elif value['defined']==False:
             data_dict[key]='disabled'
         elif value['defined']==True:
             data_dict[key]='enabled'
-
+#-links_found-
     print(raw_data[4 + scan_type][0])
     #check likns or num
     if raw_data[4 + scan_type][0].isnumeric():
@@ -68,11 +68,11 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
     else:
         links=('\n'.join(raw_data[4 + scan_type])) 
         data_dict['links_found']=links
-
-    if scan_type==0 :
+#--
+    if scan_type==-1 :#deep
         issues=[]
-        for key, value in raw_data[0].items():
-            for key2, value2 in raw_data[0][key].items():
+        for key, value in raw_data[3].items():
+            for key2, value2 in raw_data[3][key].items():
                 issues.append(f'{key2.upper()} : {value2}')
             issues.append('\n--')
         print('\n'.join(issues))
