@@ -1010,9 +1010,9 @@ def arachni (request):
                                 else:
                                     to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
                                     db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
-                            for x in json_obj['sitemap']:
+                            for xy in json_obj['sitemap']:
                                 
-                                db.child(emailtofirebase).child("scans").child(url_tofirebase).update(x) 
+                                db.child(emailtofirebase).child("scans").child(url_tofirebase).child("sitemap").update(xy) 
                             
                         else:
            
