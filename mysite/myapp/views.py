@@ -785,7 +785,8 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-    
+    email="fypemail@yahoo.com"
+    login_email_rn="fypemail@yahoo.com"
     url_inp=""
     try:
                
@@ -981,7 +982,7 @@ def arachni (request):
             fixed_scan_Id=scan_ID[:20]
             a.delete_scan(scan_ID)
             print("testpass")
-            thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url)
+            
 
             
             
@@ -1000,9 +1001,9 @@ def arachni (request):
             try:
                 with open("myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
                     json_obj = json.load(jsonfile)
-                    
+                    print(json_obj['issues'])
                     try:
-                        if json_obj['issues'] is not None:
+                        if json_obj['issues'] !=[]:
                             for x in json_obj['issues']:
                                 
                                 if x['name']=="Interesting response":
@@ -1024,10 +1025,10 @@ def arachni (request):
                             
                             for xy in json_obj['sitemap']: 
                                 count+=1 
-                                print(json_obj['sitemap'][xy]) 
+                                
                                 nummm=str(json_obj['sitemap'][xy])   
                                 to_f={count:xy}                    
-                                db.child(emailtofirebase).child("scans").child(url_tofirebase).child("links_found").update(to_f)
+                                db.child(emailtofirebase).child("scans").child(url_tofirebase).child("sitemap").update(to_f)
 
                     except Exception as e:
                         print(e)
@@ -1041,24 +1042,32 @@ def arachni (request):
    
     # pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
     p.kill()
-
+    
     keys=[]
     descr=[]
     remedy=[]
     url_issue=[]
     emel=login_email_rn.replace(".","_")
-    extract = db.child(emel).child("scans").child(url_tofirebase).get()
+    extract = db.child(emel).child("scans").child(url_tofirebase).child("issues").get()
+    
 
     for x in extract.each():
+        if x.key()=="issues":
+            keys.append("None")
+            descr.append("None")
+            remedy.append("None")
+            url_issue.append("None")
+            
 
-        keys.append(x.key())
-        descr.append(x.val()['description'])
-        remedy.append(x.val()['remedy'])
-        url_issue.append(x.val()['url_issue'])
+        else:
+            keys.append(x.key())
+            descr.append(x.val()['description'])
+            remedy.append(x.val()['remedy'])
+            url_issue.append(x.val()['url_issue'])
   
-    
-    # return render(request,'report.html',{"keysNvalue":zip(keys,descr,remedy,url_issue)}) 
-    return render(request, 'report.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":urlfirebase,"keysNvalue":zip(keys,descr,remedy,url_issue)})
+    thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url)
+    print("i passed")
+    return render(request, 'report.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
    
 
 #@login_required
