@@ -785,6 +785,7 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
+    
     url_inp=""
     try:
                
@@ -913,7 +914,7 @@ def arachni (request):
         checkAuth="n"
         while checkAuth not in ("y","n"):
             print("Invalid input")
-            cls()
+          
             checkAuth = input("Do you want to perform an Authenticated Scan? (y/n): ")
 
     #select scan type here then ask if user would like to use authenticated scanning
@@ -926,7 +927,7 @@ def arachni (request):
 
         while checkNormalScanType not in [1,2,3,4]:
             print("Invalid input")
-            cls()
+         
             checkNormalScanType = input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: ")
         scanType = a.selectNormalScan(checkNormalScanType)
         print(scanType)
@@ -944,7 +945,7 @@ def arachni (request):
         checkAuthScanType = int(input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: "))
         while checkAuthScanType not in [1,2,3,4]:
             print("Invalid input")
-            cls()
+           
             checkAuthScanType = input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: ")
         print("Authenticated scan")
         scanType = a.selectAuthScan(checkAuthScanType)
@@ -980,7 +981,7 @@ def arachni (request):
             fixed_scan_Id=scan_ID[:20]
             a.delete_scan(scan_ID)
             print("testpass")
-            thisonetrust(fixed_scan_Id,email,url)
+            thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url)
 
             
             
@@ -991,34 +992,42 @@ def arachni (request):
             now_today=datetime.now().strftime("%d%m%Y%H%M%S")
            
             url_tofirebase=url_inp.replace(".","_")+"_"+now_today
-            print("after fixing")
+          
             print(url_tofirebase)
             db.child(emailtofirebase).child("scans").child(url_tofirebase).set(tofirebase) 
             
-            print("hi there")
+            
             try:
                 with open("myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
                     json_obj = json.load(jsonfile)
-                    print(json_obj.get('issues'))
+                    
                     try:
-                        if json_obj['issues']!=[]:
+                        if json_obj['issues'] is not None:
                             for x in json_obj['issues']:
                                 
                                 if x['name']=="Interesting response":
                                     to_firebase={"issues":x['name'],"description":x['description']}
-                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
+                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").child(x['name']).set(to_firebase)
                                 else:
                                     to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
-                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
-                            for xy in json_obj['sitemap']:
-                                
-                                db.child(emailtofirebase).child("scans").child(url_tofirebase).child("sitemap").update(xy) 
+                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").child(x['name']).set(to_firebase)
+                        
                             
                         else:
            
 
                             to_firebase={"issues":"None"}
-                            db.child(emailtofirebase).child("scans").child(url_tofirebase).update(to_firebase) 
+                            db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").update(to_firebase) 
+
+                        count=0
+                        if json_obj['sitemap'] is not None:
+                            
+                            for xy in json_obj['sitemap']: 
+                                count+=1 
+                                print(json_obj['sitemap'][xy]) 
+                                nummm=str(json_obj['sitemap'][xy])   
+                                to_f={count:xy}                    
+                                db.child(emailtofirebase).child("scans").child(url_tofirebase).child("links_found").update(to_f)
 
                     except Exception as e:
                         print(e)
@@ -1030,7 +1039,7 @@ def arachni (request):
 
     #the pdf generator is here
    
-    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
+    # pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
     p.kill()
 
     keys=[]
