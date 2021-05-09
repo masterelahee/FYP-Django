@@ -785,8 +785,7 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-    email="fypemail@yahoo.com"
-    login_email_rn="fypemail@yahoo.com"
+
     url_inp=""
     try:
                
@@ -1040,7 +1039,7 @@ def arachni (request):
 
     #the pdf generator is here
    
-    # pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
+    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
     p.kill()
     
     keys=[]
