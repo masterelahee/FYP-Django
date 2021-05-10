@@ -17,7 +17,7 @@ import random
 import time
 import mechanize
 import http.cookiejar as cookielib
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup,SoupStrainer
 import html2text
 import re
 import requests 
@@ -478,7 +478,7 @@ def fullscan_arachni_auth(request):
 def index(request):
     return render(request,'index.html')
 
-#@login_required
+#wats this for
 @csrf_exempt
 def external(request):
 
@@ -634,12 +634,26 @@ def external(request):
 #@login_required
 @csrf_exempt
 def norm_scan(request):
+
+
+    remoteServer= request.POST.get('param')
+    url_inp=""
+    try:
+               
+        urller = re.compile(r"https?://(www\.)?")
+        new=urller.sub('', remoteServer).strip().strip('/')
+        split_string = new.split("/", 1)
+        url_inp = split_string[0]
+    except:
+        pass
+    print(url_inp)
     
-    remoteServer    = request.POST.get('param')
-    remoteServerIP  = socket.gethostbyname(remoteServer)
+    remoteServerIP  = socket.gethostbyname(url_inp)
     com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
     portOpenList = []
     portCloseList = []
+
+    
     #out=run([sys.executable, 'D://Desktop//quanta//QuantaDjango//quanta_Scanner//mysite//myapp//tester.py',inp], shell=False)
     try:
         for port in com_port:
@@ -666,7 +680,7 @@ def norm_scan(request):
     values=json.loads(data)
     val=values['lat']
     val2=values['lon']
-
+    
 
     b=len(fixed_list)/31
     c=b*100
@@ -676,14 +690,14 @@ def norm_scan(request):
 
     parsed = urlparse(remoteServer)
     if not parsed.scheme:
-        url = 'https://' + remoteServer # default to http if scheme not provided
+        url = 'http://' + remoteServer # default to http if scheme not provided
 
 
     headers = foo.check_headers(url)
 
     if not headers:
         print ("Failed to fetch headers, exiting...")
-        sys.exit(1)
+   
 
     okColor = '\033[92m'
     warnColor = '\033[93m'
@@ -722,60 +736,96 @@ def norm_scan(request):
     # -------------------------------------------
     cli(url)
     
-    # urlscraper(url)
+
                             
-    visited_links  = set()
-    # Cookie Jar
-
-    cj=cookielib.LWPCookieJar()
-    def visit(br, url):
-        br.open(url)
-        br._factory.is_html = True
-        links = br.links()
-        for link in links:
-            if not link.url in links:
-                visited_links.add(link.url)  
-
-    br = mechanize.Browser()
-    cj = cookielib.LWPCookieJar()
-    # br.set_cookiejar(cj)
+    # visited_links  = set()
+    # # Cookie Jar
     
-    # br.set_handle_equiv(True)
-    # br.set_handle_gzip(True)
-    # br.set_handle_redirect(True)
-    # br.set_handle_referer(True)
-    # br.set_handle_robots(False)
+    # cj=cookielib.LWPCookieJar()
+    # def visit(br, url):
+    #     print(url)
+    #     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+    #     br.open(url)
+        
+        
+    #     links = br.links()
+    #     for link in links:
+    #         if not link.url in links:
+    #             visited_links.add(link.url)  
+
+    # br = mechanize.Browser()
+    # cj = cookielib.LWPCookieJar()
    
-    br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    thelink=remoteServer
-    # br.open(thelink)
+   
+    # thelink=url_inp
     
-       
-    # br.set_cookiejar(cj)
-    print("The email bosku")
-    print(login_email_rn)
+    
+    # # print(login_email_rn)
 
     # visit(br,thelink)
+ 
     # bar=visited_links.copy()
+  
     # for e in bar:
     #     visit(br,e)
-    
-    print(list(visited_links))
+    visited_links=[]
+    page = requests.get(url)    
+    data = page.text
+    soup = BeautifulSoup(data, features = "lxml")
+    linkfinder=soup.find_all('a')
+    print(linkfinder)
+    if not linkfinder:
+        print("None")
+        visited_links.append("None") 
+    else:
+        for link in soup.find_all('a'):
+            print(link.get('href'))
+            visited_links.append(link.get('href')) 
+        
+    print(visited_links)
     
         # -------------------------------------------------------------------
  
-
+    
+    login_email_rn="fypemail@yahoo.com"
     # a=render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj,"keysNvalue":zip(keys,descr,remedy,url_issue)})
     now_today=datetime.now().strftime("%d%m%Y%H%M%S")
-    print(now_today)
-    url_tofirebase=remoteServer.replace(".","_")+"_"+now_today
+    
+    url_tofirebase=url_inp.replace(".","_")+"_"+now_today
     emailtofirebase=login_email_rn.replace(".","_")
+    
     #sending to firebase
-    to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
+    to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "sitemap":visited_links,"head_found":headers}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).set(to_firebase)
-    time.sleep(10)
-    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',remoteServer),app)
-    return render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
+    
+    # pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',remoteServer),app)
+    time.sleep(5)
+    keys=[]
+    descr=[]
+    remedy=[]
+    url_issue=[]
+
+    extract = db.child(emailtofirebase).child("scans").child(url_tofirebase).child("head_found").get()
+    
+
+    for x in extract.each():
+        print(x.key())
+        if len(x.val())==3:
+
+            keys.append(x.key())
+            descr.append(x.val()['contents'])
+            remedy.append(x.val()['defined'])
+            url_issue.append(remoteServer)
+
+           
+            
+        else:
+            keys.append(x.key())
+            descr.append(x.val()['defined'])
+            remedy.append(x.val()['discription'])
+            url_issue.append(remoteServer)
+
+    return render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':visited_links,"keysNvalue":zip(keys,descr,remedy,url_issue)})
   
 
 
@@ -785,7 +835,8 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-
+    email="fypemail@yahoo.com"
+    login_email_rn="fypemail@yahoo.com"
     url_inp=""
     try:
                

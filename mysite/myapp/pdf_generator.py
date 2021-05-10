@@ -60,10 +60,13 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
     else:# deep
         scan_type=1 
         PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format_deep.pdf'
+    links=[]
+    for key, value in raw_data[4+scan_type].items():
+        issues.append(f'{key} : {value}')
+    print('\n'.join(links))
+    data_dict['links_found']= ('\n'.join(links))
 
-    #-links_found-
-    links=('\n'.join(raw_data[4+scan_type])) 
-    data_dict['links_found']=links
+    template_pdf = pdfrw.PdfReader(PDF_TEMPLATE_PATH)
 
     if scan_type==1 :#deep
         issues=[]
