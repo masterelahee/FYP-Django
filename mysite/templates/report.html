@@ -67,62 +67,173 @@
       <div class="mx-auto text-center">
     
         <h1 class="mx-auto my-0 text-uppercase">Your Scan Report</h1>
-        <h2 class="text-white-50 mx-auto mt-2 mb-5">Hello again, below is your scan report.</h2>
+        <h2 class="text-white-50 mx-auto mt-2 mb-5">Hello again, below is your scan report.</h2><br>
+        <div class="arrow bounce">
+          <a class="fa fa-arrow-down fa-2x" href="#tohere"></a>
+        </div>
     </div>
+    
   </div>
+ 
+        <style>
+          
+         
+          a { color: white; text-decoration: none; }
+          
+          .arrow {
+            text-align: center;
+            margin: 8% 0;
+          }
+          .bounce {
+            -moz-animation: bounce 2s infinite;
+            -webkit-animation: bounce 2s infinite;
+            animation: bounce 2s infinite;
+          }
+          
+          @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+              transform: translateY(0);
+            }
+            40% {
+              transform: translateY(-30px);
+            }
+            60% {
+              transform: translateY(-15px);
+            }
+          }
+          
+          
        
-        <!-- <p class="text-black-50 mb-0"> -->
-          <table class="table table-striped table-dark">
+        </style>
+  </header>
+
+  <section id="about" class="about-section text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          
+          <p class="text-white-50">
+            <style>
+             progress {
+  width: 40%;
+  display: block; /* default: inline-block */
+  margin: 2em auto;
+  padding: 3px;
+  border: 0 none;
+  background: #444;
+  border-radius: 14px;
+}
+progress::-moz-progress-bar {
+  border-radius: 12px;
+  background: orange;
+
+}
+/* webkit */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  progress {
+    height: 25px;
+  }
+}
+progress::-webkit-progress-bar {
+    background: transparent;
+}  
+progress::-webkit-progress-value {  
+  border-radius: 12px;
+  background: orange;
+} 
+              </style>
+              <div id="tohere"></div>
+              <h1 class="text-white mb-4">Your website is only {{data2}}% secured!</h1>
+              <progress max="100" value={{data2}}></progress>
+              <br>
+              <h4 class="text-white mb-4">Fret not, below is your scan report. Check your email for an interactive HTML and PDF report.
+            </h4>
+            
+            <h3 class="text-white mb-4">Ports open and vulnerable: {{data}}</h3>
+            
+            <br><h3 class="text-white mb-4">Server Location:</h3><br><div id='map' style='width: 400px; height: 300px; margin:0 auto;'></div>
+              <br>
+              <h3 class="text-white mb-4">Areas we have penetrated:</h3>
+            <table class="table table-striped table-dark">
  
               <tr>
-                <th scope="col">Issues</th>
-                <th scope="col">Description</th>
-                <th scope="col">Remedy</th>
-                <th scope="col">Url Issue</th>
+                <th scope="col">Scanned Areas</th>
+          
               </tr>
         
             </thead>
             <tbody>
-    
-        {% for key,descr,remedy,url_iss in keysNvalue %}
-        
-          <tr>
-            <td>{{key|linebreaksbr }}</td>
-            <td>{{descr|linebreaksbr }}</td>
-            <td>{{remedy|linebreaksbr }}</td>
-            <td>{{url_iss|linebreaksbr }}</td>
-          </tr>
-        {% endfor %}
-          
-        
-        </tbody>
-      </table>
-    
-      <div id='map' style='width: 400px; height: 300px; margin:0 auto;'></div>
-        
-        {% if data3 %}
-        <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q';
-            var latextrac="{{data3}}";
-            var lonextrac="{{data4}}";
-            var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/dark-v10',
-            center: [lonextrac,latextrac],
-            zoom: 5,
-            pitch: 0
-            });
-
+            {% for xyz in data5 %}
             
-            var size = 200;
+            <tr>
+              <td>{{xyz|linebreaksbr }}</td>
+             
+            </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+            
+       
+
+          </p>
+           
+        </div>
+      </div>
+             
+  {% if data %}
+  <h2 class="text-white mb-4">Issues Found</h2>
+  <!-- <p class="text-black-50 mb-0"> -->
+    <table class="table table-striped table-dark">
  
+      <tr>
+        <th scope="col">Issues</th>
+        <th scope="col">Description</th>
+        <th scope="col">Remedy</th>
+        <th scope="col">Url Issue</th>
+      </tr>
+
+    </thead>
+    <tbody>
+
+{% for key,descr,remedy,url_iss in keysNvalue %}
+
+  <tr>
+    <td>{{key|linebreaksbr }}</td>
+    <td>{{descr|linebreaksbr }}</td>
+    <td>{{remedy|linebreaksbr }}</td>
+    <td>{{url_iss|linebreaksbr }}</td>
+  </tr>
+{% endfor %}
+  
+
+</tbody>
+</table>
+
+
+
+{% if data3 %}
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q';
+    var latextrac="{{data3}}";
+    var lonextrac="{{data4}}";
+    var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v10',
+    center: [lonextrac,latextrac],
+    zoom: 5,
+    pitch: 0
+    });
+
+    
+    var size = 200;
+
 // implementation of CustomLayerInterface to draw a pulsing dot icon on the map
 // see https://docs.mapbox.com/mapbox-gl-js/api/#customlayerinterface for more info
 var pulsingDot = {
 width: size,
 height: size,
 data: new Uint8Array(size * size * 4),
- 
+
 // get rendering context for the map canvas when layer is added to the map
 onAdd: function() {
 var canvas = document.createElement('canvas');
@@ -130,16 +241,16 @@ canvas.width = this.width;
 canvas.height = this.height;
 this.context = canvas.getContext('2d');
 },
- 
+
 // called once before every frame where the icon will be used
 render: function() {
 var duration = 1000;
 var t = (performance.now() % duration) / duration;
- 
+
 var radius = (size / 2) * 0.3;
 var outerRadius = (size / 2) * 0.7 * t + radius;
 var context = this.context;
- 
+
 // draw outer circle
 context.clearRect(0, 0, this.width, this.height);
 context.beginPath();
@@ -152,7 +263,7 @@ Math.PI * 2
 );
 context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
 context.fill();
- 
+
 // draw inner circle
 context.beginPath();
 context.arc(
@@ -167,7 +278,7 @@ context.strokeStyle = 'white';
 context.lineWidth = 2 + 4 * (1 - t);
 context.fill();
 context.stroke();
- 
+
 // update this image's data with data from the canvas
 this.data = context.getImageData(
 0,
@@ -175,15 +286,15 @@ this.data = context.getImageData(
 this.width,
 this.height
 ).data;
- 
+
 // continuously repaint the map, resulting in the smooth animation of the dot
 map.triggerRepaint();
- 
+
 // return `true` to let the map know that the image was updated
 return true;
 }
 };
- 
+
 map.on('load', function() {
 map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
 var latextrac="{{data3}}";
@@ -215,50 +326,22 @@ map.addLayer({
 });
 
 
-        </script>
-        {% endif %}
+</script>
+{% endif %}
 
-  
-    </div>
+
+</div>
+
+
+
       
-      </div>
-    </div>
-  </header>
- 
-  {% if data %}
-  <section id="about" class="about-section text-center">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mx-auto">
-          <h2 class="text-white mb-4">Your results are ready! </h2>
-          
-          <p class="text-white-50">
-            
-            Ports open and vulnerable: {{data}}
-            <div class="btn btn-primary mx-auto">{{data2}}</div>
-            
-            <div class="btn btn-primary mx-auto">LAT {{data3}}</div>
-            <div class="btn btn-primary mx-auto">LONG {{data4}}</div>
-
-            <div class="btn btn-primary mx-auto">{{data5}}</div>
-
-          </p>
-           
-          
-            
-
-            <!--<a  class="btn btn-primary mx-auto" href="{% url 'attack'%}">Attack</a>-->
                         
-            <form action="{% url 'attack'%}" class="form-inline d-flex" method="post">
-              {% csrf_token %}
+            <!-- <form action="{% url 'attack'%}" class="form-inline d-flex" method="post">
+              {% csrf_token %}<p>Wan't to try attacking your site and see if it can handle pressure?</p>
               <input type="text" name="param2" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter IP address..." required>
               <button class="btn btn-primary mx-auto" type="submit" value="{% url 'attack'%}">Attack</button><br><br>
              
-          </form>
-         
-        </div>
-        
-      </div>
+          </form> -->
       
   </section>
 

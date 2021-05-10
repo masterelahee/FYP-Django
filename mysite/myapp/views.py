@@ -675,7 +675,7 @@ def norm_scan(request):
  
     print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
     
-    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
+    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer.strip())
     data=ip_locate.read()
     values=json.loads(data)
     val=values['lat']
@@ -825,7 +825,7 @@ def norm_scan(request):
             remedy.append(x.val()['discription'])
             url_issue.append(remoteServer)
 
-    return render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':visited_links,"keysNvalue":zip(keys,descr,remedy,url_issue)})
+    return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"keysNvalue":zip(keys,descr,remedy,url_issue)})
   
 
 
