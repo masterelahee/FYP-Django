@@ -6,7 +6,7 @@ import pdfrw
 from math import ceil
 
 
-def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
+def pdf_generator(url_tofirebase,login_email_rn):
     
     config={
         "apiKey": "AIzaSyARTOEGZOikzGrk6f0jSkhCiXBx2FAKg78",
@@ -29,43 +29,57 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
     
     print("AFTER THIS")
    
-    PDF_OUTPUT_PATH = './myapp/pdf_reports/{0}.pdf'.format(urlfirebase) 
+    PDF_OUTPUT_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/'+url_tofirebase +'.pdf'
     print("IAFTER PATH")
     f=[]
-   
+
     extract = db.child(login_email_rn.replace(".","_")).child("scans").child(url_tofirebase)# rickyteama_tk or https___guthib_com
     for x in extract.get():
         f.append(x.val())
 
     json_fixed=json.dumps(f,indent=2)
-   
+    print(json_fixed)
     raw_data = json.loads(json_fixed)#raw_data is list
 
     data_dict = raw_data[2]#ip_info
     data_dict['ip']=raw_data[1]
-    for key, value in raw_data[0].items():#head_found
+    for key, value in raw_data[0].items():#head_found #value= sub dict
         if key=='server':
             data_dict[key]=value['contents']
         elif value['defined']==False:
             data_dict[key]='disabled'
         elif value['defined']==True:
             data_dict[key]='enabled'
+        if len(value) !=3 :  
+            for key2, value2 in raw_data[0][key].items():
+                if key2=='discription':
+                    data_dict[key+"desc"]=value2
+        else:
+            data_dict[key + "desc"]="none"
 
-
-    print(type(raw_data[3][0]))
+    # scan_type=1
+    # PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1_deep.pdf'
     #check normal scan or deep scan
+    # try:
+    print(raw_data[3][0])
     if raw_data[3][0].isnumeric():#normal
         scan_type=0 
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format4.pdf'
-    else:# deep
+        PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1.pdf'
+    else:
         scan_type=1 
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format_deep.pdf'
-    links=[]
-    for key, value in raw_data[4+scan_type].items():
-        issues.append(f'{key} : {value}')
-    print('\n'.join(links))
-    data_dict['links_found']= ('\n'.join(links))
+        PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
+    # except:# deep
+    #     pass
+        # scan_type=1 
+        # PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
 
+    data_dict['port_open']=raw_data[3+scan_type]#port_open
+
+    #links_found
+    links=raw_data[4+scan_type]
+    print('\n'.join(map(str, links)))
+    data_dict['links_found']= ('\n'.join(map(str, links)))
+        
     template_pdf = pdfrw.PdfReader(PDF_TEMPLATE_PATH)
 
     if scan_type==1 :#deep

@@ -675,15 +675,15 @@ def norm_scan(request):
  
     print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
     
-    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer.strip())
+    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
     data=ip_locate.read()
     values=json.loads(data)
     val=values['lat']
     val2=values['lon']
     
 
-    b=len(fixed_list)/31
-    c=b*100
+    scoring=31-len(fixed_list)
+    
     #----------------------------------------------
     
     foo = SecurityHeaders()
@@ -707,67 +707,47 @@ def norm_scan(request):
         if value['warn'] == 1:
             if value['defined'] == False:
                 print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+                
             else:
                 print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
                     ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+                scoring=scoring+1
         elif value['warn'] == 0:
             if value['defined'] == False:
                 print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
+                
             else:
                 print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
                     ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+                scoring=scoring+1
 
     https = foo.test_https(url)
     if https['supported']:
         print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
     else:
         print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+        
 
     if https['certvalid']:
         print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
     else:
         print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+        
 
 
     if foo.test_http_to_https(url, 5):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+        
     # -------------------------------------------
     cli(url)
     
 
-                            
-    # visited_links  = set()
-    # # Cookie Jar
-    
-    # cj=cookielib.LWPCookieJar()
-    # def visit(br, url):
-    #     print(url)
-    #     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    #     br.open(url)
-        
-        
-    #     links = br.links()
-    #     for link in links:
-    #         if not link.url in links:
-    #             visited_links.add(link.url)  
-
-    # br = mechanize.Browser()
-    # cj = cookielib.LWPCookieJar()
-   
-   
-    # thelink=url_inp
-    
-    
-    # # print(login_email_rn)
-
-    # visit(br,thelink)
- 
-    # bar=visited_links.copy()
-  
-    # for e in bar:
-    #     visit(br,e)
+                
     visited_links=[]
     page = requests.get(url)    
     data = page.text
@@ -787,7 +767,7 @@ def norm_scan(request):
         # -------------------------------------------------------------------
  
     
-    login_email_rn="fypemail@yahoo.com"
+ 
     # a=render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj,"keysNvalue":zip(keys,descr,remedy,url_issue)})
     now_today=datetime.now().strftime("%d%m%Y%H%M%S")
     
@@ -798,7 +778,7 @@ def norm_scan(request):
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "sitemap":visited_links,"head_found":headers}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).set(to_firebase)
     
-    # pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',remoteServer),app)
+    pdf_generator(url_tofirebase,emailtofirebase)
     time.sleep(5)
     keys=[]
     descr=[]
@@ -825,6 +805,7 @@ def norm_scan(request):
             remedy.append(x.val()['discription'])
             url_issue.append(remoteServer)
 
+    c=(scoring/36)*100
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"keysNvalue":zip(keys,descr,remedy,url_issue)})
   
 
@@ -880,6 +861,11 @@ def arachni (request):
     data=ip_locate.read()
     values=json.loads(data)
     print(values)
+    val=values['lat']
+    val2=values['lon']
+    
+
+    scoring=31-len(fixed_list)
     #----------------------------------------------
      #sending to firebase
     
@@ -908,37 +894,42 @@ def arachni (request):
             else:
                 print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
                     ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+                scoring=scoring+1
         elif value['warn'] == 0:
             if value['defined'] == False:
                 print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
             else:
                 print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
                     ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+                scoring=scoring+1
 
     https = foo.test_https(url)
     if https['supported']:
         print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
     else:
         print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
 
     if https['certvalid']:
         print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
     else:
         print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
 
 
     if foo.test_http_to_https(url, 5):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
     
    
     
 
-    if not re.match('(?:http|https)://', url):
-        url='https://{}'.format(url)
-    else:
-        pass
+    # if not re.match('(?:http|https)://', url):
+    #     url='https://{}'.format(url)
+    # else:
+    #     pass
     
     print(url)
     p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
@@ -1090,7 +1081,7 @@ def arachni (request):
 
     #the pdf generator is here
    
-    pdf_generator(url_tofirebase,login_email_rn,re.sub('[.:/]','_',url),url)
+    pdf_generator(url_tofirebase,emailtofirebase)
     p.kill()
     
     keys=[]
@@ -1114,11 +1105,15 @@ def arachni (request):
             descr.append(x.val()['description'])
             remedy.append(x.val()['remedy'])
             url_issue.append(x.val()['url_issue'])
-  
-    thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url)
-    print("i passed")
-    return render(request, 'report.html',{'data_arach':status_object["statistics"]["runtime"],"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
-   
+
+    visited_links=[]
+    extract_sitemap= db.child(emel).child("scans").child(url_tofirebase).child("sitemap").get()
+    for x in extract_sitemap.each():
+        visited_links.append(x.val())
+    thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url_tofirebase)
+    c=(scoring/36)*100
+    return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),'data_arach':status_object["statistics"]["runtime"],"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
+     
 
 #@login_required
 @csrf_exempt    

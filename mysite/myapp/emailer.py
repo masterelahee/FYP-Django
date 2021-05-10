@@ -24,7 +24,7 @@ def thisonetrust(scan_id,email,fixurl,url):
     scanID = scan_id
     print(scanID)
     filename = scanID + ".html.zip"         # file name
-    filename2=fixurl+".pdf"
+    filename2=url+".pdf"
     filepath = folder / filename  # path object, defining the file
     filepath2 = folder2 / filename2 #pdf version
     print(filepath)
