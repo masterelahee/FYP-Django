@@ -29,10 +29,10 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
     
     print("AFTER THIS")
    
-    PDF_OUTPUT_PATH = './myapp/pdf_reports/{0}.pdf'.format(urlfirebase) 
+   PDF_OUTPUT_PATH = url_tofirebase +'.pdf'
     print("IAFTER PATH")
     f=[]
-   
+
     extract = db.child(login_email_rn.replace(".","_")).child("scans").child(url_tofirebase)# rickyteama_tk or https___guthib_com
     for x in extract.get():
         f.append(x.val())
@@ -51,22 +51,21 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
         elif value['defined']==True:
             data_dict[key]='enabled'
 
-
-    print(type(raw_data[3][0]))
     #check normal scan or deep scan
-    if raw_data[3][0].isnumeric():#normal
-        scan_type=0 
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format4.pdf'
-    else:# deep
+    try:
+        print(raw_data[3][0])
+        if raw_data[3][0].isnumeric():#normal
+            scan_type=0 
+            PDF_TEMPLATE_PATH = 'format4.pdf'
+    except:# deep
         scan_type=1 
-        PDF_TEMPLATE_PATH = './myapp/pdf_reports/templates/format_deep.pdf'
+        PDF_TEMPLATE_PATH = 'format_deep.pdf'
 
-    #-links_found-
-    links=[]
-    for key, value in raw_data[4+scan_type].items():
-        issues.append(f'{key} : {value}')
-    print('\n'.join(links))
-    data_dict['links_found']= ('\n'.join(links))
+
+    #links_found
+    links=raw_data[4+scan_type]
+    print('\n'.join(map(str, links)))
+    data_dict['links_found']= ('\n'.join(map(str, links)))
         
     template_pdf = pdfrw.PdfReader(PDF_TEMPLATE_PATH)
 
