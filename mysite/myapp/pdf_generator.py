@@ -43,24 +43,32 @@ def pdf_generator(url_tofirebase,login_email_rn,urlfirebase,url):
 
     data_dict = raw_data[2]#ip_info
     data_dict['ip']=raw_data[1]
-    for key, value in raw_data[0].items():#head_found
-        if key=='server':
-            data_dict[key]=value['contents']
-        elif value['defined']==False:
-            data_dict[key]='disabled'
-        elif value['defined']==True:
-            data_dict[key]='enabled'
+    for key, value in raw_data[0].items():#head_found #value= sub dict
+    if key=='server':
+        data_dict[key]=value['contents']
+    elif value['defined']==False:
+        data_dict[key]='disabled'
+    elif value['defined']==True:
+        data_dict[key]='enabled'
+    if len(value) !=3 :  
+        for key2, value2 in raw_data[0][key].items():
+            if key2=='discription':
+                data_dict[key+"desc"]=value2
+    else:
+        data_dict[key + "desc"]="none"
 
-    #check normal scan or deep scan
-    try:
-        print(raw_data[3][0])
-        if raw_data[3][0].isnumeric():#normal
-            scan_type=0 
-            PDF_TEMPLATE_PATH = 'format4.pdf'
-    except:# deep
-        scan_type=1 
-        PDF_TEMPLATE_PATH = 'format_deep.pdf'
 
+#check normal scan or deep scan
+try:
+    print(raw_data[3][0])
+    if raw_data[3][0].isnumeric():#normal
+        scan_type=0 
+        PDF_TEMPLATE_PATH = 'format1.pdf'
+except:# deep
+    scan_type=1 
+    PDF_TEMPLATE_PATH = 'format_deep1.pdf'
+
+data_dict['port_open']=raw_data[3+scan_type]#port_open
 
     #links_found
     links=raw_data[4+scan_type]
