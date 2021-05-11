@@ -51,6 +51,7 @@ from email import encoders
 from myapp.emailer import thisonetrust
 import firebase_admin
 from firebase_admin import credentials
+from django.template import Template, Context
 from firebase_admin import auth as auth2
 from myapp.pdf_generator import pdf_generator
 from myapp.otpyer import qrcodeGenerator, validation
@@ -374,7 +375,7 @@ def scan_history(request):
 
     history=[]
     scan_date=[]
-    
+    login_email_rn="fypemail@yahoo.com"
     emel=login_email_rn.replace(".","_")
     print(emel)
     
@@ -398,7 +399,11 @@ def scan_history(request):
         scan_date.append(date_formatted)
         ziplist=zip(history, scan_date)
         
-        dload_button='<button type="submit" class="btn btn-primary" name="dload_scan" value={0}>Download</button>'.format(url_extract)
+        dload_button=Template(
+            f'<form  action="{{% url \'historyreport\' %}}" method="post"><button type="submit" name="dload_scan" value="{scanned.key()}" class="btn btn-primary" name="dload_scan" value="{scanned.key()}">View</button></form>'
+            ).render(Context())
+        print("passsiong")
+
     return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
 
 # #@login_required(login_url='/admin_log_in/')
@@ -816,8 +821,7 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-    email="fypemail@yahoo.com"
-    login_email_rn="fypemail@yahoo.com"
+   
     url_inp=""
     try:
                
@@ -1111,9 +1115,57 @@ def arachni (request):
     for x in extract_sitemap.each():
         visited_links.append(x.val())
     thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url_tofirebase)
-    c=(scoring/36)*100
-    return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),'data_arach':status_object["statistics"]["runtime"],"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
      
+
+    c=(scoring/36)*100
+    tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
+    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
+    return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
+@csrf_exempt
+def scan_history_report(request):  
+    web_history=request.POST.get('dload_scan')
+    print(web_history)
+    
+    
+    keys=[]
+    descr=[]
+    remedy=[]
+    url_issue=[]
+    emel=login_email_rn.replace(".","_")
+   
+
+    extract = db.child(emel).child("scans").child(web_history).child("issues").get()
+    
+
+    for x in extract.each():
+        if x.key()=="issues":
+            keys.append("None")
+            descr.append("None")
+            remedy.append("None")
+            url_issue.append("None")
+            
+
+        else:
+            keys.append(x.key())
+            descr.append(x.val()['description'])
+            remedy.append(x.val()['remedy'])
+            url_issue.append(x.val()['url_issue'])
+
+    visited_links=[]
+    extract_sitemap= db.child(emel).child("scans").child(web_history).child("sitemap").get()
+    val=db.child(emel).child("scans").child(web_history).child("z_lat").get().val()
+    val2=db.child(emel).child("scans").child(web_history).child("z_long").get().val()
+    print(val)
+    print(extract_sitemap)
+    c=db.child(emel).child("scans").child(web_history).child("z_scor").get().val()
+   
+    print(db.child(emel).child("scans").child(web_history).child("port_open").get().val())
+
+    fixed_list=db.child(emel).child("scans").child(web_history).child("port_open").get().val()
+    for x in extract_sitemap.each():
+        visited_links.append(x.val())
+
+    return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"keysNvalue":zip(keys,descr,remedy,url_issue)})
 
 #@login_required
 @csrf_exempt    

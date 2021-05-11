@@ -57,17 +57,19 @@ def pdf_generator(url_tofirebase,login_email_rn):
         else:
             data_dict[key + "desc"]="none"
 
-    # scan_type=1
-    # PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1_deep.pdf'
-    #check normal scan or deep scan
+    scan_type=1
+    print("pdfpath")
+    PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1_deep.pdf'
+    # check normal scan or deep scan
     # try:
-    print(raw_data[3][0])
-    if raw_data[3][0].isnumeric():#normal
-        scan_type=0 
-        PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1.pdf'
-    else:
-        scan_type=1 
-        PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
+    # print(raw_data[3][0])
+    # if raw_data[3][0].isnumeric():#normal
+    #     scan_type=0 
+    #     PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1.pdf'
+    # else:
+    #     scan_type=1 
+    #     PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
+    
     # except:# deep
     #     pass
         # scan_type=1 

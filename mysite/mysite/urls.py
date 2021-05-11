@@ -34,6 +34,7 @@ urlpatterns = [
     path("normal/", v.normal),
     path('home/', v.home, name="home"),
     path('report/', v.report, name="report"),
+    path('history-report/', v.scan_history_report, name="historyreport"),
     path('normal/', v.normal, name="normal"),
     path('attack', v.attack, name='attack'),
     path('administrator/', v.admin_custom, name='admin_custom'),
