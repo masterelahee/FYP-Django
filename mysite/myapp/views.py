@@ -223,13 +223,13 @@ def postregister(request):
         secret_to_firebase = db.child(regem.replace(".","_")).child("secret")
         secret_to_firebase.set(secretcode)
         return render(request,'userreg.html', {"msgg":message})
-
+@login_required
 def profile(request):
     
     check_email = auth2.get_user_by_email(login_email_rn)
     
     return render(request,'profile.html',{"firebasename":check_email.display_name,"emel":login_email_rn})
-
+@login_required
 def profile_update(request):
     check=request.POST.get('resetemail')
     pass1=request.POST.get('respass')
@@ -269,7 +269,7 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-# @login_required
+@login_required
 def home(request):
     print(login_email_rn)
     check_email = auth2.get_user_by_email(login_email_rn)
@@ -358,7 +358,8 @@ def admin_custom(request):
         page = page.get_next_page()
     
     return render(request,'template.html', {"extractuser":list(g),"today":today})
-    
+
+@login_required    
 def scan_history(request):
 
     history=[]
@@ -431,7 +432,7 @@ def logout_admin(request):
     
 
 
-# #@login_required
+@login_required
 @csrf_exempt
 def report(request):
   
@@ -452,25 +453,25 @@ def report(request):
     
     return render(request,'report.html',{"keysNvalue":zip(keys,descr,remedy,url_issue)})
 
-# @login_required
+@login_required
 def normal(request):
     return render(request,'normal.html')    
 
-#@login_required
+@login_required
 def fullscan_arachni(request):
     return render(request,'fullarachni.html') 
 
-#@login_required
+@login_required
 def fullscan_arachni_auth(request):
     return render(request,'fullarachni_auth.html') 
 
-#@login_required
+@login_required
 def index(request):
     return render(request,'index.html')
 
 
 
-#@login_required
+@login_required
 @csrf_exempt
 def norm_scan(request):
      
@@ -654,7 +655,7 @@ def norm_scan(request):
   
 
 
-#@login_required
+@login_required
 @csrf_exempt    
 def arachni (request):
     
@@ -960,6 +961,7 @@ def arachni (request):
     tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
+@login_required
 @csrf_exempt
 def scan_history_report(request):  
     web_history=request.POST.get('dload_scan')
@@ -1006,7 +1008,7 @@ def scan_history_report(request):
 
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"keysNvalue":zip(keys,descr,remedy,url_issue)})
 
-#@login_required
+@login_required
 @csrf_exempt    
 def arachni_auth (request):
     
