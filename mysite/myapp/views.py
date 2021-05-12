@@ -178,44 +178,49 @@ def postregister(request):
         return render(request,'userreg.html', {"msgg":message})
     else:
 
-        saveuser=User.objects.create_user(username=regem,password=regpass,display_name=regname)
+        saveuser=User.objects.create_user(username=regem,password=regpass)
         saveuser.save()
         user=auth.create_user_with_email_and_password(regem, regpass)
 
         signin = auth.sign_in_with_email_and_password(regem, regpass)
         auth.send_email_verification(signin['idToken'])
-        
+        time.sleep(2)
+        user = auth2.get_user_by_email(regem)
+            
+        user_update=auth2.update_user(user.uid, display_name=str(regname))
         message="Email Verification Has Been Sent"
 
         #saving otp secret to firebase
         secretcode=qrcodeGenerator(regem)
         #==========QR CODE SEND TO EMAIL=======
+        try:
+            msg = MIMEMultipart()
+            attachment ='D:/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/{0}.jpg'.format(regem) 
+            msg['Subject'] = 'Your QR Code - TheBoyes Web Scanner'
+            msg['From'] = 'fypemail@yahoo.com' #change this to email used by us
+            msg['To'] = regem #change this to email input from user
+            # Add body to email
+            msgText = MIMEText('<b>Hi there!</b><br><p>Please scan the QR code attached with this email with Google Authenticator to be able to get your code during login</p><br><p>Google Authenticator for Android:<a>https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2</a></p><br><p>Google Authenticator for iOS:<a>https://apps.apple.com/us/app/google-authenticator/id388497605</a></p><img src="cid:attachment">', 'html')  
+            msg.attach(msgText)   # Added, and edited the previous line
         
-        msg = MIMEMultipart()
-        attachment ='D:/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/otp.png' 
-        msg['Subject'] = 'Your QR Code - TheBoyes Web Scanner'
-        msg['From'] = 'fypemail@yahoo.com' #change this to email used by us
-        msg['To'] = regem #change this to email input from user
-        # Add body to email
-        msgText = MIMEText('<b>Hi there!</b><br><p>Please scan the QR code attached with this email with Google Authenticator to be able to get your code during login</p><br><p>Google Authenticator for Android:<a>https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2</a></p><br><p>Google Authenticator for iOS:<a>https://apps.apple.com/us/app/google-authenticator/id388497605</a></p><img src="cid:attachment">', 'html')  
-        msg.attach(msgText)   # Added, and edited the previous line
-       
-        fp = open(attachment, 'rb')                                                    
-        img = MIMEImage(fp.read())
-        fp.close()
-        img.add_header('Content-ID', '<{}>'.format(attachment))
-        msg.attach(img)
+            fp = open(attachment, 'rb')                                                    
+            img = MIMEImage(fp.read())
+            fp.close()
+            img.add_header('Content-ID', '<{}>'.format(attachment))
+            msg.attach(img)
+        
+            # Create SMTP object
+            session = smtplib.SMTP('smtp.mail.yahoo.com', 587)
+            session.starttls() #enable security
+            # Login to the server
+            session.login('fypemail@yahoo.com', 'driqnfsefylmmlwq')
 
-        # Create SMTP object
-        session = smtplib.SMTP('smtp.mail.yahoo.com', 587)
-        session.starttls() #enable security
-        # Login to the server
-        session.login('fypemail@yahoo.com', 'driqnfsefylmmlwq')
-
-        # Convert the message to a string and send it
-        session.sendmail(msg['From'], msg['To'], msg.as_string())
+            # Convert the message to a string and send it
+            session.sendmail(msg['From'], msg['To'], msg.as_string())
    
-        print("Mail sent")
+            print("Mail sent")
+        except:
+            print("issue")
 
 
         #========================================

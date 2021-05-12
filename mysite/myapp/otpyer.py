@@ -14,10 +14,11 @@ def qrcodeGenerator(userEmail):
         userEmail,
         issuer_name="fyp-scanner")
 
-    print(totp_uri)
-
-    qr = qrcode.make(totp_uri)
-    qr.save('D:/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/otp.png') #send to email #secret saved in DB
+    imageqqr = qrcode.make(str(totp_uri))
+    print("sdfsdfsd")
+    imageqqr.save("D:/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/{0}.jpg".format(userEmail)) 
+   
+    print("ggg")
     return secret
 
 def validation(secret,inputOtp):
