@@ -111,7 +111,8 @@
         
         </thead>
         <tbody>
-            {% for scans, date in scanHistory %}
+            {% for scans, date,dload in scanHistory %}
+   
 
             <tr>
                 <td>
@@ -119,10 +120,11 @@
                 </td>
            
                 <td>{{date}}</td>
-            
-                <td>{{dload_button|safe}}</td>
+                
+                <td>{{dload|safe}}</td>
             </tr>
             {% endfor %}
+        
         </tbody>
     </table> </div></div>
 

@@ -57,42 +57,34 @@ def pdf_generator(url_tofirebase,login_email_rn):
         else:
             data_dict[key + "desc"]="none"
 
-    scan_type=1
-    print("pdfpath")
-    PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1_deep.pdf'
-    # check normal scan or deep scan
-    # try:
-    # print(raw_data[3][0])
-    # if raw_data[3][0].isnumeric():#normal
-    #     scan_type=0 
-    #     PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format1.pdf'
-    # else:
-    #     scan_type=1 
-    #     PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
     
-    # except:# deep
-    #     pass
-        # scan_type=1 
-        # PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
-
-    data_dict['port_open']=raw_data[3+scan_type]#port_open
+    print("pdfpath")
+    PDF_TEMPLATE_PATH = 'D:/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
+    
+    data_dict['port_open']=raw_data[4]#port_open
 
     #links_found
-    links=raw_data[4+scan_type]
+    links=raw_data[5]
     print('\n'.join(map(str, links)))
     data_dict['links_found']= ('\n'.join(map(str, links)))
         
     template_pdf = pdfrw.PdfReader(PDF_TEMPLATE_PATH)
-
-    if scan_type==1 :#deep
-        issues=[]
-        for key, value in raw_data[3].items():
+    print(raw_data[3])
+   
+    issues=[]
+    for key, value in raw_data[3].items():
+        print(raw_data[3][key])
+        if raw_data[3][key]=="Issues listed above.":
+            data_dict['found_issue']=raw_data[3][key]
+            
+        elif raw_data[3][key]== "None":
+            data_dict['found_issue']=raw_data[3][key]
+        else:
             for key2, value2 in raw_data[3][key].items():
                 issues.append(f'{key2.upper()} : {value2}')
             issues.append('\n--')
-        print('\n'.join(issues))
-        data_dict['found_issue']= ('\n'.join(issues))
-        
+            print('\n'.join(issues))
+            data_dict['found_issue']= ('\n'.join(issues))
     template_pdf = pdfrw.PdfReader(PDF_TEMPLATE_PATH)
 
     for page in range(len(template_pdf.pages)):

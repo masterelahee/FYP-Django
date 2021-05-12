@@ -25,7 +25,7 @@ admin.site.site_header="TheBoyes Administrator Dashboard"
 urlpatterns = [
 
     path('admin/', admin.site.urls, name="admin"),
-    path("external/",  v.external),
+
     path("normal_external/",  v.norm_scan, name="normal_scan"),
     path("fullscan/",  v.fullscan_arachni, name="full"),
     path("fullauthscan/",  v.fullscan_arachni_auth, name="full_auth"),
@@ -41,8 +41,7 @@ urlpatterns = [
     path('new-user/', v.admin_reg, name='admin_reg'),
     path('full-normal/', v.index, name="welcome"),
     path('scan-history/',v.scan_history, name="scan_history"),
-    # path('', v.postsign, name="post_sign"),
-    # path('login/', v.signIn, name="login"),
+
     path('welcome/', v.postsign, name="post_sign"),
     path('', v.signIn, name="login"),
     path('signup/', v.postregister),
@@ -51,7 +50,9 @@ urlpatterns = [
     path('admin-login/', v.admin_login, name="admin_log_in"),
     path('logout/', v.logout_admin, name="logoutadmin"),
     path('accounts/logout/', logout_view, name="logout"),
-    path('logup/', v.logup, name="logup")
+
+    path('profile/', v.profile, name="profile"),
+    path('profileupdate/', v.profile_update, name="profile_update")
     
 ]
 

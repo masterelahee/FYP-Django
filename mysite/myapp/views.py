@@ -77,8 +77,7 @@ app=firebase_admin.initialize_app(cred, {
 })
 
 login_email_rn=""
-#https://www.youtube.com/watch?v=gsW5gYTNi34
-#https://codeloop.org/python-firebase-authentication-with-email-password/
+
 
 def error_404_view(request,exception):
     return render(request,'404.html')
@@ -168,67 +167,18 @@ def postsign(request):
         message="Invalid login details. Try again."
         return render(request,"login.html", {"msgg":message}) 
     
-#-----UP IS WORKING---------------------
-    # try:
-    #     user=auth.sign_in_with_email_and_password(email,passw)
-    #     print("The user"+user)
-    #     usercheck = auth.get_account_info(user['idToken'])
-    #     usercheckjson=json.dumps(usercheck['users'])
-    #     userjsonload=json.loads(usercheckjson)
-    #     login(request, user)                
-    #     if userjsonload[0]['emailVerified'] == False:
-    #         message="Please verify your email before login!"
-    #         return render(request,"login.html", {"msgg":message})
-        
-        
-    #     elif cap_json['success']==False:
-    #         login(request, user)
-    #         message="Invalid captcha, try again!"
-    #         return render(request,"login.html", {"msgg":message})
-        
-    # except:
-    #     message="There was a problem. Try again."
-    #     return render(request,"login.html", {"msgg":message})  
-  
-    #----------------------------------------
-    # now = datetime.now()
-    # dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    # email_address = email    # add email address here
-    # Subject = 'Did you log in?\n\n'
-    # content = 'Hi there, we detected a login from your account on '+dt_string+'. If this is not you kindly contact us ASAP and we will assist you.\n\n' 
-    # footer = '- TheBoyes Administrator'    # add test footer 
-    # passcode = 'blfmslewrtijnfqn'        # add passcode here
-    # conn = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465) 
-    # conn.ehlo()
-    # conn.login('fypemail@yahoo.com', passcode)
-    # conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
-    # conn.quit()
-    # global login_email_rn
-    # login_email_rn=str(email)
-    #-----------------------------------------------------
-    # Reset password
-    #auth.send_password_reset_email(email)
 
-    
-    # session_id=user['idToken'] 
-
-    # request.session['uid']=str(session_id) 
-    # return render(request,"pick.html") 
-
-#----------------------------------------------
-#CHECK THIS IF WORK!! ADMIN fypemail yahoo pass is password, regitration is not working, login required
-# #@login_required(login_url='/admin_log_in/')
 def postregister(request):
     regem=request.POST.get('reg_email')
     regpass=request.POST.get('reg_password')
-
+    regname=request.POST.get('reg_name')
     if User.objects.filter(username=regem).exists():
         message="User Exists!"
 
         return render(request,'userreg.html', {"msgg":message})
     else:
 
-        saveuser=User.objects.create_user(username=regem,password=regpass)
+        saveuser=User.objects.create_user(username=regem,password=regpass,display_name=regname)
         saveuser.save()
         user=auth.create_user_with_email_and_password(regem, regpass)
 
@@ -274,7 +224,45 @@ def postregister(request):
         secret_to_firebase.set(secretcode)
         return render(request,'userreg.html', {"msgg":message})
 
+def profile(request):
+    
+    check_email = auth2.get_user_by_email(login_email_rn)
+    
+    return render(request,'profile.html',{"firebasename":check_email.display_name,"emel":login_email_rn})
 
+def profile_update(request):
+    check=request.POST.get('resetemail')
+    pass1=request.POST.get('respass')
+    pass2=request.POST.get('respassconf')
+    print(check,pass1,pass2)
+    if len(str(pass1))>=6:
+        print(len(str(pass1)))
+        if str(pass1) == str(pass2):
+            u=User.objects.get(username=check)
+            
+            
+            u.set_password(pass1)
+            u.save()
+            print(u.is_active)
+            user = auth2.get_user_by_email(check)
+            print(user.uid)
+            user_update=auth2.update_user(user.uid, password=str(pass1))
+            
+            mesg="Password updated successfully."
+            return render(request, 'profile.html',{"msgg":mesg})
+        else:
+            print("it passed here2")
+
+            mesg="Password error. Check input!"
+            return render(request, 'profile.html',{"msgg":mesg})
+    else:
+        print("it passed here2")
+
+        mesg="Password must be above 6 characters long!"
+        return render(request, 'profile.html',{"msgg":mesg})
+    
+
+    
 def logout_view(request):
     global login_email_rn
     login_email_rn=""
@@ -375,6 +363,7 @@ def scan_history(request):
 
     history=[]
     scan_date=[]
+    dload=[]
     login_email_rn="fypemail@yahoo.com"
     emel=login_email_rn.replace(".","_")
     print(emel)
@@ -388,37 +377,33 @@ def scan_history(request):
         keys=scanned.key()
         web_extract=keys.replace("_",".")
         strip_character="."
-        print(web_extract)
+  
         url_extract=web_extract[:-15]
         # datee=strip_character.join(web_extract.split(strip_character)[2:])
         dateee=web_extract[-14:]
-        print(url_extract)
+        
         date_formatted=datetime.strptime(dateee, '%d%m%Y%H%M%S')
     
         history.append(url_extract)
         scan_date.append(date_formatted)
-        ziplist=zip(history, scan_date)
+        
         
         dload_button=Template(
             f'<form  action="{{% url \'historyreport\' %}}" method="post"><button type="submit" name="dload_scan" value="{scanned.key()}" class="btn btn-primary" name="dload_scan" value="{scanned.key()}">View</button></form>'
             ).render(Context())
-        print("passsiong")
-
-    return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
+        print(dload_button)
+        dload.append(dload_button)
+        
+        ziplist=zip(history, scan_date,dload)
+    print(dload)
+    # return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
+    return render(request,'scan_history.html', {"scanHistory":ziplist,"dlojad":dload})
 
 # #@login_required(login_url='/admin_log_in/')
 def admin_reg(request):
     return render(request,'userreg.html')
 
-def logup(request):
-    scan_log=[]
-    emel="fypemail@yahoo.com".replace(".","_")
-    print(emel)
-    #  secret=db.child(email.replace(".","_")).child("secret").get()
-    extract_scan_log= db.child(emel).child("logging").get()
-    for i in extract_scan_log:
-        scan_log.append(i)
-    return render(request, 'logging_update.html', {'logup': scan_log})
+
 
 def admin_login(request):
     
@@ -483,164 +468,12 @@ def fullscan_arachni_auth(request):
 def index(request):
     return render(request,'index.html')
 
-#wats this for
-@csrf_exempt
-def external(request):
-
-    remoteServer    = request.POST.get('param')
-    remoteServerIP  = socket.gethostbyname(remoteServer)
-    com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
-    portOpenList = []
-    portCloseList = []
-    #out=run([sys.executable, 'D://Desktop//quanta//QuantaDjango//quanta_Scanner//mysite//myapp//tester.py',inp], shell=False)
-    try:
-        for port in com_port:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.8)
-            result = sock.connect_ex((remoteServerIP, port))
-            if result == 0:
-                portOpenList.append(port)
-                print("Port {}: 	 Open".format(port))
-
-            else:
-                portCloseList.append(port)
-                print("Port {}:          Closed".format(port))
-            sock.close()
-
-    except KeyboardInterrupt:
-        print("Keyboard Interrupt")
-    fixed_list=str(portOpenList)[1:-1]
- 
-    print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
-    
-    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
-    data=ip_locate.read()
-    values=json.loads(data)
-    val=values['lat']
-    val2=values['lon']
-
-
-    b=len(fixed_list)/31
-    c=b*100
-    #----------------------------------------------
-    
-    foo = SecurityHeaders()
-
-    parsed = urlparse(remoteServer)
-    if not parsed.scheme:
-        url = 'https://' + remoteServer # default to http if scheme not provided
-
-
-    headers = foo.check_headers(url)
-
-    if not headers:
-        print ("Failed to fetch headers, exiting...")
-        sys.exit(1)
-
-    okColor = '\033[92m'
-    warnColor = '\033[93m'
-    endColor = '\033[0m'
-    
-    for header, value in headers.items():
-        if value['warn'] == 1:
-            if value['defined'] == False:
-                print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
-            else:
-                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
-                    ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
-        elif value['warn'] == 0:
-            if value['defined'] == False:
-                print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
-            else:
-                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
-                    ' ... [ ' + okColor + 'OK' + endColor + ' ]')
-
-    https = foo.test_https(url)
-    if https['supported']:
-        print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
-    else:
-        print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-
-    if https['certvalid']:
-        print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
-    else:
-        print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-
-
-    if foo.test_http_to_https(url, 5):
-        print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
-    else:
-        print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-    # -------------------------------------------
-    cli(url)
-    
-    # urlscraper(url)
-                            
-    visited_links  = set()
-    # Cookie Jar
-
-    cj=cookielib.LWPCookieJar()
-    def visit(br, url):
-        br.open(url)
-        br._factory.is_html = True
-        links = br.links()
-        for link in links:
-            if not link.url in links:
-                visited_links.add(link.url)  
-
-    br = mechanize.Browser()
-    cj = cookielib.LWPCookieJar()
-    br.set_cookiejar(cj)
-    
-    br.set_handle_equiv(True)
-    br.set_handle_gzip(True)
-    br.set_handle_redirect(True)
-    br.set_handle_referer(True)
-    br.set_handle_robots(False)
-    #br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-    br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-    thelink='http://'+remoteServer
-    br.open(thelink)
-    
-    # Select the second (index one) form (the first form is a search query box)
-    for f in br.forms():
-        print (f)
-
-    br.select_form(nr=0)
-
-    # User credentials
-
-    br.form[request.POST.get('form_cred_user')] = request.POST.get('userInp')
-    br.form[request.POST.get('form_cred_pass')] = request.POST.get('passInp')
-    
-    br.submit()
-    
-    br.set_cookiejar(cj)
-    print(cj)
-
-    visit(br,thelink)
-    bar=visited_links.copy()
-    for e in bar:
-        visit(br,e)
-    
-    print(list(visited_links))
-    
-        # -------------------------------------------------------------------
-    a=render(request, 'index.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj})
-    
-    #sending to firebase
-    to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "links_found":list(visited_links),"head_found":headers}
-    db.child(login_email_rn.replace(".","_")).child(remoteServer.replace(".","_")).set(to_firebase)
-    pdf_generator(re.sub('[.:/]','_',url),app)
-    return a
-    
 
 
 #@login_required
 @csrf_exempt
 def norm_scan(request):
-
-
+     
     remoteServer= request.POST.get('param')
     url_inp=""
     try:
@@ -747,7 +580,8 @@ def norm_scan(request):
         scoring=scoring+1
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-        
+
+   
     # -------------------------------------------
     cli(url)
     
@@ -782,7 +616,9 @@ def norm_scan(request):
     #sending to firebase
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "sitemap":visited_links,"head_found":headers}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).set(to_firebase)
-    
+    to_firebase23={"issues":"Issues listed above."}
+    db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").update(to_firebase23) 
+   
     pdf_generator(url_tofirebase,emailtofirebase)
     time.sleep(5)
     keys=[]
@@ -811,6 +647,9 @@ def norm_scan(request):
             url_issue.append(remoteServer)
 
     c=(scoring/36)*100
+    tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
+    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
+    
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"keysNvalue":zip(keys,descr,remedy,url_issue)})
   
 
@@ -821,7 +660,7 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-   
+    email="fypemail@yahoo.com"
     url_inp=""
     try:
                

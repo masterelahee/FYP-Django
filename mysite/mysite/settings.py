@@ -28,7 +28,7 @@ STATICFILES_DIRS=(
 SECRET_KEY = '2o^)7(229_6kt$@wbz64zep#^p@xo5!9dwx=2l+2u)39n8-8ic'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
