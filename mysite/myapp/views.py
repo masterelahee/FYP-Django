@@ -519,7 +519,7 @@ def norm_scan(request):
  
     print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
     
-    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+remoteServer)
+    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+url_inp)
     data=ip_locate.read()
     values=json.loads(data)
     val=values['lat']
@@ -666,7 +666,7 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
-    email="fypemail@yahoo.com"
+ 
     url_inp=""
     try:
                
@@ -966,6 +966,7 @@ def arachni (request):
     tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
+
 @login_required
 @csrf_exempt
 def scan_history_report(request):  
@@ -1021,19 +1022,139 @@ def arachni_auth (request):
     url = request.POST.get('param')
     username = request.POST.get('userInp')
     password = request.POST.get('passInp')
+    usernameinp = request.POST.get('form_cred_user')
+    passwordinp = request.POST.get('form_cred_pass')
 
-    if not re.match('(?:http|https)://', url):
-        url='https://{}'.format(url)
-    else:
+    url_inp=""
+    try:
+               
+        urller = re.compile(r"https?://(www\.)?")
+        new=urller.sub('', url).strip().strip('/')
+        split_string = new.split("/", 1)
+        url_inp = split_string[0]
+    except:
         pass
+    print(url_inp)
     
+    # split_url = parse.urlsplit(url_inp)
+    # remoteServerIP = socket.gethostbyname(split_url.netloc)
+    remoteServerIP  = socket.gethostbyname(url_inp)
+    print(remoteServerIP)
+    com_port = [20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 110, 119, 123, 135,136, 137, 138, 139, 143, 161, 162, 179, 389, 443, 636, 989, 990, 993, 1812]
+    portOpenList = []
+    portCloseList = []
+    #out=run([sys.executable, 'D://Desktop//quanta//QuantaDjango//quanta_Scanner//mysite//myapp//tester.py',inp], shell=False)
+    try:
+        for port in com_port:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(1)
+            result = sock.connect_ex((remoteServerIP, port))
+            if result == 0:
+                portOpenList.append(port)
+                print("Port {}: 	 Open".format(port))
+
+            else:
+                portCloseList.append(port)
+                print("Port {}:          Closed".format(port))
+            sock.close()
+
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt")
+    fixed_list=str(portOpenList)[1:-1]
+ 
+    print ("ip: ",url , "portsOpen: ", fixed_list)
+    
+    ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+url_inp)
+    data=ip_locate.read()
+    values=json.loads(data)
+    print(values)
+    val=values['lat']
+    val2=values['lon']
+    
+
+    scoring=31-len(fixed_list)
+    #----------------------------------------------
+     #sending to firebase
+    
+
+    foo = SecurityHeaders()
+
+    parsed = urlparse(url)
+    if not parsed.scheme:
+        url = 'http://' + url # defasult to http if scheme not provided
+
+
+    headers = foo.check_headers(url)
+
+    if not headers:
+        print ("Failed to fetch headers, exiting...")
+        sys.exit(1)
+
+    okColor = '\033[92m'
+    warnColor = '\033[93m'
+    endColor = '\033[0m'
+    
+    for header, value in headers.items():
+        if value['warn'] == 1:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + warnColor + 'WARN' + endColor + ' ]')
+                scoring=scoring+1
+        elif value['warn'] == 0:
+            if value['defined'] == False:
+                print('Header \'' + header + '\' is missing ... [ ' + okColor + 'OK' + endColor +' ]')
+            else:
+                print('Header \'' + header + '\' contains value \'' + value['contents'] + '\'' + \
+                    ' ... [ ' + okColor + 'OK' + endColor + ' ]')
+                scoring=scoring+1
+
+    https = foo.test_https(url)
+    if https['supported']:
+        print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
+    else:
+        print('HTTPS supported ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+    if https['certvalid']:
+        print('HTTPS valid certificate ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
+    else:
+        print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+
+
+    if foo.test_http_to_https(url, 5):
+        print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
+        scoring=scoring+1
+        if not re.match('(?:http|https)://', url):
+            url='https://{}'.format(url)
+        else:
+            pass
+    
+    else:
+        print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
+        if not re.match('(?:http|https)://', url):
+            url='http://{}'.format(url)
+        else:
+            pass
+    
+   
+    
+
+    # if not re.match('(?:http|https)://', url):
+    #     url='https://{}'.format(url)
+    # else:
+    #     pass
+    
+    print(url)
     p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
     time.sleep(20)
-    print(url)
     a = ArachniClient()
     resumeFlag = False
     authFlag = False
-
+    scanType = ""
+    
     #checks for existing scans and resumes from there instead
     avail_scan_object = a.get_scans() #returns json object of available scans
     print(a.get_scans()) #displays available scans | testing only
@@ -1045,24 +1166,52 @@ def arachni_auth (request):
             resumeFlag = True
             start_time = time.time()
             break
-
-    #authFlag = True
-    print("Authenticated scan")
-    a.startAuthScan()
-    a.profile("./myapp/profiles/full_audit_auth.json")
-    target_url = url
     
-    try:
-        urllib.request.urlopen(target_url)
-        a.options["url"] = target_url
-        a.options["plugins"]["autologin"]["url"] = target_url
-        a.options["plugins"]["autologin"]["parameters"] = request.POST.get('form_cred_user')+"=" + username + "&" + request.POST.get('form_cred_pass')+"=" + password
-    except urllib.request.HTTPError as e:
-        print(e.code)
+    if(resumeFlag == False):
+      
+        checkAuth="y"
+        while checkAuth not in ("y","n"):
+            print("Invalid input")
+          
+            checkAuth = input("Do you want to perform an Authenticated Scan? (y/n): ")
 
-    scan_json_object = a.start_scan() #outputs json dictionary
-    scan_ID = scan_json_object["id"]
-    start_time = time.time()
+    #select scan type here then ask if user would like to use authenticated scanning
+
+    #start new scan if there are no ongoing ones
+    if(resumeFlag == False and checkAuth == "n"):
+        print("Normal scan")
+
+        checkNormalScanType = int(request.POST.get("scanType"))
+
+        while checkNormalScanType not in [1,2,3,4]:
+            print("Invalid input")
+         
+            checkNormalScanType = input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: ")
+        scanType = a.selectNormalScan(checkNormalScanType)
+        print(scanType)
+        try:
+            a.target(url)
+            scan_json_object = a.start_scan() #outputs json dictionary
+            scan_ID = scan_json_object["id"]
+            start_time = time.time()
+        except Exception as e:
+            print(e)
+
+    #start auth scan if user chose yes
+    elif(resumeFlag == False and checkAuth == "y"):
+        authFlag = True
+        checkAuthScanType = int(request.POST.get("scanType"))
+        while checkAuthScanType not in [1,2,3,4]:
+            print("Invalid input")
+           
+            checkAuthScanType = input("Please select a scan type [1 - full audit, 2 - xss, 3 - sql, 4 - server]: ")
+        print("Authenticated scan")
+        scanType = a.selectAuthScan(checkAuthScanType,url,username,password,usernameinp,passwordinp)
+        scan_json_object = a.start_scan() #outputs json dictionary
+        scan_ID = scan_json_object["id"]
+        start_time = time.time()
+
+    print("passes")
     scanflag=True
     while scanflag is True:
     
@@ -1083,14 +1232,107 @@ def arachni_auth (request):
             print("Scan has been completed, retrieving report...")
             a.getScanReport(scan_ID,"json") #output to json for database processing
             a.getScanReport(scan_ID,"html") #output to html for user ease of interaction
-            a.processJSON(scan_ID) #print out choice information
+            # a.processJSON(scan_ID) #print out choice information
             scanflag=False
-        time.sleep(5) #delay status update to 1 minute per status request
         
-    a.delete_scan(scan_ID) #comment this out if performing testing | deletes the scan after it is complete to prevent zombie processes
+            time.sleep(10)
+            fixed_scan_Id=scan_ID[:20]
+            a.delete_scan(scan_ID)
+            print("testpass")
+            
+
+            
+            
+            tofirebase={"ip":url_inp,"port_open":fixed_list, "ip_info":values, "head_found":headers}
+           
+            emailtofirebase=login_email_rn.replace(".","_")
+
+            now_today=datetime.now().strftime("%d%m%Y%H%M%S")
+           
+            url_tofirebase=url_inp.replace(".","_")+"_"+now_today
+          
+            print(url_tofirebase)
+            db.child(emailtofirebase).child("scans").child(url_tofirebase).set(tofirebase) 
+            
+            
+            try:
+                with open("myapp/reports/"+fixed_scan_Id+ ".json", encoding="utf-8") as jsonfile:
+                    json_obj = json.load(jsonfile)
+                    print(json_obj['issues'])
+                    try:
+                        if json_obj['issues'] !=[]:
+                            for x in json_obj['issues']:
+                                
+                                if x['name']=="Interesting response":
+                                    to_firebase={"issues":x['name'],"description":x['description']}
+                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").child(x['name']).set(to_firebase)
+                                else:
+                                    to_firebase={"issues":x['name'],"description":x['description'],"remedy":x['remedy_guidance'],"url_issue":x['vector']['url']}
+                                    db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").child(x['name']).set(to_firebase)
+                        
+                            
+                        else:
+           
+
+                            to_firebase={"issues":"None"}
+                            db.child(emailtofirebase).child("scans").child(url_tofirebase).child("issues").update(to_firebase) 
+
+                        count=0
+                        if json_obj['sitemap'] is not None:
+                            
+                            for xy in json_obj['sitemap']: 
+                                count+=1 
+                                
+                                nummm=str(json_obj['sitemap'][xy])   
+                                to_f={count:xy}                    
+                                db.child(emailtofirebase).child("scans").child(url_tofirebase).child("sitemap").update(to_f)
+
+                    except Exception as e:
+                        print(e)
+
+            except:
+                print("File not found!")
+            scanflag=False
+      
+
+    #the pdf generator is here
+   
+    pdf_generator(url_tofirebase,emailtofirebase)
+    p.kill()
     
+    keys=[]
+    descr=[]
+    remedy=[]
+    url_issue=[]
+    emel=login_email_rn.replace(".","_")
+    extract = db.child(emel).child("scans").child(url_tofirebase).child("issues").get()
     
-    return render(request, 'fullarachni_auth.html',{'data_arach':status_object["statistics"]["runtime"]})
+
+    for x in extract.each():
+        if x.key()=="issues":
+            keys.append("None")
+            descr.append("None")
+            remedy.append("None")
+            url_issue.append("None")
+            
+
+        else:
+            keys.append(x.key())
+            descr.append(x.val()['description'])
+            remedy.append(x.val()['remedy'])
+            url_issue.append(x.val()['url_issue'])
+
+    visited_links=[]
+    extract_sitemap= db.child(emel).child("scans").child(url_tofirebase).child("sitemap").get()
+    for x in extract_sitemap.each():
+        visited_links.append(x.val())
+    thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url_tofirebase)
+     
+
+    c=(scoring/36)*100
+    tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
+    db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
+    return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
 
 def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'

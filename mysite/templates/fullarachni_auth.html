@@ -75,7 +75,13 @@
             <input type="text" name="passInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter password" required>
             <input type="text" name="form_cred_user" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Form username name" required>
             <input type="text" name="form_cred_pass" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Form password name" required>
-         
+            <select class="form-select" aria-label="Default select example" name="scanType">
+              <option selected value="1">Scan type</option>
+              <option value="1">Full Audit</option>
+              <option value="2">Cross-Site Scripting</option>
+              <option value="3">SQL Injection</option>
+              <option value="4">Server checking</option>
+            </select> 
             <button class="btn btn-primary mx-auto">Check!</button><br><br>
            
         </form>

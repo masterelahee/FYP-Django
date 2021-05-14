@@ -92,7 +92,7 @@ class ArachniClient(object):
       except Exception:
          pass
    
-   def selectAuthScan(self, auth_scan_type): #call this if user decides to do auth scan and has selected a type of scan
+   def selectAuthScan(self, auth_scan_type,target_url,username, password,usernameinp,passwordinp): #call this if user decides to do auth scan and has selected a type of scan
       scanType = ""
       if auth_scan_type == 1: #full audit
          self.profile("./myapp/profiles/auth/full_audit.json")
@@ -107,15 +107,16 @@ class ArachniClient(object):
          self.profile("./myapp/profiles/auth/server.json")
          scanType = "Server" 
 
-      target_url = input("Enter URL: ")
-      username = input("Input username: ")
-      password = input("Input password: ")
+      # target_url = input("Enter URL: ")
+      # username = input("Input username: ")
+      # password = input("Input password: ")
 
       try:
          urllib2.urlopen(target_url)
          self.options["url"] = target_url
          self.options["plugins"]["autologin"]["url"] = target_url
-         self.options["plugins"]["autologin"]["parameters"] = "email=" + username + "&" + "password=" + password
+         thisthingy="{0}=" + username + "&" + "{0}=" + password
+         self.options["plugins"]["autologin"]["parameters"] = thisthingy.format(usernameinp,passwordinp)
       except urllib2.HTTPError as e:
          print(e.code)
 
