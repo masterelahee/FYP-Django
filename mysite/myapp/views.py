@@ -721,12 +721,12 @@ def arachni (request):
 
     foo = SecurityHeaders()
 
-    parsed = urlparse(url)
-    if not parsed.scheme:
-        url = 'http://' + url # defasult to http if scheme not provided
+    # parsed = urlparse(url)
+    # if not parsed.scheme:
+    #     url = 'http://' + url # defasult to http if scheme not provided
 
 
-    headers = foo.check_headers(url)
+    headers = foo.check_headers(url_inp)
 
     if not headers:
         print ("Failed to fetch headers, exiting...")
@@ -769,9 +769,16 @@ def arachni (request):
     if foo.test_http_to_https(url, 5):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
+        if not re.match('(?:http|https)://', url):
+            url='https://{}'.format(url_inp)
+        else:
+            pass
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-    
+        if not re.match('(?:http|https)://', url):
+            url='http://{}'.format(url_inp)
+        else:
+            pass
    
     
 
@@ -1079,12 +1086,12 @@ def arachni_auth (request):
 
     foo = SecurityHeaders()
 
-    parsed = urlparse(url)
-    if not parsed.scheme:
-        url = 'http://' + url # defasult to http if scheme not provided
+    # parsed = urlparse(url)
+    # if not parsed.scheme:
+    #     url = 'http://' + url # defasult to http if scheme not provided
 
 
-    headers = foo.check_headers(url)
+    headers = foo.check_headers(url_inp)
 
     if not headers:
         print ("Failed to fetch headers, exiting...")
@@ -1110,7 +1117,7 @@ def arachni_auth (request):
                     ' ... [ ' + okColor + 'OK' + endColor + ' ]')
                 scoring=scoring+1
 
-    https = foo.test_https(url)
+    https = foo.test_https(url_inp)
     if https['supported']:
         print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
@@ -1128,14 +1135,14 @@ def arachni_auth (request):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
         if not re.match('(?:http|https)://', url):
-            url='https://{}'.format(url)
+            url='https://{}'.format(url_inp)
         else:
             pass
     
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
         if not re.match('(?:http|https)://', url):
-            url='http://{}'.format(url)
+            url='http://{}'.format(url_inp)
         else:
             pass
     
