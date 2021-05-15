@@ -28,7 +28,14 @@
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
 
-
+<script>
+  $(document).ready(function(){
+  $("#btnId").click(function(){
+  
+      $("#display_loading").show("15000");
+  
+   });});
+   </script>
 </head>
 
 <body id="page-top">
@@ -72,9 +79,29 @@
         <h2 class="text-white-50 mx-auto mt-2 mb-5">Key in the website and our intelligent system will check it out.</h2>
         
 
+        <style>
+          #display_loading{
+        
+            display:none;
+          }
+          .center-fit {
+              /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
 
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+        }
+          </style>
         <form action="{% url 'normal_scan' %}" class="form-inline d-flex" method="post">
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website or IP address..." required>
+           <div id="display_loading"><img class="center-fit" src="{% static 'img/loader.gif' %}" ></div>
             <button class="btn btn-primary mx-auto" id="btnId">Check!</button><br><br>
            
         </form>
@@ -82,7 +109,7 @@
    
         <p id="_appendHere"></p>
 
-
+</div></div></header>
         
  <!--
   <section id="projects" class="projects-section bg-light">
