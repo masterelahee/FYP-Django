@@ -71,12 +71,13 @@ firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 auth=firebase.auth()
 
-cred=credentials.Certificate('D:/Desktop/FYP/FYP-Django/mysite/myapp/firebasesdk.json')
+cred=credentials.Certificate('./mysite/myapp/firebasesdk.json')
 app=firebase_admin.initialize_app(cred, {
     "databaseURL": "https://fyptheboyes.firebaseio.com",
 })
 
 login_email_rn=""
+
 
 
 def error_404_view(request,exception):
@@ -91,7 +92,7 @@ def signIn(request):
 
 
 def postsign(request):
-    
+    global login_email_rn
     email=request.POST.get('email')
     passw=request.POST.get('pass')
     otpcode=request.POST.get('code')
@@ -129,7 +130,9 @@ def postsign(request):
         else:
             
             if otpcode is not None:
+               
                 secret=db.child(email.replace(".","_")).child("secret").get()
+              
                 print(secret.val())
                 
                 otp_check=validation(secret.val(), otpcode)
@@ -152,10 +155,13 @@ def postsign(request):
                     conn.login('fypemail@yahoo.com', passcode)
                     conn.sendmail('fypemail@yahoo.com',email_address,Subject + content + footer)
                     conn.quit()
-                    global login_email_rn
+                    
                     login_email_rn=str(email)
                     # -----------------------------------------------------
-                    return render(request,"pick.html",{"firebasename":check_email.display_name}) 
+                    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
+                
+                    scan_check=scan_check_get.val()
+                    return render(request,"pick.html",{"firebasename":check_email.display_name,"scan_check":scan_check}) 
 
                 else:
                     message="OTP invalid!"
@@ -172,6 +178,8 @@ def postregister(request):
     regem=request.POST.get('reg_email')
     regpass=request.POST.get('reg_password')
     regname=request.POST.get('reg_name')
+
+
     if User.objects.filter(username=regem).exists():
         message="User Exists!"
 
@@ -195,7 +203,7 @@ def postregister(request):
         #==========QR CODE SEND TO EMAIL=======
         try:
             msg = MIMEMultipart()
-            attachment ='D:/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/{0}.jpg'.format(regem) 
+            attachment ="./mysite/myapp/QRcodes/{0}.jpg'.format(regem) 
             msg['Subject'] = 'Your QR Code - TheBoyes Web Scanner'
             msg['From'] = 'fypemail@yahoo.com' #change this to email used by us
             msg['To'] = regem #change this to email input from user
@@ -277,8 +285,11 @@ def logout_view(request):
 @login_required
 def home(request):
     print(login_email_rn)
+    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
+    
+    scan_check=scan_check_get.val()
     check_email = auth2.get_user_by_email(login_email_rn)
-    return render(request,'pick.html',{"firebasename":check_email.display_name})
+    return render(request,'pick.html',{"firebasename":check_email.display_name,"scan_check":scan_check})
     
 #put three button, disable done, noe enable and delete
 def del_disble_user(request):
@@ -460,7 +471,10 @@ def report(request):
 
 @login_required
 def normal(request):
-    return render(request,'normal.html')    
+    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
+    
+    scan_check=scan_check_get.val()
+    return render(request,'normal.html',{"scan_check":scan_check})    
 
 @login_required
 def fullscan_arachni(request):
@@ -479,9 +493,11 @@ def index(request):
 @login_required
 @csrf_exempt
 def norm_scan(request):
-     
+    
     remoteServer= request.POST.get('param')
     url_inp=""
+    emailtofirebase=login_email_rn.replace(".","_")
+    db.child(emailtofirebase.replace(".","_")).child("scan_check").set(1)
     try:
                
         urller = re.compile(r"https?://(www\.)?")
@@ -617,7 +633,7 @@ def norm_scan(request):
     now_today=datetime.now().strftime("%d%m%Y%H%M%S")
     
     url_tofirebase=url_inp.replace(".","_")+"_"+now_today
-    emailtofirebase=login_email_rn.replace(".","_")
+    
     
     #sending to firebase
     to_firebase={"ip":remoteServer,"port_open":fixed_list, "ip_info":values, "sitemap":visited_links,"head_found":headers}
@@ -655,7 +671,7 @@ def norm_scan(request):
     c=(scoring/36)*100
     tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
-    
+    db.child(emailtofirebase.replace(".","_")).child("scan_check").set(0)
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"keysNvalue":zip(keys,descr,remedy,url_issue)})
   
 
@@ -666,7 +682,7 @@ def arachni (request):
     
     url = request.POST.get('param')
     email=request.POST.get('userinputemail')
- 
+    db.child(email.replace(".","_")).child("scan_check").set(1)
     url_inp=""
     try:
                
@@ -788,7 +804,7 @@ def arachni (request):
     #     pass
     
     print(url)
-    p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    p=subprocess.Popen([r'.\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
     time.sleep(20)
     a = ArachniClient()
     resumeFlag = False
@@ -972,6 +988,7 @@ def arachni (request):
     c=(scoring/36)*100
     tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
     db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
+    db.child(emailtofirebase).child("scan_check").set(1)
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
 
 @login_required
@@ -1031,7 +1048,7 @@ def arachni_auth (request):
     password = request.POST.get('passInp')
     usernameinp = request.POST.get('form_cred_user')
     passwordinp = request.POST.get('form_cred_pass')
-
+    db.child(login_email_rn.replace(".","_")).child("scan_check").set(1)
     url_inp=""
     try:
                
@@ -1155,7 +1172,7 @@ def arachni_auth (request):
     #     pass
     
     print(url)
-    p=subprocess.Popen([r'D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    p=subprocess.Popen([r'.\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
     time.sleep(20)
     a = ArachniClient()
     resumeFlag = False
@@ -1333,11 +1350,13 @@ def arachni_auth (request):
     extract_sitemap= db.child(emel).child("scans").child(url_tofirebase).child("sitemap").get()
     for x in extract_sitemap.each():
         visited_links.append(x.val())
-    thisonetrust(fixed_scan_Id,email,re.sub('[.:/]','_',url),url_tofirebase)
+
+    thisonetrust(fixed_scan_Id,login_email_rn,re.sub('[.:/]','_',url),url_tofirebase)
      
 
     c=(scoring/36)*100
     tole_firebase={"z_scor":c,"z_lat":val,"z_long":val2}
+    db.child(emailtofirebase).child("scan_check").set(0)
     db.child(emailtofirebase).child("scans").child(url_tofirebase).update(tole_firebase)
     return render(request, 'report.html',{'data':fixed_list,'data2':round(c),'data3':val,'data4':val2, 'data5':list(set(visited_links)),"urlfirebase":url_inp,"keysNvalue":zip(keys,descr,remedy,url_issue)})
 

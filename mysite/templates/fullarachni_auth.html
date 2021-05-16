@@ -22,10 +22,17 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/grayscale.min.css' %}" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
-
+<script>
+  $(document).ready(function(){
+  $("#btnId").click(function(){
+  
+      $("#display_loading").show("15000");
+  
+   });});
+   </script>
 </head>
 
 <body id="page-top">
@@ -67,7 +74,26 @@
         <br><br><br><br>
         <h1 class="mx-auto my-0 text-uppercase">TheBoyes</h1>
         <h2 class="text-white-50 mx-auto mt-2 mb-5">Sit back, relax and have some coffee. Our bots will email you once the scan is done.</h2>
-           
+        <style>
+          #display_loading{
+        
+            display:none;
+          }
+          .center-fit {
+              /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+        }
+          </style>
         <form action="/fullscan_external_auth/" class="form-inline d-flex" method="post">
             {% csrf_token %}
             <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website" required>
@@ -82,7 +108,9 @@
               <option value="3">SQL Injection</option>
               <option value="4">Server checking</option>
             </select> 
-            <button class="btn btn-primary mx-auto">Check!</button><br><br>
+            <div id="display_loading"><img class="center-fit" src="{% static 'img/loader.gif' %}" ></div>
+            
+            <button class="btn btn-primary mx-auto" id="btnId">Check!</button><br><br>
            
         </form>
 
