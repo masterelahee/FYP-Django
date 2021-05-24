@@ -1,0 +1,387 @@
+{
+  "version" : "1.5.1",
+  "seed" : "9f3ac9bd299841521751f6a3cdfadf74",
+  "options" : {
+    "audit" : {
+      "parameter_values" : true,
+      "exclude_vector_patterns" : [],
+      "include_vector_patterns" : [],
+      "link_templates" : []
+    },
+    "browser_cluster" : {
+      "local_storage" : {},
+      "wait_for_elements" : {},
+      "pool_size" : 10,
+      "job_timeout" : 25,
+      "worker_time_to_live" : 100,
+      "ignore_images" : false,
+      "screen_width" : 1600,
+      "screen_height" : 1200
+    },
+    "datastore" : {
+      "report_path" : null,
+      "token" : "ef48e78fcc4351002137f03da174ea8a"
+    },
+    "http" : {
+      "user_agent" : "Arachni/v2.0dev",
+      "request_timeout" : 10000,
+      "request_redirect_limit" : 5,
+      "request_concurrency" : 20,
+      "request_queue_size" : 100,
+      "request_headers" : {},
+      "response_max_size" : 500000,
+      "cookies" : {},
+      "authentication_type" : "auto"
+    },
+    "input" : {
+      "values" : {},
+      "default_values" : {
+        "(?i-mx:pass)" : "5543!%arachni_secret",
+        "(?i-mx:name)" : "arachni_name",
+        "(?i-mx:mail)" : "arachni@email.gr",
+        "(?i-mx:amount)" : "100",
+        "(?i-mx:usr)" : "arachni_user",
+        "(?i-mx:id)" : "1",
+        "(?i-mx:txt)" : "arachni_text",
+        "(?i-mx:account)" : "12",
+        "(?i-mx:user)" : "arachni_user",
+        "(?i-mx:num)" : "132"
+      },
+      "without_defaults" : false,
+      "force" : false
+    },
+    "scope" : {
+      "redundant_path_patterns" : {},
+      "dom_depth_limit" : 5,
+      "exclude_file_extensions" : [],
+      "exclude_path_patterns" : [],
+      "exclude_content_patterns" : [],
+      "include_path_patterns" : [],
+      "restrict_paths" : [],
+      "extend_paths" : [],
+      "url_rewrites" : {},
+      "auto_redundant_paths" : 3
+    },
+    "session" : {},
+    "checks" : [
+      "allowed_methods",
+      "backup_directories",
+      "csrf",
+      "path_traversal",
+      "html_objects",
+      "http_only_cookies",
+      "http_put",
+      "insecure_client_access_policy",
+      "insecure_cookies",
+      "interesting_responses",
+      "x_frame_options",
+      "password_autocomplete",
+      "backup_files"
+    ],
+    "platforms" : [],
+    "plugins" : {
+      "uniformity" : {},
+      "autothrottle" : {},
+      "healthmap" : {},
+      "timing_attacks" : {},
+      "discovery" : {}
+    },
+    "no_fingerprinting" : false,
+    "authorized_by" : null,
+    "url" : "http://cea1105f5552.ngrok.io/"
+  },
+  "sitemap" : {
+    "http://cea1105f5552.ngrok.io/" : 302,
+    "http://cea1105f5552.ngrok.io/login" : 200,
+    "http://cea1105f5552.ngrok.io/password/reset" : 200,
+    "http://cea1105f5552.ngrok.io/css/custom.css" : 200,
+    "http://cea1105f5552.ngrok.io/password/email" : 405
+  },
+  "start_datetime" : "2020-11-18 00:31:05 +0800",
+  "finish_datetime" : "2020-11-18 00:32:30 +0800",
+  "delta_time" : "00:01:25",
+  "issues" : [
+    {
+      "name" : "Missing 'X-Frame-Options' header",
+      "description" : "\nClickjacking (User Interface redress attack, UI redress attack, UI redressing)\nis a malicious technique of tricking a Web user into clicking on something different\nfrom what the user perceives they are clicking on, thus potentially revealing\nconfidential information or taking control of their computer while clicking on\nseemingly innocuous web pages.\n\nThe server didn't return an `X-Frame-Options` header which means that this website\ncould be at risk of a clickjacking attack.\n\nThe `X-Frame-Options` HTTP response header can be used to indicate whether or not\na browser should be allowed to render a page inside a frame or iframe. Sites can\nuse this to avoid clickjacking attacks, by ensuring that their content is not\nembedded into other sites.\n",
+      "references" : {
+        "MDN" : "https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options",
+        "RFC" : "http://tools.ietf.org/html/rfc7034",
+        "OWASP" : "https://www.owasp.org/index.php/Clickjacking"
+      },
+      "cwe" : 693,
+      "severity" : "low",
+      "remedy_guidance" : "\nConfigure your web server to include an `X-Frame-Options` header.\n",
+      "check" : {
+        "name" : "Missing X-Frame-Options header",
+        "description" : "Checks the host for a missing `X-Frame-Options` header.",
+        "author" : "Tasos Laskos <tasos.laskos@arachni-scanner.com>",
+        "version" : "0.1.2",
+        "elements" : [
+          "server"
+        ],
+        "shortname" : "x_frame_options"
+      },
+      "vector" : {
+        "class" : "Arachni::Element::Server",
+        "type" : "server",
+        "url" : "http://cea1105f5552.ngrok.io/",
+        "affected_input_name" : null
+      },
+      "proof" : "HTTP/1.1 302 Found",
+      "referring_page" : {
+        "body" : "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/login'\" />\n\n        <title>Redirecting to /login</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/login\">/login</a>.\n    </body>\n</html>",
+        "dom" : {
+          "url" : "http://cea1105f5552.ngrok.io/",
+          "transitions" : [],
+          "cookies" : [],
+          "digest" : null,
+          "data_flow_sinks" : [],
+          "execution_flow_sinks" : []
+        }
+      },
+      "platform_name" : null,
+      "platform_type" : null,
+      "page" : {
+        "body" : "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/login'\" />\n\n        <title>Redirecting to /login</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/login\">/login</a>.\n    </body>\n</html>",
+        "dom" : {
+          "url" : "http://cea1105f5552.ngrok.io/",
+          "transitions" : [],
+          "cookies" : [],
+          "digest" : null,
+          "data_flow_sinks" : [],
+          "execution_flow_sinks" : []
+        }
+      },
+      "remarks" : {},
+      "trusted" : true,
+      "tags" : [],
+      "cwe_url" : "http://cwe.mitre.org/data/definitions/693.html",
+      "digest" : 2895176841,
+      "response" : {
+        "headers" : {
+          "Server" : "nginx/1.15.8",
+          "Content-Type" : "text/html; charset=UTF-8",
+          "Transfer-Encoding" : "chunked",
+          "Cache-Control" : "no-cache, private",
+          "Date" : "Tue, 17 Nov 2020 16:31:31 GMT",
+          "Location" : "/login",
+          "Set-Cookie" : [
+            "XSRF-TOKEN=eyJpdiI6Im1rcjB0dDVyNm1DbjhOc3A5VE1OQlE9PSIsInZhbHVlIjoidXJ3TGNCRnp5V0pabmx6ZFNxOGg1aVJXanZkaHlyWU9uTlBGRG4zcDd4U1BTa1I4bGpPNGVkYlNxb0QxNTJ5dWdSNUxcL3VDXC9PUHdDRlJNdmMxaTNlZ2VPbEY4R2RpTTYrczh2Q1ZBSGVOWVdXQ2dIc2cwXC9mMzJoZjE5Rm1vNCsiLCJtYWMiOiJlNGYzZjBkZGMwMGU1ZTY5MGQ5ZjBjNzE0MzY0ZThjMDdkZmJlYWU0NDRlZDJmNTllMDhjODQ5YzAyZDA2ZjQ5In0%3D; expires=Tue, 17-Nov-2020 18:31:31 GMT; Max-Age=7200; path=/",
+            "laravel_session=eyJpdiI6ImJDYWVBMmJuSlczQURmRTRYV3dteHc9PSIsInZhbHVlIjoidTBuMGpvNDVHaXoxMEpiUWdidnd2UVh5UjJvbU5WcGgwTGxJVitBY1pKRmIwdVV4RCtKQTc0UDY3S3VxUm9YbmI2ZXRaU3poWmd4bEVNQXBzR3dEWnNDeFZPdnBEak16aXBPckloaWpcL2lRdVlabTFFcWxBMEdcL3d3MVdTZ05XMSIsIm1hYyI6ImE3ODZlZGE0ZWVlOGNkMDA2MmIyMjU0ODlkN2I4MTQ1YWNiODkzYjU0MjUxMTM3OTZkOTI3YmEwZmU0YTZhYmYifQ%3D%3D; expires=Tue, 17-Nov-2020 18:31:31 GMT; Max-Age=7200; path=/; httponly"
+          ]
+        },
+        "url" : "http://cea1105f5552.ngrok.io/",
+        "code" : 302,
+        "ip_address" : "3.134.125.175",
+        "headers_string" : "HTTP/1.1 302 Found\r\nServer: nginx/1.15.8\r\nContent-Type: text/html; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nCache-Control: no-cache, private\r\nDate: Tue, 17 Nov 2020 16:31:31 GMT\r\nLocation: /login\r\nSet-Cookie: XSRF-TOKEN=eyJpdiI6Im1rcjB0dDVyNm1DbjhOc3A5VE1OQlE9PSIsInZhbHVlIjoidXJ3TGNCRnp5V0pabmx6ZFNxOGg1aVJXanZkaHlyWU9uTlBGRG4zcDd4U1BTa1I4bGpPNGVkYlNxb0QxNTJ5dWdSNUxcL3VDXC9PUHdDRlJNdmMxaTNlZ2VPbEY4R2RpTTYrczh2Q1ZBSGVOWVdXQ2dIc2cwXC9mMzJoZjE5Rm1vNCsiLCJtYWMiOiJlNGYzZjBkZGMwMGU1ZTY5MGQ5ZjBjNzE0MzY0ZThjMDdkZmJlYWU0NDRlZDJmNTllMDhjODQ5YzAyZDA2ZjQ5In0%3D; expires=Tue, 17-Nov-2020 18:31:31 GMT; Max-Age=7200; path=/\r\nSet-Cookie: laravel_session=eyJpdiI6ImJDYWVBMmJuSlczQURmRTRYV3dteHc9PSIsInZhbHVlIjoidTBuMGpvNDVHaXoxMEpiUWdidnd2UVh5UjJvbU5WcGgwTGxJVitBY1pKRmIwdVV4RCtKQTc0UDY3S3VxUm9YbmI2ZXRaU3poWmd4bEVNQXBzR3dEWnNDeFZPdnBEak16aXBPckloaWpcL2lRdVlabTFFcWxBMEdcL3d3MVdTZ05XMSIsIm1hYyI6ImE3ODZlZGE0ZWVlOGNkMDA2MmIyMjU0ODlkN2I4MTQ1YWNiODkzYjU0MjUxMTM3OTZkOTI3YmEwZmU0YTZhYmYifQ%3D%3D; expires=Tue, 17-Nov-2020 18:31:31 GMT; Max-Age=7200; path=/; httponly\r\n\r\n",
+        "body" : "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/login'\" />\n\n        <title>Redirecting to /login</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/login\">/login</a>.\n    </body>\n</html>",
+        "time" : 1.25,
+        "app_time" : 0.843,
+        "total_time" : 1.25,
+        "return_code" : "ok",
+        "return_message" : "No error",
+        "status_line" : "HTTP/1.1 302 Found"
+      },
+      "request" : {
+        "url" : "http://cea1105f5552.ngrok.io/",
+        "parameters" : {},
+        "headers" : {
+          "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "User-Agent" : "Arachni/v2.0dev",
+          "Accept-Language" : "en-US,en;q=0.8,he;q=0.6",
+          "X-Arachni-Scan-Seed" : "9f3ac9bd299841521751f6a3cdfadf74"
+        },
+        "headers_string" : "GET / HTTP/1.1\r\nHost: cea1105f5552.ngrok.io\r\nAccept-Encoding: gzip, deflate\r\nUser-Agent: Arachni/v2.0dev\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8,he;q=0.6\r\nX-Arachni-Scan-Seed: 9f3ac9bd299841521751f6a3cdfadf74\r\n\r\n",
+        "effective_body" : null,
+        "body" : null,
+        "method" : "get"
+      }
+    },
+    {
+      "name" : "Interesting response",
+      "description" : "\nThe server responded with a non 200 (OK) nor 404 (Not Found) status code.\nThis is a non-issue, however exotic HTTP response status codes can provide useful\ninsights into the behavior of the web application and assist with the penetration test.\n",
+      "references" : {
+        "w3.org" : "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html"
+      },
+      "severity" : "informational",
+      "check" : {
+        "name" : "Interesting responses",
+        "description" : "Logs all non 200 (OK) server responses.",
+        "elements" : [
+          "server"
+        ],
+        "author" : "Tasos \"Zapotek\" Laskos <tasos.laskos@arachni-scanner.com>",
+        "version" : "0.2.1",
+        "max_issues" : 25,
+        "shortname" : "interesting_responses"
+      },
+      "vector" : {
+        "class" : "Arachni::Element::Server",
+        "type" : "server",
+        "url" : "http://cea1105f5552.ngrok.io/",
+        "affected_input_name" : null
+      },
+      "proof" : "HTTP/1.1 405 Not Allowed",
+      "referring_page" : {
+        "body" : "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/login'\" />\n\n        <title>Redirecting to /login</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/login\">/login</a>.\n    </body>\n</html>",
+        "dom" : {
+          "url" : "http://cea1105f5552.ngrok.io/",
+          "transitions" : [],
+          "cookies" : [],
+          "digest" : null,
+          "data_flow_sinks" : [],
+          "execution_flow_sinks" : []
+        }
+      },
+      "platform_name" : null,
+      "platform_type" : null,
+      "page" : {
+        "body" : "<html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.15.8</center>\r\n</body>\r\n</html>\r\n",
+        "dom" : {
+          "url" : "http://cea1105f5552.ngrok.io/",
+          "transitions" : [],
+          "cookies" : [],
+          "digest" : null,
+          "data_flow_sinks" : [],
+          "execution_flow_sinks" : []
+        }
+      },
+      "remarks" : {},
+      "trusted" : true,
+      "tags" : [
+        "interesting",
+        "response",
+        "server"
+      ],
+      "digest" : 2350549150,
+      "response" : {
+        "headers" : {
+          "Server" : "nginx/1.15.8",
+          "Date" : "Tue, 17 Nov 2020 16:31:32 GMT",
+          "Content-Type" : "text/html; charset=utf-8",
+          "Content-Length" : "157"
+        },
+        "url" : "http://cea1105f5552.ngrok.io/",
+        "code" : 405,
+        "ip_address" : "3.134.125.175",
+        "headers_string" : "HTTP/1.1 405 Not Allowed\r\nServer: nginx/1.15.8\r\nDate: Tue, 17 Nov 2020 16:31:32 GMT\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 157\r\n\r\n",
+        "body" : "<html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.15.8</center>\r\n</body>\r\n</html>\r\n",
+        "time" : 1.156,
+        "app_time" : 0.797,
+        "total_time" : 1.156,
+        "return_code" : "ok",
+        "return_message" : "No error",
+        "status_line" : "HTTP/1.1 405 Not Allowed"
+      },
+      "request" : {
+        "url" : "http://cea1105f5552.ngrok.io/",
+        "parameters" : {},
+        "headers" : {
+          "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "User-Agent" : "Arachni/v2.0dev",
+          "Accept-Language" : "en-US,en;q=0.8,he;q=0.6",
+          "X-Arachni-Scan-Seed" : "9f3ac9bd299841521751f6a3cdfadf74",
+          "Cookie" : "XSRF-TOKEN=eyJpdiI6Im1rcjB0dDVyNm1DbjhOc3A5VE1OQlE9PSIsInZhbHVlIjoidXJ3TGNCRnp5V0pabmx6ZFNxOGg1aVJXanZkaHlyWU9uTlBGRG4zcDd4U1BTa1I4bGpPNGVkYlNxb0QxNTJ5dWdSNUxcL3VDXC9PUHdDRlJNdmMxaTNlZ2VPbEY4R2RpTTYrczh2Q1ZBSGVOWVdXQ2dIc2cwXC9mMzJoZjE5Rm1vNCsiLCJtYWMiOiJlNGYzZjBkZGMwMGU1ZTY5MGQ5ZjBjNzE0MzY0ZThjMDdkZmJlYWU0NDRlZDJmNTllMDhjODQ5YzAyZDA2ZjQ5In0%3D;laravel_session=eyJpdiI6ImJDYWVBMmJuSlczQURmRTRYV3dteHc9PSIsInZhbHVlIjoidTBuMGpvNDVHaXoxMEpiUWdidnd2UVh5UjJvbU5WcGgwTGxJVitBY1pKRmIwdVV4RCtKQTc0UDY3S3VxUm9YbmI2ZXRaU3poWmd4bEVNQXBzR3dEWnNDeFZPdnBEak16aXBPckloaWpcL2lRdVlabTFFcWxBMEdcL3d3MVdTZ05XMSIsIm1hYyI6ImE3ODZlZGE0ZWVlOGNkMDA2MmIyMjU0ODlkN2I4MTQ1YWNiODkzYjU0MjUxMTM3OTZkOTI3YmEwZmU0YTZhYmYifQ%3D%3D"
+        },
+        "headers_string" : "OPTIONS / HTTP/1.1\r\nHost: cea1105f5552.ngrok.io\r\nAccept-Encoding: gzip, deflate\r\nUser-Agent: Arachni/v2.0dev\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8,he;q=0.6\r\nX-Arachni-Scan-Seed: 9f3ac9bd299841521751f6a3cdfadf74\r\nCookie: XSRF-TOKEN=eyJpdiI6Im1rcjB0dDVyNm1DbjhOc3A5VE1OQlE9PSIsInZhbHVlIjoidXJ3TGNCRnp5V0pabmx6ZFNxOGg1aVJXanZkaHlyWU9uTlBGRG4zcDd4U1BTa1I4bGpPNGVkYlNxb0QxNTJ5dWdSNUxcL3VDXC9PUHdDRlJNdmMxaTNlZ2VPbEY4R2RpTTYrczh2Q1ZBSGVOWVdXQ2dIc2cwXC9mMzJoZjE5Rm1vNCsiLCJtYWMiOiJlNGYzZjBkZGMwMGU1ZTY5MGQ5ZjBjNzE0MzY0ZThjMDdkZmJlYWU0NDRlZDJmNTllMDhjODQ5YzAyZDA2ZjQ5In0%3D;laravel_session=eyJpdiI6ImJDYWVBMmJuSlczQURmRTRYV3dteHc9PSIsInZhbHVlIjoidTBuMGpvNDVHaXoxMEpiUWdidnd2UVh5UjJvbU5WcGgwTGxJVitBY1pKRmIwdVV4RCtKQTc0UDY3S3VxUm9YbmI2ZXRaU3poWmd4bEVNQXBzR3dEWnNDeFZPdnBEak16aXBPckloaWpcL2lRdVlabTFFcWxBMEdcL3d3MVdTZ05XMSIsIm1hYyI6ImE3ODZlZGE0ZWVlOGNkMDA2MmIyMjU0ODlkN2I4MTQ1YWNiODkzYjU0MjUxMTM3OTZkOTI3YmEwZmU0YTZhYmYifQ%3D%3D\r\n\r\n",
+        "effective_body" : null,
+        "body" : null,
+        "method" : "options"
+      }
+    },
+    {
+      "name" : "Interesting response",
+      "description" : "\nThe server responded with a non 200 (OK) nor 404 (Not Found) status code.\nThis is a non-issue, however exotic HTTP response status codes can provide useful\ninsights into the behavior of the web application and assist with the penetration test.\n",
+      "references" : {
+        "w3.org" : "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html"
+      },
+      "severity" : "informational",
+      "check" : {
+        "name" : "Interesting responses",
+        "description" : "Logs all non 200 (OK) server responses.",
+        "elements" : [
+          "server"
+        ],
+        "author" : "Tasos \"Zapotek\" Laskos <tasos.laskos@arachni-scanner.com>",
+        "version" : "0.2.1",
+        "max_issues" : 25,
+        "shortname" : "interesting_responses"
+      },
+      "vector" : {
+        "class" : "Arachni::Element::Server",
+        "type" : "server",
+        "url" : "http://cea1105f5552.ngrok.io/password/reset/reset%20-%20Copy.97c",
+        "affected_input_name" : null
+      },
+      "proof" : "HTTP/1.1 502 Bad Gateway",
+      "referring_page" : {
+        "body" : "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/login'\" />\n\n        <title>Redirecting to /login</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/login\">/login</a>.\n    </body>\n</html>",
+        "dom" : {
+          "url" : "http://cea1105f5552.ngrok.io/",
+          "transitions" : [],
+          "cookies" : [],
+          "digest" : null,
+          "data_flow_sinks" : [],
+          "execution_flow_sinks" : []
+        }
+      },
+      "platform_name" : null,
+      "platform_type" : null,
+      "page" : {
+        "body" : "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx/1.15.8</center>\r\n</body>\r\n</html>\r\n",
+        "dom" : {
+          "url" : "http://cea1105f5552.ngrok.io/password/reset/reset%20-%20Copy.97c",
+          "transitions" : [],
+          "cookies" : [],
+          "digest" : null,
+          "data_flow_sinks" : [],
+          "execution_flow_sinks" : []
+        }
+      },
+      "remarks" : {},
+      "trusted" : true,
+      "tags" : [
+        "interesting",
+        "response",
+        "server"
+      ],
+      "digest" : 2143077788,
+      "response" : {
+        "headers" : {
+          "Server" : "nginx/1.15.8",
+          "Date" : "Tue, 17 Nov 2020 16:31:48 GMT",
+          "Content-Type" : "text/html; charset=utf-8",
+          "Content-Length" : "157"
+        },
+        "url" : "http://cea1105f5552.ngrok.io/password/reset/reset%20-%20Copy.97c",
+        "code" : 502,
+        "ip_address" : "3.134.125.175",
+        "headers_string" : "HTTP/1.1 502 Bad Gateway\r\nServer: nginx/1.15.8\r\nDate: Tue, 17 Nov 2020 16:31:48 GMT\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 157\r\n\r\n",
+        "body" : "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx/1.15.8</center>\r\n</body>\r\n</html>\r\n",
+        "time" : 0.937,
+        "app_time" : 0.594,
+        "total_time" : 0.937,
+        "return_code" : "ok",
+        "return_message" : "No error",
+        "status_line" : "HTTP/1.1 502 Bad Gateway"
+      },
+      "request" : {
+        "url" : "http://cea1105f5552.ngrok.io/password/reset/reset%20-%20Copy.97c",
+        "parameters" : {},
+        "headers" : {
+          "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "User-Agent" : "Arachni/v2.0dev",
+          "Accept-Language" : "en-US,en;q=0.8,he;q=0.6",
+          "X-Arachni-Scan-Seed" : "9f3ac9bd299841521751f6a3cdfadf74",
+          "Cookie" : "XSRF-TOKEN=eyJpdiI6IjFGM3lyMjBOSTRTdE5kWWI1SXhwUWc9PSIsInZhbHVlIjoia1pTcjczV2d0UUh2SWxKYWQwUWVSYm9McXJMcFljRnhwZ0JMR1k2NzFiSUVcL2dPczZSNVZ5cDhqQXpZWThzbEg2QXZUWlwvT0NPblE5ajlTMU5VbkZhNSt2WElVclI1djBTWmhYaUhDMkd4XC9GSVJEZG5uKzVmc25JMVB2UVZOa2MiLCJtYWMiOiI5ZDNjMjdlZDlkZGI3MjUzYWZkZWY2NWFiZDY1NDYyMTllOGVjMDVkYzEzZjExYWUwMmJjNGMwYzViZmQ0NmQzIn0%3D;laravel_session=eyJpdiI6Ikp3Q3F2UkVoZ3lKZGJkOWQ0RmNiUUE9PSIsInZhbHVlIjoiOEhoZVJWdVcxYXpSTW1XQldsd3dnXC8xSlBpR1hGK0xVbnhydW1SSzRUOEZnUHRDSzhmU0Q0UEJaOG1OdmtyK3Rqb3hLVHJLM1h6OVN5RHp0THF5TGJZelRCN1pXbjlQQTB1OUtmQXBNd1REbG5kOUtCclBmQU1vcitcL1h2UjJBNCIsIm1hYyI6IjZhOGQyZDk3ZWQzY2I5ZGUxNjYyMzY0ODZiNDA4ZWNjOGJlOWJjNmM0ZmJiMTE2NmIxZmU2OWUwYjgxMzA5ZjcifQ%3D%3D"
+        },
+        "headers_string" : "GET /password/reset/reset%20-%20Copy.97c HTTP/1.1\r\nHost: cea1105f5552.ngrok.io\r\nAccept-Encoding: gzip, deflate\r\nUser-Agent: Arachni/v2.0dev\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8,he;q=0.6\r\nX-Arachni-Scan-Seed: 9f3ac9bd299841521751f6a3cdfadf74\r\nCookie: XSRF-TOKEN=eyJpdiI6IjFGM3lyMjBOSTRTdE5kWWI1SXhwUWc9PSIsInZhbHVlIjoia1pTcjczV2d0UUh2SWxKYWQwUWVSYm9McXJMcFljRnhwZ0JMR1k2NzFiSUVcL2dPczZSNVZ5cDhqQXpZWThzbEg2QXZUWlwvT0NPblE5ajlTMU5VbkZhNSt2WElVclI1djBTWmhYaUhDMkd4XC9GSVJEZG5uKzVmc25JMVB2UVZOa2MiLCJtYWMiOiI5ZDNjMjdlZDlkZGI3MjUzYWZkZWY2NWFiZDY1NDYyMTllOGVjMDVkYzEzZjExYWUwMmJjNGMwYzViZmQ0NmQzIn0%3D;laravel_session=eyJpdiI6Ikp3Q3F2UkVoZ3lKZGJkOWQ0RmNiUUE9PSIsInZhbHVlIjoiOEhoZVJWdVcxYXpSTW1XQldsd3dnXC8xSlBpR1hGK0xVbnhydW1SSzRUOEZnUHRDSzhmU0Q0UEJaOG1OdmtyK3Rqb3hLVHJLM1h6OVN5RHp0THF5TGJZelRCN1pXbjlQQTB1OUtmQXBNd1REbG5kOUtCclBmQU1vcitcL1h2UjJBNCIsIm1hYyI6IjZhOGQyZDk3ZWQzY2I5ZGUxNjYyMzY0ODZiNDA4ZWNjOGJlOWJjNmM0ZmJiMTE2NmIxZmU2OWUwYjgxMzA5ZjcifQ%3D%3D\r\n\r\n",
+        "effective_body" : null,
+        "body" : null,
+        "method" : "get"
+      }
+    }
+  ],
+  "plugins" : {}
+}

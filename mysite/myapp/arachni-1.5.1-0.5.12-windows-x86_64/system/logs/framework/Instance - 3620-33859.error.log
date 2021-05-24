@@ -1,0 +1,171 @@
+
+2020-11-17 12:24:32 +0800 --------------------------------------------------------------------------------
+ENV:
+---
+ALLUSERSPROFILE: C:\ProgramData
+APPDATA: C:\Users\USER\AppData\Roaming
+ARACHNI_FRAMEWORK_LOGDIR: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\\logs\framework
+ARACHNI_WEBUI_LOGDIR: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\\logs\webui
+asl.log: Destination=file
+BUNDLER_ORIG_GEM_PATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0;C:/Users/USER/.gem/ruby/2.2.0
+BUNDLER_ORIG_MANPATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/kramdown-1.4.1/man
+BUNDLER_VERSION: 1.14.6
+BUNDLE_BIN_PATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/bundler-1.14.6/exe/bundle
+BUNDLE_GEMFILE: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/arachni-ui-web/Gemfile
+CommonProgramFiles: C:\Program Files\Common Files
+CommonProgramFiles(x86): C:\Program Files (x86)\Common Files
+CommonProgramW6432: C:\Program Files\Common Files
+COMPUTERNAME: LAPTOP-FLHQ8BK5
+ComSpec: C:\WINDOWS\system32\cmd.exe
+DriverData: C:\Windows\System32\Drivers\DriverData
+ENV_ROOT: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\
+ENV_RUBY_BIN: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\ruby\bin
+ENV_WEBUI_BIN: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\arachni-ui-web\bin
+ENV_WEBUI_ROOT: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\arachni-ui-web
+FPS_BROWSER_APP_PROFILE_STRING: Internet Explorer
+FPS_BROWSER_USER_PROFILE_STRING: Default
+GEM_HOME: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0
+GEM_PATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0;C:/Users/USER/.gem/ruby/2.2.0
+GTK_BASEPATH: C:\Program Files (x86)\GtkSharp\2.12\
+HOME: C:/Users/USER
+HOMEDRIVE: 'C:'
+HOMEPATH: "\\Users\\USER"
+LOCALAPPDATA: C:\Users\USER\AppData\Local
+LOGONSERVER: "\\\\LAPTOP-FLHQ8BK5"
+MANPATH: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/kramdown-1.4.1/man
+MSYS2_PATH_TYPE: inherit
+NDI_RUNTIME_DIR_V2: D:\v4
+NDI_RUNTIME_DIR_V3: D:\v4
+NDI_RUNTIME_DIR_V4: D:\v4
+NUMBER_OF_PROCESSORS: '8'
+OneDrive: C:\Users\USER\OneDrive
+OS: Windows_NT
+Path: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/bin;D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\ruby\bin;C:\Program
+  Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\Intel(R)
+  Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine
+  Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program
+  Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R)
+  Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management
+  Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program
+  Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program
+  Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\PharosSystems\Core;C:\Program
+  Files\Microsoft SQL Server\110\Tools\Binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Git\cmd;C:\Program
+  Files (x86)\Nmap;C:\Program Files\dotnet\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\msys64\home\USER\.splashkit;C:\msys64\home\USER\.splashkit\lib\win64;C:\msys64\home\USER\.splashkit\lib;C:\Windows\System32;C:\Users\USER\AppData\Local\Programs\Python\Python38-32\Scripts;D:\Microsoft
+  VS Code\bin;C:\Users\USER\AppData\Local\GitHubDesktop\bin;C:\Users\USER\AppData\Local\Microsoft\WindowsApps;D:\Xampp\php;C:\Users\USER\AppData\Local\Programs\Python\Python38-32
+pathExists: '0 '
+PATHEXT: ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC"
+PROCESSOR_ARCHITECTURE: AMD64
+PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 158 Stepping 10, GenuineIntel
+PROCESSOR_LEVEL: '6'
+PROCESSOR_REVISION: 9e0a
+ProgramData: C:\ProgramData
+ProgramFiles: C:\Program Files
+ProgramFiles(x86): C:\Program Files (x86)
+ProgramW6432: C:\Program Files
+PROMPT: "$P$G"
+PSModulePath: C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+PT7HOME: D:\Cisco Packet Tracer 7.3.0
+PUBLIC: C:\Users\Public
+QT_DEVICE_PIXEL_RATIO: auto
+RACK_ENV: development
+RAILS_ENV: production
+RUBYLIB: D:/Desktop/FYP/FYP-Django/mysite/myapp/arachni-1.5.1-0.5.12-windows-x86_64/system/ruby/lib/ruby/gems/2.2.0/gems/bundler-1.14.6/lib
+RUBYOPT: "-rbundler/setup"
+SESSIONNAME: Console
+SystemDrive: 'C:'
+SystemRoot: C:\WINDOWS
+TEMP: C:\Users\USER\AppData\Local\Temp
+TMP: C:\Users\USER\AppData\Local\Temp
+USER: USER
+USERDOMAIN: LAPTOP-FLHQ8BK5
+USERDOMAIN_ROAMINGPROFILE: LAPTOP-FLHQ8BK5
+USERNAME: USER
+USERPROFILE: D:\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\system\home
+VBOX_MSI_INSTALL_PATH: D:\VM\
+windir: C:\WINDOWS
+--------------------------------------------------------------------------------
+OPTIONS:
+---
+audit:
+  parameter_values: true
+  exclude_vector_patterns: []
+  include_vector_patterns: []
+  link_templates: []
+browser_cluster:
+  local_storage: {}
+  wait_for_elements: {}
+  pool_size: 10
+  job_timeout: 25
+  worker_time_to_live: 100
+  ignore_images: false
+  screen_width: 1600
+  screen_height: 1200
+datastore:
+  report_path: 
+  token: fdbcdfd6f01042353ca7d4bac3697c6b
+http:
+  user_agent: Arachni/v2.0dev
+  request_timeout: 10000
+  request_redirect_limit: 5
+  request_concurrency: 20
+  request_queue_size: 100
+  request_headers: {}
+  response_max_size: 500000
+  cookies: {}
+  authentication_type: auto
+input:
+  values: {}
+  default_values:
+    "(?i-mx:pass)": 5543!%arachni_secret
+    "(?i-mx:name)": arachni_name
+    "(?i-mx:mail)": arachni@email.gr
+    "(?i-mx:amount)": '100'
+    "(?i-mx:usr)": arachni_user
+    "(?i-mx:id)": '1'
+    "(?i-mx:txt)": arachni_text
+    "(?i-mx:account)": '12'
+    "(?i-mx:user)": arachni_user
+    "(?i-mx:num)": '132'
+  without_defaults: false
+  force: false
+scope:
+  redundant_path_patterns: {}
+  dom_depth_limit: 5
+  exclude_file_extensions: []
+  exclude_path_patterns: []
+  exclude_content_patterns: []
+  include_path_patterns: []
+  restrict_paths: []
+  extend_paths: []
+  url_rewrites: {}
+  auto_redundant_paths: 3
+session: {}
+checks:
+- allowed_methods
+- backup_directories
+- csrf
+- path_traversal
+- html_objects
+- http_only_cookies
+- http_put
+- insecure_client_access_policy
+- insecure_cookies
+- interesting_responses
+- x_frame_options
+- password_autocomplete
+- backup_files
+platforms: []
+plugins:
+  uniformity: {}
+  autothrottle: {}
+  healthmap: {}
+  timing_attacks: {}
+  discovery: {}
+no_fingerprinting: false
+authorized_by: 
+url: http://cea1105f5552.ngrok.io/
+--------------------------------------------------------------------------------
+[2020-11-17 12:24:32 +0800] [HTTP: 405] http://cea1105f5552.ngrok.io/password/email
+[2020-11-17 12:24:32 +0800] [operation_timedout] Timeout was reached
+[2020-11-17 12:24:57 +0800] [HTTP: 405] http://cea1105f5552.ngrok.io/password/email
+[2020-11-17 12:24:57 +0800] [operation_timedout] Timeout was reached

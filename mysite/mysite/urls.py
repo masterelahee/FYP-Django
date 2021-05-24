@@ -18,18 +18,45 @@ from django.urls import path
 from myapp import views as v
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import include
-from myapp.views import login_view, register_view, logout_view
+from myapp.views import postregister, logout_view
+
+admin.site.site_header="TheBoyes Administrator Dashboard"
+# https://www.youtube.com/watch?v=PX6J6h_ihyE&list=PLVZgTVNoxdMksQAJI7J2IHpNW7rY7U3XI&index=2
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('', v.index, name="index"),
-    # path("external/",  v.external),
-    # path('attack', v.attack, name='attack'),
-    path('welcome/', v.index, name="welcome"),
-    path('', login_view, name="login"),
-    path('accounts/register/', register_view),
-    path('accounts/logout/', logout_view, name="logout")
+
+    path('admin/', admin.site.urls, name="admin"),
+
+    path("normal_external/",  v.norm_scan, name="normal_scan"),
+    path("fullscan/",  v.fullscan_arachni, name="full"),
+    path("fullauthscan/",  v.fullscan_arachni_auth, name="full_auth"),
+    path("fullscan_external/",  v.arachni),
+    path("fullscan_external_auth/",  v.arachni_auth),
+    path("normal/", v.normal),
+    path('home/', v.home, name="home"),
+    path('report/', v.report, name="report"),
+    path('history-report/', v.scan_history_report, name="historyreport"),
+    path('normal/', v.normal, name="normal"),
+    path('attack', v.attack, name='attack'),
+    path('administrator/', v.admin_custom, name='admin_custom'),
+    path('new-user/', v.admin_reg, name='admin_reg'),
+    path('full-normal/', v.index, name="welcome"),
+    path('scan-history/',v.scan_history, name="scan_history"),
+
+    path('welcome/', v.postsign, name="post_sign"),
+    path('', v.signIn, name="login"),
+    path('signup/', v.postregister, name="signup"),
+    path('processing_user/',v.del_disble_user, name="del_disble_user"),
+    path('post_adm_login/',v.admin_process_log),
+    path('admin-login/', v.admin_login, name="admin_log_in"),
+    path('logout/', v.logout_admin, name="logoutadmin"),
+    path('accounts/logout/', logout_view, name="logout"),
+
+    path('profile/', v.profile, name="profile"),
+    path('profileupdate/', v.profile_update, name="profile_update")
     
 ]
 
 urlpatterns += staticfiles_urlpatterns()
+
+
 

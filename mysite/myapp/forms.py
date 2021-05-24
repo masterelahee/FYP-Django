@@ -29,9 +29,10 @@ class UserLoginForm(forms.Form):
 
 
 class UserRegisterForm(forms.ModelForm):
-    email = forms.EmailField(label='Email address')
-    email2 = forms.EmailField(label='Confirm Email')
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control','placeholder': 'Email'}))
+    email2 = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control','placeholder': 'Confirm email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control','placeholder': 'Password'}))
+
 
     class Meta:
         model = User

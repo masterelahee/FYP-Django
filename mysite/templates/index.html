@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +14,7 @@
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/loader.css' %}" rel="stylesheet">
-
+ 
   <!-- Custom fonts for this template -->
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
@@ -22,14 +22,14 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/grayscale.min.css' %}" rel="stylesheet">
-
+ 
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
 
 </head>
 
 <body id="page-top">
- 
+
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
@@ -41,13 +41,16 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'scan_history' %}">History</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#signup">Contact</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'home' %}#products">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{% url 'profile' %}">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Logout</a>
@@ -63,21 +66,29 @@
       <div class="mx-auto text-center">
         <br><br><br><br>
         <h1 class="mx-auto my-0 text-uppercase">TheBoyes</h1>
-        <h2 class="text-white-50 mx-auto mt-2 mb-5">Key in the IP Address and our intelligent system will check it out.</h2>
+        <h2 class="text-white-50 mx-auto mt-2 mb-5">Key in the website and our intelligent system will check it out.</h2>
         
 
 
         <form action="/external/" class="form-inline d-flex" method="post">
-            <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter IP address..." required>
+            <input type="text" name="param" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter website" required>
+            <input type="text" name="userInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter username" required>
+            <input type="text" name="passInp" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter password" required>
+            <input type="text" name="form_cred_user" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Form username name" required>
+            <input type="text" name="form_cred_pass" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Form password name" required>
+            
             <button class="btn btn-primary mx-auto">Check!</button><br><br>
-           
+            
+            
         </form>
 
         
         <div id='map' style='width: 400px; height: 300px;'></div>
         
         {% if data3 %}
+
         <script>
+          
             mapboxgl.accessToken = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q';
             var latextrac="{{data3}}";
             var lonextrac="{{data4}}";
@@ -211,18 +222,15 @@ map.addLayer({
           <p class="text-white-50">
             
             Ports open and vulnerable: {{data}}
-            <div class="btn btn-primary mx-auto">{{data2}}</div>
+                  
+            <br>
+            Links scraped: {{data5}}
+            <br>
+            Cookie found: {{data6}}
             
-            <div class="btn btn-primary mx-auto">LAT {{data3}}</div>
-            <div class="btn btn-primary mx-auto">LONG {{data4}}</div>
-
-            <div class="btn btn-primary mx-auto">{{data5}}</div>
 
           </p>
-           
           
-            
-
             <!--<a  class="btn btn-primary mx-auto" href="{% url 'attack'%}">Attack</a>-->
                         
             <form action="{% url 'attack'%}" class="form-inline d-flex" method="post">
@@ -239,6 +247,7 @@ map.addLayer({
   </section>
 
   {% endif %}
+
  <!--
   <section id="projects" class="projects-section bg-light">
     <div class="container">
@@ -246,11 +255,11 @@ map.addLayer({
      
       <div class="row align-items-center no-gutters mb-4 mb-lg-5">
         <div class="col-xl-8 col-lg-7">
-          <img class="img-fluid mb-3 mb-lg-0" src="{% static 'img/bg-masthead.jpg' %}" alt="">
+          <img class="img-fluid mb-3 mb-lg-0" src="{% static 'img/new.jpg' %}" alt="">
         </div>
         <div class="col-xl-4 col-lg-5">
           <div class="featured-text text-center text-lg-left">
-            <h4>Shoreline</h4>
+            <h4>Vulnerable</h4>
             <p class="text-black-50 mb-0">Grayscale is open source and MIT licensed. This means you can use it for any project - even commercial projects! Download it, customize it, and publish your website!</p>
           </div>
         </div>
@@ -369,11 +378,10 @@ map.addLayer({
 
     </div>
   </section>
--->
   <!-- Footer -->
   <footer class="bg-black small text-center text-white-50">
     <div class="container">
-      Copyright &copy; TheBoyes 2020
+      Copyright &copy; TheBoyes 2021
     </div>
   </footer>
   

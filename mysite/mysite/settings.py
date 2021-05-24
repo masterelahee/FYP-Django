@@ -28,9 +28,9 @@ STATICFILES_DIRS=(
 SECRET_KEY = '2o^)7(229_6kt$@wbz64zep#^p@xo5!9dwx=2l+2u)39n8-8ic'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'myapp',
 
 ]
+
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,3 +131,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL="login"
+LOGIN_REDIRECT_URL="/home/"
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)

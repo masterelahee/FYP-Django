@@ -2,7 +2,8 @@
     "workbench.colorCustomizations": {
     
     },
-    "python.pythonPath": "venv\\Scripts\\python.exe"
+    "git.ignoreLimitWarning": true,
+    "python.pythonPath": "thelatestfypvenv\\Scripts\\python.exe"
 
    
 }
