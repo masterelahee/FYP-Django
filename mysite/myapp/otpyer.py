@@ -16,7 +16,7 @@ def qrcodeGenerator(userEmail):
 
     imageqqr = qrcode.make(str(totp_uri))
     print("sdfsdfsd")
-    imageqqr.save("./mysite/myapp/QRcodes/{0}.jpg".format(userEmail)) 
+    imageqqr.save("C:/Users/maste/OneDrive/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/{0}.jpg".format(userEmail)) 
    
     print("ggg")
     return secret

@@ -3,6 +3,7 @@ from subprocess import run,PIPE
 import subprocess
 import requests
 import sys
+from http.client import HTTPConnection, HTTPSConnection
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext
 from django.http import HttpResponse
@@ -71,7 +72,7 @@ firebase=pyrebase.initialize_app(config)
 db=firebase.database()
 auth=firebase.auth()
 
-cred=credentials.Certificate('./mysite/myapp/firebasesdk.json')
+cred=credentials.Certificate('C:/Users/maste/OneDrive/Desktop/FYP/FYP-Django/mysite/myapp/firebasesdk.json')
 app=firebase_admin.initialize_app(cred, {
     "databaseURL": "https://fyptheboyes.firebaseio.com",
 })
@@ -139,7 +140,7 @@ def postsign(request):
                 print("printing otp check")
                 print(otp_check)
                 if otp_check == True:
-                    #login the user and save session :D
+                   
                     login(request, user)
                     
                     # ----------------------------------------
@@ -161,6 +162,7 @@ def postsign(request):
                     scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
                 
                     scan_check=scan_check_get.val()
+                    
                     return render(request,"pick.html",{"firebasename":check_email.display_name,"scan_check":scan_check}) 
 
                 else:
@@ -203,7 +205,7 @@ def postregister(request):
         #==========QR CODE SEND TO EMAIL=======
         try:
             msg = MIMEMultipart()
-            attachment ="./mysite/myapp/QRcodes/{0}.jpg'.format(regem) 
+            attachment ='C:/Users/maste/OneDrive/Desktop/FYP/FYP-Django/mysite/myapp/QRcodes/{0}.jpg'.format(regem) 
             msg['Subject'] = 'Your QR Code - TheBoyes Web Scanner'
             msg['From'] = 'fypemail@yahoo.com' #change this to email used by us
             msg['To'] = regem #change this to email input from user
@@ -238,12 +240,21 @@ def postregister(request):
         return render(request,'userreg.html', {"msgg":message})
 @login_required
 def profile(request):
+    current_user = request.user
+    print("testing")
+    print(current_user)
+    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
     
+    scan_check=scan_check_get.val()
     check_email = auth2.get_user_by_email(login_email_rn)
     
-    return render(request,'profile.html',{"firebasename":check_email.display_name,"emel":login_email_rn})
+    
+    return render(request,'profile.html',{"firebasename":check_email.display_name,"emel":login_email_rn,"scan_check":scan_check})
 @login_required
 def profile_update(request):
+    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
+    
+    scan_check=scan_check_get.val()
     check=request.POST.get('resetemail')
     pass1=request.POST.get('respass')
     pass2=request.POST.get('respassconf')
@@ -262,17 +273,17 @@ def profile_update(request):
             user_update=auth2.update_user(user.uid, password=str(pass1))
             
             mesg="Password updated successfully."
-            return render(request, 'profile.html',{"msgg":mesg})
+            return render(request, 'profile.html',{"msgg":mesg,"scan_check":scan_check})
         else:
             print("it passed here2")
 
             mesg="Password error. Check input!"
-            return render(request, 'profile.html',{"msgg":mesg})
+            return render(request, 'profile.html',{"msgg":mesg,"scan_check":scan_check})
     else:
         print("it passed here2")
 
         mesg="Password must be above 6 characters long!"
-        return render(request, 'profile.html',{"msgg":mesg})
+        return render(request, 'profile.html',{"msgg":mesg,"scan_check":scan_check})
     
 
     
@@ -291,7 +302,7 @@ def home(request):
     check_email = auth2.get_user_by_email(login_email_rn)
     return render(request,'pick.html',{"firebasename":check_email.display_name,"scan_check":scan_check})
     
-#put three button, disable done, noe enable and delete
+
 def del_disble_user(request):
     email_to_disable=request.POST.get('disble_user_button')
     email_to_delete=request.POST.get('del_user_button')
@@ -319,7 +330,7 @@ def del_disble_user(request):
     
             user = auth2.get_user_by_email(email_to_disable)
             user_update=auth2.update_user(user.uid, disabled=True)
-            # auth2.delete_user(user.uid)
+
             
         print("User disabled/enabled!")
     
@@ -363,9 +374,7 @@ def admin_custom(request):
             lastlogin=usermeta.user_metadata.last_sign_in_timestamp
             formtd_time_create=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(createtime/1000.0))
             formtd_time_lastlogin=time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(lastlogin/1000.0))
-            #change to disable/enable..and add the delete button
-
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     
             disable_button='<button type="submit" class="btn btn-primary" name="disble_user_button" value={0}>Enable/Disable</button>'.format(user.email)
             delete_button='<button type="submit" class="btn btn-primary" name="del_user_button" value={0}>Delete</button>'.format(user.email)
 
@@ -381,40 +390,58 @@ def scan_history(request):
     history=[]
     scan_date=[]
     dload=[]
-    login_email_rn="fypemail@yahoo.com"
+   
     emel=login_email_rn.replace(".","_")
     print(emel)
+    scan_check_get=db.child(emel).child("scan_check").get()#only when login
+    
+    scan_check=scan_check_get.val()
     
     extract_scan_history = db.child(emel).child("scans").get()
     print("printing random stuff")
-    print(extract_scan_history)
+    print(extract_scan_history.val())
     
-    for scanned in extract_scan_history:
-        print(scanned.key())
-        keys=scanned.key()
-        web_extract=keys.replace("_",".")
-        strip_character="."
-  
-        url_extract=web_extract[:-15]
-        # datee=strip_character.join(web_extract.split(strip_character)[2:])
-        dateee=web_extract[-14:]
-        
-        date_formatted=datetime.strptime(dateee, '%d%m%Y%H%M%S')
+    if extract_scan_history.val() is not None:
+
+        for scanned in extract_scan_history:
+
+            print(scanned.key())
+            keys=scanned.key()
+            web_extract=keys.replace("_",".")
+            strip_character="."
     
-        history.append(url_extract)
-        scan_date.append(date_formatted)
+            url_extract=web_extract[:-15]
+          
+            dateee=web_extract[-14:]
+            
+            date_formatted=datetime.strptime(dateee, '%d%m%Y%H%M%S')
         
-        
+            history.append(url_extract)
+            scan_date.append(date_formatted)
+            
+            
+            dload_button=Template(
+                f'<form  action="{{% url \'historyreport\' %}}" method="post"><button type="submit" name="dload_scan" value="{scanned.key()}" class="btn btn-primary" name="dload_scan" value="{scanned.key()}">View</button></form>'
+                ).render(Context())
+            print(dload_button)
+            dload.append(dload_button)
+            
+            ziplist=zip(history, scan_date,dload)
+        print(dload)
+        # return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
+        return render(request,'scan_history.html', {"scanHistory":ziplist,"dlojad":dload,"scan_check":scan_check})
+
+    else:
+        history.append("No history")
+        scan_date.append("-")
         dload_button=Template(
-            f'<form  action="{{% url \'historyreport\' %}}" method="post"><button type="submit" name="dload_scan" value="{scanned.key()}" class="btn btn-primary" name="dload_scan" value="{scanned.key()}">View</button></form>'
-            ).render(Context())
+                f'<form  action="{{% url \'home\' %}}" method="post"><button type="submit" name="dload_scan" class="btn btn-primary" name="dload_scan">Start Scan</button></form>'
+                ).render(Context())
         print(dload_button)
         dload.append(dload_button)
-        
-        ziplist=zip(history, scan_date,dload)
-    print(dload)
-    # return render(request,'scan_history.html', {"scanHistory":ziplist,"dload_button":dload_button})
-    return render(request,'scan_history.html', {"scanHistory":ziplist,"dlojad":dload})
+        return render(request,'scan_history.html', {"scanHistory":ziplist,"dlojad":dload,"scan_check":scan_check})
+
+
 
 # #@login_required(login_url='/admin_log_in/')
 def admin_reg(request):
@@ -478,11 +505,17 @@ def normal(request):
 
 @login_required
 def fullscan_arachni(request):
-    return render(request,'fullarachni.html') 
+    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
+    
+    scan_check=scan_check_get.val()
+    return render(request,'fullarachni.html',{"scan_check":scan_check}) 
 
 @login_required
 def fullscan_arachni_auth(request):
-    return render(request,'fullarachni_auth.html') 
+    scan_check_get=db.child(login_email_rn.replace(".","_")).child("scan_check").get()#only when login
+    
+    scan_check=scan_check_get.val()
+    return render(request,'fullarachni_auth.html',{"scan_check":scan_check}) 
 
 @login_required
 def index(request):
@@ -504,6 +537,7 @@ def norm_scan(request):
         new=urller.sub('', remoteServer).strip().strip('/')
         split_string = new.split("/", 1)
         url_inp = split_string[0]
+        going_tofirebase=url_inp
     except:
         pass
     print(url_inp)
@@ -533,7 +567,7 @@ def norm_scan(request):
         print("Keyboard Interrupt")
     fixed_list=str(portOpenList)[1:-1]
  
-    print ("ip: ",remoteServer , "portsOpen: ", fixed_list)
+    print ("ip: ",url_inp , "portsOpen: ", fixed_list)
     
     ip_locate=urllib.request.urlopen("http://ip-api.com/json/"+url_inp)
     data=ip_locate.read()
@@ -548,12 +582,42 @@ def norm_scan(request):
     
     foo = SecurityHeaders()
 
-    parsed = urlparse(remoteServer)
-    if not parsed.scheme:
-        url = 'http://' + remoteServer # default to http if scheme not provided
+    def check_https_url(url):
+        HTTPS_URL = f'https://{url}'
+        try:
+            HTTPS_URL = urlparse(HTTPS_URL)
+            connection = HTTPSConnection(HTTPS_URL.netloc, timeout=2)
+            connection.request('HEAD', HTTPS_URL.path)
+            if connection.getresponse():
+                return True
+            else:
+                return False
+        except:
+            return False
+    def check_http_url(url):
+        HTTP_URL = f'http://{url}'
+        try:
+            HTTP_URL = urlparse(HTTP_URL)
+            connection = HTTPConnection(HTTP_URL.netloc)
+            connection.request('HEAD', HTTP_URL.path)
+            if connection.getresponse():
+                return True
+            else:
+                return False
+        except:
+            return False
 
+    if check_https_url(url_inp):
+        print("Nice, you can load the website with HTTPS")
+        url_inp="https://"+url_inp
+    elif check_http_url(url_inp):
+        print("HTTPS didn't load the website, but you can use HTTP")
+        url_inp="http://"+url_inp
+    else:
+        print("Both HTTP and HTTPS did not load the website, check whether your url is malformed.")
+        
 
-    headers = foo.check_headers(url)
+    headers = foo.check_headers(url_inp)
 
     if not headers:
         print ("Failed to fetch headers, exiting...")
@@ -581,7 +645,7 @@ def norm_scan(request):
                     ' ... [ ' + okColor + 'OK' + endColor + ' ]')
                 scoring=scoring+1
 
-    https = foo.test_https(url)
+    https = foo.test_https(url_inp)
     if https['supported']:
         print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
@@ -597,7 +661,7 @@ def norm_scan(request):
         
 
 
-    if foo.test_http_to_https(url, 5):
+    if foo.test_http_to_https(url_inp, 5):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
     else:
@@ -605,25 +669,28 @@ def norm_scan(request):
 
    
     # -------------------------------------------
-    cli(url)
+    cli(url_inp)
     
 
                 
     visited_links=[]
-    page = requests.get(url)    
-    data = page.text
-    soup = BeautifulSoup(data, features = "lxml")
-    linkfinder=soup.find_all('a')
-    print(linkfinder)
-    if not linkfinder:
-        print("None")
-        visited_links.append("None") 
-    else:
-        for link in soup.find_all('a'):
-            print(link.get('href'))
-            visited_links.append(link.get('href')) 
-        
-    print(visited_links)
+    try:
+        page = requests.get(url_inp)    
+        data = page.text
+        soup = BeautifulSoup(data, features = "lxml")
+        linkfinder=soup.find_all('a')
+        print(linkfinder)
+        if not linkfinder:
+            print("None")
+            visited_links.append(url_inp) 
+        else:
+            for link in soup.find_all('a'):
+                print(link.get('href'))
+                visited_links.append(link.get('href')) 
+            
+        print(visited_links)
+    except:
+        visited_links.append(url_inp) 
     
         # -------------------------------------------------------------------
  
@@ -632,7 +699,7 @@ def norm_scan(request):
     # a=render(request, 'report.html',{'data':fixed_list,'data2':c,'data3':val,'data4':val2, 'data5':list(visited_links), 'data6':cj,"keysNvalue":zip(keys,descr,remedy,url_issue)})
     now_today=datetime.now().strftime("%d%m%Y%H%M%S")
     
-    url_tofirebase=url_inp.replace(".","_")+"_"+now_today
+    url_tofirebase=going_tofirebase.replace(".","_")+"_"+now_today
     
     
     #sending to firebase
@@ -690,6 +757,7 @@ def arachni (request):
         new=urller.sub('', url).strip().strip('/')
         split_string = new.split("/", 1)
         url_inp = split_string[0]
+        going_tofirebase=url_inp
     except:
         pass
     print(url_inp)
@@ -737,16 +805,45 @@ def arachni (request):
 
     foo = SecurityHeaders()
 
-    # parsed = urlparse(url)
-    # if not parsed.scheme:
-    #     url = 'http://' + url # defasult to http if scheme not provided
+    def check_https_url(url):
+        HTTPS_URL = f'https://{url}'
+        try:
+            HTTPS_URL = urlparse(HTTPS_URL)
+            connection = HTTPSConnection(HTTPS_URL.netloc, timeout=2)
+            connection.request('HEAD', HTTPS_URL.path)
+            if connection.getresponse():
+                return True
+            else:
+                return False
+        except:
+            return False
+    def check_http_url(url):
+        HTTP_URL = f'http://{url}'
+        try:
+            HTTP_URL = urlparse(HTTP_URL)
+            connection = HTTPConnection(HTTP_URL.netloc)
+            connection.request('HEAD', HTTP_URL.path)
+            if connection.getresponse():
+                return True
+            else:
+                return False
+        except:
+            return False
 
+    if check_https_url(url_inp):
+        print("Nice, you can load the website with HTTPS")
+        url_inp="https://"+url_inp
+    elif check_http_url(url_inp):
+        print("HTTPS didn't load the website, but you can use HTTP")
+        url_inp="http://"+url_inp
+    else:
+        print("Both HTTP and HTTPS did not load the website, check whether your url is malformed.")
 
     headers = foo.check_headers(url_inp)
 
     if not headers:
         print ("Failed to fetch headers, exiting...")
-        sys.exit(1)
+    
 
     okColor = '\033[92m'
     warnColor = '\033[93m'
@@ -768,7 +865,7 @@ def arachni (request):
                     ' ... [ ' + okColor + 'OK' + endColor + ' ]')
                 scoring=scoring+1
 
-    https = foo.test_https(url)
+    https = foo.test_https(url_inp)
     if https['supported']:
         print('HTTPS supported ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
@@ -782,29 +879,17 @@ def arachni (request):
         print('HTTPS valid certificate ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
 
 
-    if foo.test_http_to_https(url, 5):
+    if foo.test_http_to_https(url_inp, 5):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
-        scoring=scoring+1
-        if not re.match('(?:http|https)://', url):
-            url='https://{}'.format(url_inp)
-        else:
-            pass
+        
+           
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-        if not re.match('(?:http|https)://', url):
-            url='http://{}'.format(url_inp)
-        else:
-            pass
-   
+      
+ 
     
-
-    # if not re.match('(?:http|https)://', url):
-    #     url='https://{}'.format(url)
-    # else:
-    #     pass
-    
-    print(url)
-    p=subprocess.Popen([r'.\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    print(url_inp)
+    p=subprocess.Popen([r'C:\Users\maste\OneDrive\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
     time.sleep(20)
     a = ArachniClient()
     resumeFlag = False
@@ -819,7 +904,7 @@ def arachni (request):
         status_object = a.get_status(x)
         if(status_object["busy"] == True): #break and resume last scan if scan is still ongoing
             scan_ID = x
-            resumeFlag = True
+            resumeFlag = False
             start_time = time.time()
             break
     
@@ -846,7 +931,7 @@ def arachni (request):
         scanType = a.selectNormalScan(checkNormalScanType)
         print(scanType)
         try:
-            a.target(url)
+            a.target(url_inp)
             scan_json_object = a.start_scan() #outputs json dictionary
             scan_ID = scan_json_object["id"]
             start_time = time.time()
@@ -905,7 +990,7 @@ def arachni (request):
 
             now_today=datetime.now().strftime("%d%m%Y%H%M%S")
            
-            url_tofirebase=url_inp.replace(".","_")+"_"+now_today
+            url_tofirebase=going_tofirebase.replace(".","_")+"_"+now_today
           
             print(url_tofirebase)
             db.child(emailtofirebase).child("scans").child(url_tofirebase).set(tofirebase) 
@@ -1056,6 +1141,7 @@ def arachni_auth (request):
         new=urller.sub('', url).strip().strip('/')
         split_string = new.split("/", 1)
         url_inp = split_string[0]
+        going_tofirebase=url_inp
     except:
         pass
     print(url_inp)
@@ -1103,16 +1189,46 @@ def arachni_auth (request):
 
     foo = SecurityHeaders()
 
-    # parsed = urlparse(url)
-    # if not parsed.scheme:
-    #     url = 'http://' + url # defasult to http if scheme not provided
+    def check_https_url(url):
+        HTTPS_URL = f'https://{url}'
+        try:
+            HTTPS_URL = urlparse(HTTPS_URL)
+            connection = HTTPSConnection(HTTPS_URL.netloc, timeout=2)
+            connection.request('HEAD', HTTPS_URL.path)
+            if connection.getresponse():
+                return True
+            else:
+                return False
+        except:
+            return False
+    def check_http_url(url):
+        HTTP_URL = f'http://{url}'
+        try:
+            HTTP_URL = urlparse(HTTP_URL)
+            connection = HTTPConnection(HTTP_URL.netloc)
+            connection.request('HEAD', HTTP_URL.path)
+            if connection.getresponse():
+                return True
+            else:
+                return False
+        except:
+            return False
 
+    if check_https_url(url_inp):
+        print("Nice, you can load the website with HTTPS")
+        url_inp="https://"+url_inp
+    elif check_http_url(url_inp):
+        print("HTTPS didn't load the website, but you can use HTTP")
+        url_inp="http://"+url_inp
+    else:
+        print("Both HTTP and HTTPS did not load the website, check whether your url is malformed.")
+        
 
     headers = foo.check_headers(url_inp)
 
     if not headers:
         print ("Failed to fetch headers, exiting...")
-        sys.exit(1)
+        pass
 
     okColor = '\033[92m'
     warnColor = '\033[93m'
@@ -1151,28 +1267,14 @@ def arachni_auth (request):
     if foo.test_http_to_https(url, 5):
         print('HTTP -> HTTPS redirect ... [ ' + okColor + 'OK' + endColor + ' ]')
         scoring=scoring+1
-        if not re.match('(?:http|https)://', url):
-            url='https://{}'.format(url_inp)
-        else:
-            pass
+        
     
     else:
         print('HTTP -> HTTPS redirect ... [ ' + warnColor + 'FAIL' + endColor + ' ]')
-        if not re.match('(?:http|https)://', url):
-            url='http://{}'.format(url_inp)
-        else:
-            pass
-    
-   
-    
-
-    # if not re.match('(?:http|https)://', url):
-    #     url='https://{}'.format(url)
-    # else:
-    #     pass
+     
     
     print(url)
-    p=subprocess.Popen([r'.\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
+    p=subprocess.Popen([r'C:\Users\maste\OneDrive\Desktop\FYP\FYP-Django\mysite\myapp\arachni-1.5.1-0.5.12-windows-x86_64\bin\arachni_rest_server.bat'])
     time.sleep(20)
     a = ArachniClient()
     resumeFlag = False
@@ -1187,7 +1289,7 @@ def arachni_auth (request):
         status_object = a.get_status(x)
         if(status_object["busy"] == True): #break and resume last scan if scan is still ongoing
             scan_ID = x
-            resumeFlag = True
+            resumeFlag = False
             start_time = time.time()
             break
     
@@ -1273,7 +1375,7 @@ def arachni_auth (request):
 
             now_today=datetime.now().strftime("%d%m%Y%H%M%S")
            
-            url_tofirebase=url_inp.replace(".","_")+"_"+now_today
+            url_tofirebase=going_tofirebase.replace(".","_")+"_"+now_today
           
             print(url_tofirebase)
             db.child(emailtofirebase).child("scans").child(url_tofirebase).set(tofirebase) 
@@ -1364,7 +1466,7 @@ def default_map(request):
     mapbox_access_token = 'pk.eyJ1IjoibWFzdGVyZWxhaGVlIiwiYSI6ImNrOWp0am43MTFtM3IzbHA0dzhuOHZiN3UifQ.kgIXiMoyl9tfKZcFys9b_Q'
     return render(request, 'default.html', {'mapbox_access_token': mapbox_access_token})
 
-
+#ddos attack, not implemented
 def attack(request):
     remoteServer2    = request.POST.get('param2')
     remoteServerIP2  = socket.gethostbyname(remoteServer2)

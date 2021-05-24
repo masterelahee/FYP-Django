@@ -24,12 +24,12 @@ def pdf_generator(url_tofirebase,login_email_rn):
     db=firebase.database()
  
 
-    cred=credentials.Certificate('./mysite/myapp/firebasesdk.json')
+    cred=credentials.Certificate('C:/Users/maste/OneDrive/Desktop/FYP/FYP-Django/mysite/myapp/firebasesdk.json')
     print("IAFTER CRED")
     
     print("AFTER THIS")
    
-    PDF_OUTPUT_PATH = './mysite/myapp/pdf_reports/'+url_tofirebase +'.pdf'
+    PDF_OUTPUT_PATH = 'C:/Users/maste/OneDrive/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/'+url_tofirebase +'.pdf'
     print("IAFTER PATH")
     f=[]
 
@@ -59,7 +59,7 @@ def pdf_generator(url_tofirebase,login_email_rn):
 
     
     print("pdfpath")
-    PDF_TEMPLATE_PATH = './mysite/myapp/pdf_reports/templates/format_deep1.pdf'
+    PDF_TEMPLATE_PATH = 'C:/Users/maste/OneDrive/Desktop/FYP/FYP-Django/mysite/myapp/pdf_reports/templates/format_deep1.pdf'
     
     data_dict['port_open']=raw_data[4]#port_open
 
@@ -98,3 +98,4 @@ def pdf_generator(url_tofirebase,login_email_rn):
                         annotation.update(pdfrw.PdfDict(AP=f'{key}', V=f'{data_dict[key]}'))
 
     pdfrw.PdfWriter().write(PDF_OUTPUT_PATH, template_pdf)
+    print("pdf done")
